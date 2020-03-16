@@ -256,4 +256,37 @@ public final class HsRecordsModel implements Serializable {
 
         return added;
     } //addSubcategory
+
+    /**
+     * Attempts to edit the entry with the specified ID of this model by replacing it with the specified new entry. If
+     * the ID of the specified new entry does not equal the specified ID or an entry with the specified ID has not been
+     * previously added to this model, the edit will not occur.
+     *
+     * @param id the ID to be used in the operation
+     * @param newEntry the new entry to be used in the operation
+     * @return {@code true}, if the entry with the specified of the model ID was edited and {@code false} otherwise
+     */
+    public boolean editEntry(String id, Entry newEntry) {
+        boolean edited;
+
+        Objects.requireNonNull(id, "the specified ID is null");
+
+        Objects.requireNonNull(newEntry, "the specified new entry is null");
+
+        if (Objects.equals(newEntry.getId(), id)) {
+            Entry currentEntry = this.idsToEntries.get(id);
+
+            if (currentEntry == null) {
+                edited = false;
+            } else {
+                this.idsToEntries.put(id, newEntry);
+
+                edited = true;
+            } //endif
+        } else {
+            edited = false;
+        } //end if
+
+        return edited;
+    } //editEntry
 }
