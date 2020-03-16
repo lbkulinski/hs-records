@@ -29,11 +29,6 @@ public final class HsRecordsModel implements Serializable {
         private final Map<String, Entry> idsToEntries;
 
         /**
-         * The categories of this serialization proxy.
-         */
-        private final Set<String> categories;
-
-        /**
          * The mapping from categories to subcategories of this serialization proxy.
          */
         private final Map<String, Set<String>> catsToSubcats;
@@ -44,24 +39,19 @@ public final class HsRecordsModel implements Serializable {
 
         /**
          * Constructs a newly allocated {@code SerializationProxy} object with the specified mapping from IDs to
-         * entries, categories, and mapping from categories to subcategories.
+         * entries and mapping from categories to subcategories.
          *
          * @param idsToEntries the mapping from IDs to entries to be used in construction
-         * @param categories the categories to be used in construction
          * @param catsToSubcats the mapping from categories to subcategories to be used in construction
-         * @throws NullPointerException if the specified mapping from IDs to entries, categories, or mapping from
-         * categories to subcategories is {@code null}
+         * @throws NullPointerException if the specified mapping from IDs to entries or mapping from categories to
+         * subcategories is {@code null}
          */
-        public SerializationProxy(Map<String, Entry> idsToEntries, Set<String> categories,
-                                  Map<String, Set<String>> catsToSubcats) {
+        public SerializationProxy(Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
             Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
-
-            Objects.requireNonNull(categories, "the specified categories is null");
 
             Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
 
             this.idsToEntries = new HashMap<>(idsToEntries);
-            this.categories = new HashSet<>(categories);
             this.catsToSubcats = new HashMap<>();
 
             for (Map.Entry<String, Set<String>> entry : catsToSubcats.entrySet()) {
@@ -74,9 +64,9 @@ public final class HsRecordsModel implements Serializable {
          *
          * @return a {@code HsRecordsModel} object in place of this serialization proxy
          */
-        private Object readReplace() {
-            return new HsRecordsModel(this.idsToEntries, this.categories, this.catsToSubcats);
-        } //readReplace
+        private Object readResolve() {
+            return new HsRecordsModel(this.idsToEntries, this.catsToSubcats);
+        } //readResolve
 
         /**
          * Returns the hash code of this serialization proxy.
@@ -90,8 +80,6 @@ public final class HsRecordsModel implements Serializable {
 
             result = prime * result + Objects.hashCode(this.idsToEntries);
 
-            result = prime * result + Objects.hashCode(this.categories);
-
             result = prime * result + Objects.hashCode(this.catsToSubcats);
 
             return result;
@@ -100,8 +88,7 @@ public final class HsRecordsModel implements Serializable {
         /**
          * Determines whether or not the specified object is equal to this serialization proxy. {@code true} is
          * returned if and only if the specified object is an instance of {@code SerializationProxy} and its mapping
-         * from IDs to entries, categories, and mapping from categories to subcategories are equal to this
-         * serialization proxy's.
+         * from IDs to entries and mapping from categories to subcategories are equal to this serialization proxy's.
          *
          * @param object the object to be used in the comparisons
          * @return {@code true}, if the specified object is equal to this serialization proxy and {@code false}
@@ -115,8 +102,6 @@ public final class HsRecordsModel implements Serializable {
                 boolean equal;
 
                 equal = Objects.equals(this.idsToEntries, ((SerializationProxy) object).idsToEntries);
-
-                equal &= Objects.equals(this.categories, ((SerializationProxy) object).categories);
 
                 equal &= Objects.equals(this.catsToSubcats, ((SerializationProxy) object).catsToSubcats);
 
@@ -136,9 +121,9 @@ public final class HsRecordsModel implements Serializable {
          */
         @Override
         public String toString() {
-            String format = "SerializationProxy[%s, %s %s]";
+            String format = "SerializationProxy[%s, %s]";
 
-            return String.format(format, this.idsToEntries, this.categories, this.catsToSubcats);
+            return String.format(format, this.idsToEntries, this.catsToSubcats);
         } //toString
     } //SerializationProxy
 
@@ -153,11 +138,6 @@ public final class HsRecordsModel implements Serializable {
     private final Map<String, Entry> idsToEntries;
 
     /**
-     * The categories of this model.
-     */
-    private final Set<String> categories;
-
-    /**
      * The mapping from categories to subcategories of this model.
      */
     private final Map<String, Set<String>> catsToSubcats;
@@ -167,25 +147,20 @@ public final class HsRecordsModel implements Serializable {
     } //static
 
     /**
-     * Constructs a newly allocated {@code HsRecordsModel} object with the specified mapping from IDs to entries,
-     * categories, and mapping from categories to subcategories.
+     * Constructs a newly allocated {@code HsRecordsModel} object with the specified mapping from IDs to entries and
+     * mapping from categories to subcategories.
      *
      * @param idsToEntries the mapping from IDs to entries to be used in construction
-     * @param categories the categories to be used in construction
      * @param catsToSubcats the mapping from categories to subcategories to be used in construction
      * @throws NullPointerException if the specified mapping from IDs to entries, categories, or mapping from
      * categories to subcategories is {@code null}
      */
-    public HsRecordsModel(Map<String, Entry> idsToEntries, Set<String> categories,
-                          Map<String, Set<String>> catsToSubcats) {
+    public HsRecordsModel(Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
         Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
-
-        Objects.requireNonNull(categories, "the specified categories is null");
 
         Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
 
         this.idsToEntries = new HashMap<>(idsToEntries);
-        this.categories = new HashSet<>(categories);
         this.catsToSubcats = new HashMap<>();
 
         for (Map.Entry<String, Set<String>> entry : catsToSubcats.entrySet()) {
@@ -197,6 +172,88 @@ public final class HsRecordsModel implements Serializable {
      * Constructs a newly allocated {@code HsRecordsModel} object.
      */
     public HsRecordsModel() {
-        this(new HashMap<>(), new HashSet<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>());
     } //HsRecordsModel
+
+    /**
+     * Attempts to add the specified entry to this model. If this model already contains an entry with the ID of the
+     * specified entry, the addition will not occur.
+     *
+     * @param entry the entry to be used in the operation
+     * @return {@code true}, if the specified entry was added to this model and {@code false} otherwise
+     * @throws NullPointerException if the specified entry is {@code null}
+     */
+    public boolean addEntry(Entry entry) {
+        String id;
+        Entry currentEntry;
+
+        Objects.requireNonNull(entry, "the specified entry is null");
+
+        id = entry.getId();
+
+        currentEntry = this.idsToEntries.putIfAbsent(id, entry);
+
+        return currentEntry == null;
+    } //addEntry
+
+    /**
+     * Attempts to add the specified category to this model. If this model already contains the specified category, the
+     * addition will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @return {@code true}, if the specified category was added to this model and {@code false} otherwise
+     * @throws NullPointerException if the specified category is {@code null}
+     */
+    public boolean addCategory(String category) {
+        Set<String> currentSubcats;
+        boolean added;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        currentSubcats = this.catsToSubcats.get(category);
+
+        if (currentSubcats == null) {
+            this.catsToSubcats.put(category, new HashSet<>());
+
+            added = true;
+        } else {
+            added = false;
+        } //end if
+
+        return added;
+    } //addCategory
+
+    /**
+     * Attempts to add the specified subcategory to this model. If this model already contains the specified
+     * subcategory that is mapped from the specified category, the addition will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @param subcategory the subcategory to be used in the operation
+     * @return {@code true}, if the specified subcategory was added to this model and {@code false} otherwise
+     * @throws NullPointerException if the specified category or subcategory is {@code null}
+     */
+    public boolean addSubcategory(String category, String subcategory) {
+        Set<String> currentSubcats;
+        boolean added;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        currentSubcats = this.catsToSubcats.get(category);
+
+        if (currentSubcats == null) {
+            Set<String> newSubcats = new HashSet<>();
+
+            newSubcats.add(subcategory);
+
+            this.catsToSubcats.put(category, newSubcats);
+
+            added = true;
+        } else {
+            added = currentSubcats.add(subcategory);
+        } //end if
+
+        return added;
+    } //addSubcategory
 }
