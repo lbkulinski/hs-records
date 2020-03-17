@@ -322,4 +322,44 @@ public final class HsRecordsModel implements Serializable {
 
         return edited;
     } //editCategory
+
+    /**
+     * Attempts to edit the specified subcategory of this model by replacing it with the specified new subcategory. If
+     * the specified category has not been previously added to this model or the specified subcategory is not mapped
+     * from the specified category, the edit will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @param subcategory the subcategory to be used in the operation
+     * @param newSubcategory the new subcategory to be used in the operation
+     * @return {@code true}, if the specified subcategory of this model was edited and {@code false} otherwise
+     * @throws NullPointerException if the specified category, subcategory, or new subcategory is {@code null}
+     */
+    public boolean editSubcategory(String category, String subcategory, String newSubcategory) {
+        Set<String> currentSubcats;
+        boolean edited;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        Objects.requireNonNull(newSubcategory, "the specified new subcategory is null");
+
+        currentSubcats = this.catsToSubcats.get(category);
+
+        if (currentSubcats == null) {
+            edited = false;
+        }  else {
+            boolean removed = currentSubcats.remove(subcategory);
+
+            if (removed) {
+                currentSubcats.add(newSubcategory);
+
+                edited = true;
+            } else {
+                edited = false;
+            } //end if
+        } //end if
+
+        return edited;
+    } //editSubcategory
 }
