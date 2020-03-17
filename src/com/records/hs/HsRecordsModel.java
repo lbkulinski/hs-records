@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.Objects;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Collection;
 
 /**
  * A model in the HS Records application.
@@ -364,11 +365,11 @@ public final class HsRecordsModel implements Serializable {
     } //editSubcategory
 
     /**
-     * Attempts to remove the entry of this model with the specified ID. If an entry with the specified ID has not been
-     * previously added to this model, the removal will not occur.
+     * Attempts to remove an entry with the specified ID from this model. If an entry with the specified ID has not
+     * been previously added to this model, the removal will not occur.
      *
      * @param id the ID to be used in the operation
-     * @return {@code true}, if the entry of this model with the specified ID was removed and {@code false} otherwise
+     * @return {@code true}, if an entry with the specified ID was removed from this model and {@code false} otherwise
      * @throws NullPointerException if the specified ID is {@code null}
      */
     public boolean removeEntry(String id) {
@@ -380,4 +381,41 @@ public final class HsRecordsModel implements Serializable {
 
         return removedEntry != null;
     } //removeEntry
+
+    /**
+     * Attempts to remove all of the entries with the specified category from this model. If an entry with the
+     * specified category has not been previously added to this model, no removals will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @return {@code true}, if at least one entry with the specified category was removed from this model and
+     * {@code false} otherwise
+     * @throws NullPointerException if the specified category is {@code null}
+     */
+    public boolean removeAllEntriesWithCategory(String category) {
+        Collection<Entry> values;
+        Set<Entry> entries;
+        String entryCategory;
+        String entryId;
+        boolean removed = false;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        values = this.idsToEntries.values();
+
+        entries = new HashSet<>(values);
+
+        for (Entry entry : entries) {
+            entryCategory = entry.getCategory();
+
+            if (Objects.equals(entryCategory, category)) {
+                entryId = entry.getId();
+
+                this.idsToEntries.remove(entryId);
+
+                removed = true;
+            } //end if
+        } //end for
+
+        return removed;
+    } //removeAllEntriesWithCategory
 }
