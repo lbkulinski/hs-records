@@ -418,4 +418,41 @@ public final class HsRecordsModel implements Serializable {
 
         return removed;
     } //removeAllEntriesWithCategory
+
+    /**
+     * Attempts to remove all of the entries with the specified subcategory from this model. If an entry with the
+     * specified subcategory has not been previously added to this model, no removals will not occur.
+     *
+     * @param subcategory the subcategory to be used in the operation
+     * @return {@code true}, if at least one entry with the specified subcategory was removed from this model and
+     * {@code false} otherwise
+     * @throws NullPointerException if the specified subcategory is {@code null}
+     */
+    public boolean removeAllEntriesWithSubcategory(String subcategory) {
+        Collection<Entry> values;
+        Set<Entry> entries;
+        String entrySubcategory;
+        String entryId;
+        boolean removed = false;
+
+        Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        values = this.idsToEntries.values();
+
+        entries = new HashSet<>(values);
+
+        for (Entry entry : entries) {
+            entrySubcategory = entry.getSubcategory();
+
+            if (Objects.equals(entrySubcategory, subcategory)) {
+                entryId = entry.getId();
+
+                this.idsToEntries.remove(entryId);
+
+                removed = true;
+            } //end if
+        } //end for
+
+        return removed;
+    } //removeAllEntriesWithSubcategory
 }
