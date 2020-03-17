@@ -362,4 +362,22 @@ public final class HsRecordsModel implements Serializable {
 
         return edited;
     } //editSubcategory
+
+    /**
+     * Attempts to remove the entry of this model with the specified ID. If an entry with the specified ID has not been
+     * previously added to this model, the removal will not occur.
+     *
+     * @param id the ID to be used in the operation
+     * @return {@code true}, if the entry of this model with the specified ID was removed and {@code false} otherwise
+     * @throws NullPointerException if the specified ID is {@code null}
+     */
+    public boolean removeEntry(String id) {
+        Entry removedEntry;
+
+        Objects.requireNonNull(id, "the specified ID is null");
+
+        removedEntry = this.idsToEntries.remove(id);
+
+        return removedEntry != null;
+    } //removeEntry
 }
