@@ -455,4 +455,22 @@ public final class HsRecordsModel implements Serializable {
 
         return removed;
     } //removeAllEntriesWithSubcategory
+
+    /**
+     * Attempts to remove the specified category from this model. If the specified category has not been previously
+     * added to this model, the removal will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @return {@code true}, if the specified category was removed from this model and {@code false} otherwise
+     * @throws NullPointerException if the specified category is {@code null}
+     */
+    public boolean removeCategory(String category) {
+        Set<String> removedSubcats;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        removedSubcats = this.catsToSubcats.remove(category);
+
+        return removedSubcats != null;
+    } //removeCategory
 }
