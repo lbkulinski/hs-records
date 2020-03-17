@@ -258,13 +258,14 @@ public final class HsRecordsModel implements Serializable {
     } //addSubcategory
 
     /**
-     * Attempts to edit the entry with the specified ID of this model by replacing it with the specified new entry. If
+     * Attempts to edit the entry of this model with the specified ID by replacing it with the specified new entry. If
      * the ID of the specified new entry does not equal the specified ID or an entry with the specified ID has not been
      * previously added to this model, the edit will not occur.
      *
      * @param id the ID to be used in the operation
      * @param newEntry the new entry to be used in the operation
-     * @return {@code true}, if the entry with the specified of the model ID was edited and {@code false} otherwise
+     * @return {@code true}, if the entry of this model with the specified ID was edited and {@code false} otherwise
+     * @throws NullPointerException if the specified ID or new entry is {@code null}
      */
     public boolean editEntry(String id, Entry newEntry) {
         boolean edited;
@@ -289,4 +290,36 @@ public final class HsRecordsModel implements Serializable {
 
         return edited;
     } //editEntry
+
+    /**
+     * Attempts to edit the specified category of this model by replacing it with the specified new category. If the
+     * specified category has not been previously added to this model, the edit will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @param newCategory the new category to be used in the operation
+     * @return {@code true}, if the specified category of this model was edited and {@code false} otherwise
+     * @throws NullPointerException if the specified category or new category is {@code null}
+     */
+    public boolean editCategory(String category, String newCategory) {
+        Set<String> currentSubcats;
+        boolean edited;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        Objects.requireNonNull(newCategory, "the specified new category is null");
+
+        currentSubcats = this.catsToSubcats.get(category);
+
+        if (currentSubcats == null) {
+            edited = false;
+        } else {
+            this.catsToSubcats.remove(category);
+
+            this.catsToSubcats.put(newCategory, currentSubcats);
+
+            edited = true;
+        } //end if
+
+        return edited;
+    } //editCategory
 }
