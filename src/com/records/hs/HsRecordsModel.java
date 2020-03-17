@@ -115,8 +115,8 @@ public final class HsRecordsModel implements Serializable {
         /**
          * Returns the {@code String} representation of this serialization proxy. The format of the returned
          * {@code String} may change in future versions of this API. If two entries are equal according to
-         * {@link Entry#equals(Object)}, though, their {@code toString()} values will be equal according to
-         * {@link String#equals(Object)}.
+         * {@link SerializationProxy#equals(Object)}, though, their {@code toString()} values will be equal according
+         * to {@link String#equals(Object)}.
          *
          * @return the {@code String} representation of this serialization proxy
          */
@@ -502,4 +502,70 @@ public final class HsRecordsModel implements Serializable {
 
         return removed;
     } //removeSubcategory
+
+    /**
+     * Returns a new {@code SerializationProxy} object in place of this model.
+     *
+     * @return a new {@code SerializationProxy} object in place of this model
+     */
+    private Object writeReplace() {
+        return new SerializationProxy(this.idsToEntries, this.catsToSubcats);
+    } //writeReplace
+
+    /**
+     * Returns the hash code of this model.
+     *
+     * @return the hash code of this model
+     */
+    @Override
+    public int hashCode() {
+        int result = 23;
+        int prime = 31;
+
+        result = prime * result + Objects.hashCode(this.idsToEntries);
+
+        result = prime * result + Objects.hashCode(this.catsToSubcats);
+
+        return result;
+    } //hashCode
+
+    /**
+     * Determines whether or not the specified object is equal to this model. {@code true} is returned if and only if
+     * the specified object is an instance of {@code HsRecordsModel} and its mapping from IDs to entries and mapping
+     * from categories to subcategories are equal to this model's.
+     *
+     * @param object the object to be used in the comparisons
+     * @return {@code true}, if the specified object is equal to this model and {@code false}
+     * otherwise
+     */
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {
+            return true;
+        } else if (object instanceof HsRecordsModel) {
+            boolean equal;
+
+            equal = Objects.equals(this.idsToEntries, ((HsRecordsModel) object).idsToEntries);
+
+            equal &= Objects.equals(this.catsToSubcats, ((HsRecordsModel) object).catsToSubcats);
+
+            return equal;
+        } else {
+            return false;
+        } //end if
+    } //equals
+
+    /**
+     * Returns the {@code String} representation of this model. The format of the returned {@code String} may change in
+     * future versions of this API. If two entries are equal according to {@link HsRecordsModel#equals(Object)},
+     * though, their {@code toString()} values will be equal according to {@link String#equals(Object)}.
+     *
+     * @return the {@code String} representation of this model
+     */
+    @Override
+    public String toString() {
+        String format = "HsRecordsModel[%s, %s]";
+
+        return String.format(format, this.idsToEntries, this.catsToSubcats);
+    } //toString
 }
