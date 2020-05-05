@@ -12,9 +12,9 @@ import java.util.Collection;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version March 16, 2020
+ * @version May 4, 2020
  */
-public final class HsRecordsModel implements Serializable {
+public final class Model implements Serializable {
     /**
      * The serialization proxy of the class.
      */
@@ -61,12 +61,12 @@ public final class HsRecordsModel implements Serializable {
         } //SerializationProxy
 
         /**
-         * Returns a {@code HsRecordsModel} object in place of this serialization proxy.
+         * Returns a {@code Model} object in place of this serialization proxy.
          *
-         * @return a {@code HsRecordsModel} object in place of this serialization proxy
+         * @return a {@code Model} object in place of this serialization proxy
          */
         private Object readResolve() {
-            return new HsRecordsModel(this.idsToEntries, this.catsToSubcats);
+            return new Model(this.idsToEntries, this.catsToSubcats);
         } //readResolve
 
         /**
@@ -148,15 +148,15 @@ public final class HsRecordsModel implements Serializable {
     } //static
 
     /**
-     * Constructs a newly allocated {@code HsRecordsModel} object with the specified mapping from IDs to entries and
-     * mapping from categories to subcategories.
+     * Constructs a newly allocated {@code Model} object with the specified mapping from IDs to entries and mapping
+     * from categories to subcategories.
      *
      * @param idsToEntries the mapping from IDs to entries to be used in construction
      * @param catsToSubcats the mapping from categories to subcategories to be used in construction
      * @throws NullPointerException if the specified mapping from IDs to entries, categories, or mapping from
      * categories to subcategories is {@code null}
      */
-    public HsRecordsModel(Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
+    public Model(Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
         Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
 
         Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
@@ -167,14 +167,14 @@ public final class HsRecordsModel implements Serializable {
         for (Map.Entry<String, Set<String>> entry : catsToSubcats.entrySet()) {
             this.catsToSubcats.put(entry.getKey(), new HashSet<>(entry.getValue()));
         } //end for
-    } //HsRecordsModel
+    } //Model
 
     /**
-     * Constructs a newly allocated {@code HsRecordsModel} object.
+     * Constructs a newly allocated {@code Model} object.
      */
-    public HsRecordsModel() {
+    public Model() {
         this(new HashMap<>(), new HashMap<>());
-    } //HsRecordsModel
+    } //Model
 
     /**
      * Attempts to add the specified entry to this model. If this model already contains an entry with the ID of the
@@ -531,8 +531,8 @@ public final class HsRecordsModel implements Serializable {
 
     /**
      * Determines whether or not the specified object is equal to this model. {@code true} is returned if and only if
-     * the specified object is an instance of {@code HsRecordsModel} and its mapping from IDs to entries and mapping
-     * from categories to subcategories are equal to this model's.
+     * the specified object is an instance of {@code Model} and its mapping from IDs to entries and mapping from
+     * categories to subcategories are equal to this model's.
      *
      * @param object the object to be used in the comparisons
      * @return {@code true}, if the specified object is equal to this model and {@code false}
@@ -542,12 +542,12 @@ public final class HsRecordsModel implements Serializable {
     public boolean equals(Object object) {
         if (this == object) {
             return true;
-        } else if (object instanceof HsRecordsModel) {
+        } else if (object instanceof Model) {
             boolean equal;
 
-            equal = Objects.equals(this.idsToEntries, ((HsRecordsModel) object).idsToEntries);
+            equal = Objects.equals(this.idsToEntries, ((Model) object).idsToEntries);
 
-            equal &= Objects.equals(this.catsToSubcats, ((HsRecordsModel) object).catsToSubcats);
+            equal &= Objects.equals(this.catsToSubcats, ((Model) object).catsToSubcats);
 
             return equal;
         } else {
@@ -557,14 +557,14 @@ public final class HsRecordsModel implements Serializable {
 
     /**
      * Returns the {@code String} representation of this model. The format of the returned {@code String} may change in
-     * future versions of this API. If two entries are equal according to {@link HsRecordsModel#equals(Object)},
-     * though, their {@code toString()} values will be equal according to {@link String#equals(Object)}.
+     * future versions of this API. If two entries are equal according to {@link Model#equals(Object)}, though, their
+     * {@code toString()} values will be equal according to {@link String#equals(Object)}.
      *
      * @return the {@code String} representation of this model
      */
     @Override
     public String toString() {
-        String format = "HsRecordsModel[%s, %s]";
+        String format = "Model[%s, %s]";
 
         return String.format(format, this.idsToEntries, this.catsToSubcats);
     } //toString
