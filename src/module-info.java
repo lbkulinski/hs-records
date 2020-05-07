@@ -5,6 +5,4 @@
  */
 module com.records.hs {
     requires java.desktop;
-    
-    exports com.records.hs;
 }
