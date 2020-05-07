@@ -1,4 +1,4 @@
-package com.records.hs;
+package com.records.hs.view;
 
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -17,7 +17,7 @@ import java.awt.Insets;
  * An add view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 4, 2020
+ * @version May 7, 2020
  */
 public final class AddView {
     /**

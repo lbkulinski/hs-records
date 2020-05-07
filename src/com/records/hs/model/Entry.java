@@ -1,4 +1,4 @@
-package com.records.hs;
+package com.records.hs.model;
 
 import java.util.Objects;
 
@@ -6,7 +6,7 @@ import java.util.Objects;
  * An entry in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version March 15, 2020
+ * @version May 7, 2020
  */
 public final class Entry {
     /**

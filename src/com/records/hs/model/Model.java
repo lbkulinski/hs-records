@@ -1,4 +1,4 @@
-package com.records.hs;
+package com.records.hs.model;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Collection;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 4, 2020
+ * @version May 7, 2020
  */
 public final class Model implements Serializable {
     /**
