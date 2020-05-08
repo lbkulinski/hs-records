@@ -58,36 +58,36 @@ public final class Entry {
      *
      * @return the ID of this entry
      */
-    public String getId() {
+    public String id() {
         return this.id;
-    } //getId
+    } //id
 
     /**
      * Returns the category of this entry.
      *
      * @return the category of this entry
      */
-    public String getCategory() {
+    public String category() {
         return this.category;
-    } //getCategory
+    } //category
 
     /**
      * Returns the subcategory of this entry.
      *
      * @return the subcategory of this entry
      */
-    public String getSubcategory() {
+    public String subcategory() {
         return this.subcategory;
-    } //getSubcategory
+    } //subcategory
 
     /**
      * Returns the tags of this entry.
      *
      * @return the tags of this entry
      */
-    public String getTags() {
+    public String tags() {
         return this.tags;
-    } //getTags
+    } //tags
 
     /**
      * Returns the hash code of this entry.
@@ -148,7 +148,7 @@ public final class Entry {
      */
     @Override
     public String toString() {
-        String format = "Entry[%s, %s, %s, %s]";
+        String format = "Entry[id=%s, category=%s, subcategory=%s, tags=%s]";
 
         return String.format(format, this.id, this.category, this.subcategory, this.tags);
     } //toString
