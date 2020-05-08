@@ -1,12 +1,14 @@
 package com.records.hs.model;
 
+import java.util.Set;
 import java.util.Objects;
+import java.util.HashSet;
 
 /**
  * An entry in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 7, 2020
+ * @version May 8, 2020
  */
 public final class Entry {
     /**
@@ -27,7 +29,7 @@ public final class Entry {
     /**
      * The tags of this entry.
      */
-    private final String tags;
+    private final Set<String> tags;
 
     /**
      * Constructs a newly allocated {@code Entry} object with the specified ID, category, subcategory, and tags.
@@ -38,7 +40,7 @@ public final class Entry {
      * @param tags the tags to be used in construction
      * @throws NullPointerException if the specified ID, category, subcategory, or tags is {@code null}
      */
-    public Entry(String id, String category, String subcategory, String tags) {
+    public Entry(String id, String category, String subcategory, Set<String> tags) {
         Objects.requireNonNull(id, "the specified ID is null");
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -50,7 +52,7 @@ public final class Entry {
         this.id = id;
         this.category = category;
         this.subcategory = subcategory;
-        this.tags = tags;
+        this.tags = new HashSet<>(tags);
     } //Entry
 
     /**
@@ -85,7 +87,7 @@ public final class Entry {
      *
      * @return the tags of this entry
      */
-    public String tags() {
+    public Set<String> tags() {
         return this.tags;
     } //tags
 

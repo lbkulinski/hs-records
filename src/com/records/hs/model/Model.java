@@ -467,10 +467,8 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             String entryTags = entry.tags();
-                             String searchTag = tag.toLowerCase();
-
-                             entryTags = entryTags.toLowerCase();
+                             Set<String> entryTags = entry.tags();
+                             String searchTag = tag.toUpperCase();
 
                              return entryTags.contains(searchTag);
                          })
@@ -619,10 +617,8 @@ public final class Model implements Serializable {
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
-                                            String entryTags = entry.tags();
-                                            String searchTag = tag.toLowerCase();
-
-                                            entryTags = entryTags.toLowerCase();
+                                            Set<String> entryTags = entry.tags();
+                                            String searchTag = tag.toUpperCase();
 
                                             return entryTags.contains(searchTag);
                                         })
