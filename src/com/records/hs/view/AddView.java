@@ -57,7 +57,7 @@ public final class AddView {
     private final JPanel panel;
 
     /**
-     * Constructs a newly allocated {@code HsRecordsAddView} object.
+     * Constructs a newly allocated {@code AddView} object.
      */
     private AddView() {
         int length = 15;
@@ -72,7 +72,7 @@ public final class AddView {
         this.submitButton = new JButton(submitName);
         this.clearButton = new JButton(clearName);
         this.panel = new JPanel(layout);
-    } //HsRecordsAddView
+    } //AddView
 
     /**
      * Formats the specified component with a titled border with the specified title.
@@ -174,9 +174,9 @@ public final class AddView {
     } //addComponentsToPanel
 
     /**
-     * Returns a new {@code HsRecordsAddView} object.
+     * Returns a new {@code AddView} object.
      *
-     * @return a new {@code HsRecordsAddView} object
+     * @return a new {@code AddView} object
      */
     public static AddView newAddView() {
         AddView addView = new AddView();
