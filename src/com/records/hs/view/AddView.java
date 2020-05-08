@@ -35,9 +35,9 @@ public final class AddView {
     private final JTextField tagsTextField;
 
     /**
-     * The submit button of this add view.
+     * The add button of this add view.
      */
-    private final JButton submitButton;
+    private final JButton addButton;
 
     /**
      * The clear button of this add view.
@@ -54,7 +54,7 @@ public final class AddView {
      */
     private AddView() {
         int length = 15;
-        String submitName = "Submit";
+        String addName = "Add";
         String clearName = "Clear";
         GridBagLayout layout = new GridBagLayout();
 
@@ -62,7 +62,7 @@ public final class AddView {
         this.categoryComboBox = new JComboBox<>();
         this.subcategoryComboBox = new JComboBox<>();
         this.tagsTextField = new JTextField(length);
-        this.submitButton = new JButton(submitName);
+        this.addButton = new JButton(addName);
         this.clearButton = new JButton(clearName);
         this.panel = new JPanel(layout);
     } //AddView
@@ -95,7 +95,7 @@ public final class AddView {
         int categoryRow = 1;
         int subcategoryRow = 2;
         int tagsRow = 3;
-        int submitRow = 4;
+        int addRow = 4;
         int clearRow = 5;
 
         ViewUtilities.addComponentToPanel(this.panel, this.idTextField, constraints, idRow, column);
@@ -106,7 +106,7 @@ public final class AddView {
 
         ViewUtilities.addComponentToPanel(this.panel, this.tagsTextField, constraints, tagsRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.submitButton, constraints, submitRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.addButton, constraints, addRow, column);
 
         ViewUtilities.addComponentToPanel(this.panel, this.clearButton, constraints, clearRow, column);
     } //addComponentsToPanel
@@ -163,13 +163,13 @@ public final class AddView {
     } //tagsTextField
 
     /**
-     * Returns the submit button of this add view.
+     * Returns the add button of this add view.
      *
-     * @return the submit button of this add view
+     * @return the add button of this add view
      */
-    public JButton submitButton() {
-        return this.submitButton;
-    } //submitButton
+    public JButton addButton() {
+        return this.addButton;
+    } //addButton
 
     /**
      * Returns the clear button of this add view.

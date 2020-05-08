@@ -50,9 +50,9 @@ public final class EditView {
     private final JTextField newTagsTextField;
 
     /**
-     * The submit button of this edit view.
+     * The edit button of this edit view.
      */
-    private final JButton submitButton;
+    private final JButton editButton;
 
     /**
      * The clear button of this edit view.
@@ -69,7 +69,7 @@ public final class EditView {
      */
     private EditView() {
         int length = 15;
-        String submitName = "Submit";
+        String editName = "Edit";
         String clearName = "Clear";
         GridBagLayout layout = new GridBagLayout();
 
@@ -80,7 +80,7 @@ public final class EditView {
         this.categoryComboBox = new JComboBox<>();
         this.newSubcategoryComboBox = new JComboBox<>();
         this.newTagsTextField = new JTextField(length);
-        this.submitButton = new JButton(submitName);
+        this.editButton = new JButton(editName);
         this.clearButton = new JButton(clearName);
         this.panel = new JPanel(layout);
     } //EditView
@@ -220,13 +220,13 @@ public final class EditView {
     } //newTagsTextField
 
     /**
-     * Returns the submit button of this edit view.
+     * Returns the edit button of this edit view.
      *
-     * @return the submit button of this edit view
+     * @return the edit button of this edit view
      */
-    public JButton submitButton() {
-        return this.submitButton;
-    } //submitButton
+    public JButton editButton() {
+        return this.editButton;
+    } //editButton
 
     /**
      * Returns the clear button of this edit view.
