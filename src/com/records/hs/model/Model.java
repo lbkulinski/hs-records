@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.Objects;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -394,31 +393,26 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category is {@code null}
      */
     public boolean removeAllEntriesWithCategory(String category) {
-        Collection<Entry> values;
-        Set<Entry> entries;
-        String entryCategory;
-        String entryId;
-        boolean removed = false;
+        int previousSize;
+        int currentSize;
 
         Objects.requireNonNull(category, "the specified category is null");
 
-        values = this.idsToEntries.values();
+        previousSize = this.idsToEntries.size();
 
-        entries = new HashSet<>(values);
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             String entryCategory = entry.category();
 
-        for (Entry entry : entries) {
-            entryCategory = entry.category();
+                             return entryCategory.equalsIgnoreCase(category);
+                         })
+                         .map(Entry::id)
+                         .forEach(this.idsToEntries::remove);
 
-            if (Objects.equals(entryCategory, category)) {
-                entryId = entry.id();
+        currentSize = this.idsToEntries.size();
 
-                this.idsToEntries.remove(entryId);
-
-                removed = true;
-            } //end if
-        } //end for
-
-        return removed;
+        return currentSize != previousSize;
     } //removeAllEntriesWithCategory
 
     /**
@@ -431,32 +425,62 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified subcategory is {@code null}
      */
     public boolean removeAllEntriesWithSubcategory(String subcategory) {
-        Collection<Entry> values;
-        Set<Entry> entries;
-        String entrySubcategory;
-        String entryId;
-        boolean removed = false;
+        int previousSize;
+        int currentSize;
 
         Objects.requireNonNull(subcategory, "the specified subcategory is null");
 
-        values = this.idsToEntries.values();
+        previousSize = this.idsToEntries.size();
 
-        entries = new HashSet<>(values);
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             String entrySubcategory = entry.subcategory();
 
-        for (Entry entry : entries) {
-            entrySubcategory = entry.subcategory();
+                             return entrySubcategory.equalsIgnoreCase(subcategory);
+                         })
+                         .map(Entry::id)
+                         .forEach(this.idsToEntries::remove);
 
-            if (Objects.equals(entrySubcategory, subcategory)) {
-                entryId = entry.id();
+        currentSize = this.idsToEntries.size();
 
-                this.idsToEntries.remove(entryId);
-
-                removed = true;
-            } //end if
-        } //end for
-
-        return removed;
+        return currentSize != previousSize;
     } //removeAllEntriesWithSubcategory
+
+    /**
+     * Attempts to remove all of the entries with the specified tag from this model. If an entry with the specified tag
+     * has not been previously added to this model, no removals will not occur.
+     *
+     * @param tag the tag to be used in the operation
+     * @return {@code true}, if at least one entry with the specified tag was removed from this model and {@code false}
+     * otherwise
+     * @throws NullPointerException if the specified tag is {@code null}
+     */
+    public boolean removeAllEntriesWithTag(String tag) {
+        int previousSize;
+        int currentSize;
+
+        Objects.requireNonNull(tag, "the specified tag is null");
+
+        previousSize = this.idsToEntries.size();
+
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             String entryTags = entry.tags();
+                             String searchTag = tag.toLowerCase();
+
+                             entryTags = entryTags.toLowerCase();
+
+                             return entryTags.contains(searchTag);
+                         })
+                         .map(Entry::id)
+                         .forEach(this.idsToEntries::remove);
+
+        currentSize = this.idsToEntries.size();
+
+        return currentSize != previousSize;
+    } //removeAllEntriesWithTag
 
     /**
      * Attempts to remove the specified category from this model. If the specified category has not been previously
