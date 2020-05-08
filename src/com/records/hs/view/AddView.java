@@ -11,7 +11,7 @@ import java.awt.GridBagConstraints;
  * An add view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 7, 2020
+ * @version May 8, 2020
  */
 public final class AddView {
     /**
@@ -90,25 +90,25 @@ public final class AddView {
      */
     private void addComponentsToPanel() {
         GridBagConstraints constraints = new GridBagConstraints();
-        int row = 0;
-        int idColumn = 0;
-        int categoryColumn = 1;
-        int subcategoryColumn = 2;
-        int tagsColumn = 3;
-        int submitColumn = 4;
-        int clearColumn = 5;
+        int idRow = 0;
+        int column = 0;
+        int categoryRow = 1;
+        int subcategoryRow = 2;
+        int tagsRow = 3;
+        int submitRow = 4;
+        int clearRow = 5;
 
-        ViewUtilities.addComponentToPanel(this.panel, this.idTextField, constraints, row, idColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.idTextField, constraints, idRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.categoryComboBox, constraints, row, categoryColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.categoryComboBox, constraints, categoryRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.subcategoryComboBox, constraints, row, subcategoryColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.subcategoryComboBox, constraints, subcategoryRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.tagsTextField, constraints, row, tagsColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.tagsTextField, constraints, tagsRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.submitButton, constraints, row, submitColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.submitButton, constraints, submitRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.clearButton, constraints, row, clearColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.clearButton, constraints, clearRow, column);
     } //addComponentsToPanel
 
     /**
