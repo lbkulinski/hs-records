@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * A model in the HS Records application.
@@ -122,7 +124,7 @@ public final class Model implements Serializable {
          */
         @Override
         public String toString() {
-            String format = "SerializationProxy[%s, %s]";
+            String format = "SerializationProxy[idsToEntries=%s, catsToSubcats=%s]";
 
             return String.format(format, this.idsToEntries, this.catsToSubcats);
         } //toString
@@ -190,7 +192,7 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(entry, "the specified entry is null");
 
-        id = entry.getId();
+        id = entry.id();
 
         currentEntry = this.idsToEntries.putIfAbsent(id, entry);
 
@@ -275,7 +277,7 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(newEntry, "the specified new entry is null");
 
-        if (Objects.equals(newEntry.getId(), id)) {
+        if (Objects.equals(newEntry.id(), id)) {
             Entry currentEntry = this.idsToEntries.get(id);
 
             if (currentEntry == null) {
@@ -405,10 +407,10 @@ public final class Model implements Serializable {
         entries = new HashSet<>(values);
 
         for (Entry entry : entries) {
-            entryCategory = entry.getCategory();
+            entryCategory = entry.category();
 
             if (Objects.equals(entryCategory, category)) {
-                entryId = entry.getId();
+                entryId = entry.id();
 
                 this.idsToEntries.remove(entryId);
 
@@ -442,10 +444,10 @@ public final class Model implements Serializable {
         entries = new HashSet<>(values);
 
         for (Entry entry : entries) {
-            entrySubcategory = entry.getSubcategory();
+            entrySubcategory = entry.subcategory();
 
             if (Objects.equals(entrySubcategory, subcategory)) {
-                entryId = entry.getId();
+                entryId = entry.id();
 
                 this.idsToEntries.remove(entryId);
 
@@ -502,6 +504,108 @@ public final class Model implements Serializable {
 
         return removed;
     } //removeSubcategory
+
+    /**
+     * Attempts to find an entry with the specified ID in this model.
+     *
+     * @param id the ID to be used in the operation
+     * @return an {@code Optional} containing the found entry or an empty {@code Optional} if an entry with the
+     * specified ID was not found
+     * @throws NullPointerException if the specified ID is {@code null}
+     */
+    public Optional<Entry> findEntryWithId(String id) {
+        Entry foundEntry;
+
+        Objects.requireNonNull(id, "the specified ID is null");
+
+        foundEntry = this.idsToEntries.get(id);
+
+        return Optional.ofNullable(foundEntry);
+    } //findEntryWithId
+
+    /**
+     * Attempts to find entries with the specified category in this model.
+     *
+     * @param category the category to be used in the operation
+     * @return an unmodifiable {@code Set} containing the found entries (if any)
+     * @throws NullPointerException if the specified category is {@code null}
+     */
+    public Set<Entry> findEntriesWithCategory(String category) {
+        Set<Entry> foundEntries;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        foundEntries = this.idsToEntries.values()
+                                        .stream()
+                                        .filter(entry -> {
+                                            String entryCategory = entry.category();
+
+                                            return entryCategory.equalsIgnoreCase(category);
+                                        })
+                                        .collect(Collectors.toUnmodifiableSet());
+
+        return foundEntries;
+    } //findEntriesWithCategory
+
+    /**
+     * Attempts to find entries with the specified subcategory in this model. The specified subcategory must be mapped
+     * from the specified category in order to be included in the set of found entries.
+     *
+     * @param category the category to be used in the operation
+     * @param subcategory the subcategory to be used in the operation
+     * @return an unmodifiable {@code Set} containing the found entries (if any)
+     * @throws NullPointerException if the specified category or subcategory is {@code null}
+     */
+    public Set<Entry> findEntriesWithSubcategory(String category, String subcategory) {
+        Set<Entry> foundEntries;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        foundEntries = this.idsToEntries.values()
+                                        .stream()
+                                        .filter(entry -> {
+                                            String entryCategory = entry.category();
+
+                                            return entryCategory.equalsIgnoreCase(category);
+                                        })
+                                        .filter(entry -> {
+                                            String entrySubcategory = entry.subcategory();
+
+                                            return entrySubcategory.equalsIgnoreCase(subcategory);
+                                        })
+                                        .collect(Collectors.toUnmodifiableSet());
+
+        return foundEntries;
+    } //findEntriesWithSubcategory
+
+    /**
+     * Attempts to find entries whose tags contain the specified tag in this model.
+     *
+     * @param tag the tag to be used in the operation
+     * @return an unmodifiable {@code Set} containing the found entries (if any)
+     * @throws NullPointerException if the specified tag is {@code null}
+     */
+    public Set<Entry> findEntriesWithTag(String tag) {
+        Set<Entry> foundEntries;
+
+        Objects.requireNonNull(tag, "the specified tag is null");
+
+        foundEntries = this.idsToEntries.values()
+                                        .stream()
+                                        .filter(entry -> {
+                                            String entryTags = entry.tags();
+                                            String searchTag = tag.toLowerCase();
+
+                                            entryTags = entryTags.toLowerCase();
+
+                                            return entryTags.contains(searchTag);
+                                        })
+                                        .collect(Collectors.toUnmodifiableSet());
+
+        return foundEntries;
+    } //findEntriesWithTag
 
     /**
      * Returns a new {@code SerializationProxy} object in place of this model.
@@ -564,7 +668,7 @@ public final class Model implements Serializable {
      */
     @Override
     public String toString() {
-        String format = "Model[%s, %s]";
+        String format = "Model[idsToEntries=%s, catsToSubcats=%s]";
 
         return String.format(format, this.idsToEntries, this.catsToSubcats);
     } //toString
