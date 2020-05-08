@@ -1,15 +1,16 @@
 package com.records.hs.view;
 
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.util.Objects;
 import javax.swing.BorderFactory;
 import java.awt.Color;
-import javax.swing.JComponent;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
@@ -26,14 +27,14 @@ public final class AddView {
     private final JTextField idTextField;
 
     /**
-     * The category text field of this add view.
+     * The category combo box of this add view.
      */
-    private final JTextField categoryTextField;
+    private final JComboBox<String> categoryComboBox;
 
     /**
-     * The subcategory text field of this add view.
+     * The subcategory combo box of this add view.
      */
-    private final JTextField subcategoryTextField;
+    private final JComboBox<String> subcategoryComboBox;
 
     /**
      * The tags text field of this add view.
@@ -65,8 +66,8 @@ public final class AddView {
         GridBagLayout layout = new GridBagLayout();
 
         this.idTextField = new JTextField(length);
-        this.categoryTextField = new JTextField(length);
-        this.subcategoryTextField = new JTextField(length);
+        this.categoryComboBox = new JComboBox<>();
+        this.subcategoryComboBox = new JComboBox<>();
         this.tagsTextField = new JTextField(length);
         this.submitButton = new JButton(submitName);
         this.clearButton = new JButton(clearName);
@@ -74,19 +75,19 @@ public final class AddView {
     } //HsRecordsAddView
 
     /**
-     * Formats the specified text field with a titled border with the specified title.
+     * Formats the specified component with a titled border with the specified title.
      *
-     * @param textField the text field to be used in the operation
+     * @param component the component to be used in the operation
      * @param title the title to be used in the operation
-     * @throws NullPointerException if the specified text field or title is {@code null}
+     * @throws NullPointerException if the specified component or title is {@code null}
      */
-    private void formatTextField(JTextField textField, String title) {
+    private void formatComponent(JComponent component, String title) {
         Border lineBorder;
         TitledBorder titledBorder;
 
-        Objects.requireNonNull(textField, "the specified text field is null");
+        Objects.requireNonNull(component, "the specified component is null");
 
-        Objects.requireNonNull(title, "the specified label name is null");
+        Objects.requireNonNull(title, "the specified title is null");
 
         lineBorder = BorderFactory.createLineBorder(Color.BLACK);
 
@@ -94,8 +95,8 @@ public final class AddView {
 
         titledBorder.setTitlePosition(TitledBorder.BELOW_TOP);
 
-        textField.setBorder(titledBorder);
-    } //formatTextField
+        component.setBorder(titledBorder);
+    } //formatComponent
 
     /**
      * Formats the components of this add view.
@@ -106,13 +107,13 @@ public final class AddView {
         String subcategoryTitle = "Subcategory";
         String tagsTitle = "Tags";
 
-        this.formatTextField(this.idTextField, idTitle);
+        this.formatComponent(this.idTextField, idTitle);
 
-        this.formatTextField(this.categoryTextField, categoryTitle);
+        this.formatComponent(this.categoryComboBox, categoryTitle);
 
-        this.formatTextField(this.subcategoryTextField, subcategoryTitle);
+        this.formatComponent(this.subcategoryComboBox, subcategoryTitle);
 
-        this.formatTextField(this.tagsTextField, tagsTitle);
+        this.formatComponent(this.tagsTextField, tagsTitle);
     } //formatTextFields
 
     /**
@@ -161,9 +162,9 @@ public final class AddView {
 
         this.addComponentToPanel(this.idTextField, constraints, row, idColumn);
 
-        this.addComponentToPanel(this.categoryTextField, constraints, row, categoryColumn);
+        this.addComponentToPanel(this.categoryComboBox, constraints, row, categoryColumn);
 
-        this.addComponentToPanel(this.subcategoryTextField, constraints, row, subcategoryColumn);
+        this.addComponentToPanel(this.subcategoryComboBox, constraints, row, subcategoryColumn);
 
         this.addComponentToPanel(this.tagsTextField, constraints, row, tagsColumn);
 
@@ -192,61 +193,61 @@ public final class AddView {
      *
      * @return the ID text field of this add view
      */
-    public JTextField getIdTextField() {
+    public JTextField idTextField() {
         return this.idTextField;
-    } //getIdTextField
+    } //idTextField
 
     /**
-     * Returns the category text field of this add view.
+     * Returns the category combo box of this add view.
      *
-     * @return the category text field of this add view
+     * @return the category combo box of this add view
      */
-    public JTextField getCategoryTextField() {
-        return this.categoryTextField;
-    } //getCategoryTextField
+    public JComboBox<String> categoryComboBox() {
+        return this.categoryComboBox;
+    } //categoryComboBox
 
     /**
-     * Returns the subcategory text field of this add view.
+     * Returns the subcategory combo box of this add view.
      *
-     * @return the subcategory text field of this add view
+     * @return the subcategory combo box of this add view
      */
-    public JTextField getSubcategoryTextField() {
-        return this.subcategoryTextField;
-    } //getSubcategoryTextField
+    public JComboBox<String> subcategoryComboBox() {
+        return this.subcategoryComboBox;
+    } //subcategoryComboBox
 
     /**
      * Returns the tags text field of this add view.
      *
      * @return the tags text field of this add view
      */
-    public JTextField getTagsTextField() {
+    public JTextField tagsTextField() {
         return this.tagsTextField;
-    } //getTagsTextField
+    } //tagsTextField
 
     /**
      * Returns the submit button of this add view.
      *
      * @return the submit button of this add view
      */
-    public JButton getSubmitButton() {
+    public JButton submitButton() {
         return this.submitButton;
-    } //getSubmitButton
+    } //submitButton
 
     /**
      * Returns the clear button of this add view.
      *
      * @return the clear button of this add view
      */
-    public JButton getClearButton() {
+    public JButton clearButton() {
         return this.clearButton;
-    } //getClearButton
+    } //clearButton
 
     /**
      * Returns the panel of this add view.
      *
      * @return the panel of this add view
      */
-    public JPanel getPanel() {
+    public JPanel panel() {
         return this.panel;
-    } //getPanel
+    } //panel
 }
