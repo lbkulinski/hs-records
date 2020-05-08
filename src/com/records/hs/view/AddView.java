@@ -5,14 +5,7 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
-import javax.swing.JComponent;
-import javax.swing.border.Border;
-import javax.swing.border.TitledBorder;
-import java.util.Objects;
-import javax.swing.BorderFactory;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
 /**
  * An add view in the HS Records application.
@@ -75,77 +68,22 @@ public final class AddView {
     } //AddView
 
     /**
-     * Formats the specified component with a titled border with the specified title.
-     *
-     * @param component the component to be used in the operation
-     * @param title the title to be used in the operation
-     * @throws NullPointerException if the specified component or title is {@code null}
-     */
-    private void formatComponent(JComponent component, String title) {
-        Border lineBorder;
-        TitledBorder titledBorder;
-
-        Objects.requireNonNull(component, "the specified component is null");
-
-        Objects.requireNonNull(title, "the specified title is null");
-
-        lineBorder = BorderFactory.createLineBorder(Color.BLACK);
-
-        titledBorder = BorderFactory.createTitledBorder(lineBorder, title);
-
-        titledBorder.setTitlePosition(TitledBorder.BELOW_TOP);
-
-        component.setBorder(titledBorder);
-    } //formatComponent
-
-    /**
      * Formats the components of this add view.
      */
-    private void formatTextFields() {
+    private void formatComponents() {
         String idTitle = "ID";
         String categoryTitle = "Category";
         String subcategoryTitle = "Subcategory";
         String tagsTitle = "Tags";
 
-        this.formatComponent(this.idTextField, idTitle);
+        ViewUtilities.formatComponent(this.idTextField, idTitle);
 
-        this.formatComponent(this.categoryComboBox, categoryTitle);
+        ViewUtilities.formatComponent(this.categoryComboBox, categoryTitle);
 
-        this.formatComponent(this.subcategoryComboBox, subcategoryTitle);
+        ViewUtilities.formatComponent(this.subcategoryComboBox, subcategoryTitle);
 
-        this.formatComponent(this.tagsTextField, tagsTitle);
-    } //formatTextFields
-
-    /**
-     * Adds the specified component to this add view's panel using the specified constraints, row, and column.
-     *
-     * @param component the component to be used in the operation
-     * @param constraints the constraints to be used in the operation
-     * @param row the row to be used in the operation
-     * @param column the column to be used in the operation
-     * @throws NullPointerException if the specified component or constraints are {@code null}
-     */
-    private void addComponentToPanel(JComponent component, GridBagConstraints constraints, int row, int column) {
-        int pixelCount = 5;
-
-        Objects.requireNonNull(component, "the specified component is null");
-
-        Objects.requireNonNull(constraints, "the specified constraints are null");
-
-        constraints.gridx = row;
-
-        constraints.gridy = column;
-
-        constraints.insets = new Insets(pixelCount, pixelCount, pixelCount, pixelCount);
-
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-
-        constraints.weightx = 1.0;
-
-        constraints.weighty = 1.0;
-
-        this.panel.add(component, constraints);
-    } //addComponentToPanel
+        ViewUtilities.formatComponent(this.tagsTextField, tagsTitle);
+    } //formatComponents
 
     /**
      * Adds the components of this add view to the panel of this add view.
@@ -160,17 +98,17 @@ public final class AddView {
         int submitColumn = 4;
         int clearColumn = 5;
 
-        this.addComponentToPanel(this.idTextField, constraints, row, idColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.idTextField, constraints, row, idColumn);
 
-        this.addComponentToPanel(this.categoryComboBox, constraints, row, categoryColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.categoryComboBox, constraints, row, categoryColumn);
 
-        this.addComponentToPanel(this.subcategoryComboBox, constraints, row, subcategoryColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.subcategoryComboBox, constraints, row, subcategoryColumn);
 
-        this.addComponentToPanel(this.tagsTextField, constraints, row, tagsColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.tagsTextField, constraints, row, tagsColumn);
 
-        this.addComponentToPanel(this.submitButton, constraints, row, submitColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.submitButton, constraints, row, submitColumn);
 
-        this.addComponentToPanel(this.clearButton, constraints, row, clearColumn);
+        ViewUtilities.addComponentToPanel(this.panel, this.clearButton, constraints, row, clearColumn);
     } //addComponentsToPanel
 
     /**
@@ -181,7 +119,7 @@ public final class AddView {
     public static AddView newAddView() {
         AddView addView = new AddView();
 
-        addView.formatTextFields();
+        addView.formatComponents();
 
         addView.addComponentsToPanel();
 
