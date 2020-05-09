@@ -5,13 +5,12 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 
 /**
  * An edit view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 8, 2020
+ * @version May 9, 2020
  */
 public final class EditView {
     /**
@@ -89,44 +88,43 @@ public final class EditView {
      * Formats the components of this edit view.
      */
     private void formatComponents() {
-        String idName = "ID";
-        String fieldName = "Field";
-        String newIdName = "New ID";
-        String newCategoryName = "New Category";
-        String categoryName = "Category";
-        String newSubcategoryName = "New Subcategory";
-        String newTagsName = "New Tags";
+        String idTitle = "ID";
+        String fieldTitle = "Field";
+        String newIdTitle = "New ID";
+        String newCategoryTitle = "New Category";
+        String categoryTitle = "Category";
+        String newSubcategoryTitle = "New Subcategory";
+        String newTagsTitle = "New Tags";
 
-        ViewUtilities.formatComponent(this.idTextField, idName);
+        ViewUtilities.formatComponent(this.idTextField, idTitle);
 
-        ViewUtilities.formatComponent(this.fieldComboBox, fieldName);
+        ViewUtilities.formatComponent(this.fieldComboBox, fieldTitle);
 
-        ViewUtilities.formatComponent(this.newIdTextField, newIdName);
+        ViewUtilities.formatComponent(this.newIdTextField, newIdTitle);
 
-        ViewUtilities.formatComponent(this.newCategoryComboBox, newCategoryName);
+        ViewUtilities.formatComponent(this.newCategoryComboBox, newCategoryTitle);
 
-        ViewUtilities.formatComponent(this.categoryComboBox, categoryName);
+        ViewUtilities.formatComponent(this.categoryComboBox, categoryTitle);
 
-        ViewUtilities.formatComponent(this.newSubcategoryComboBox, newSubcategoryName);
+        ViewUtilities.formatComponent(this.newSubcategoryComboBox, newSubcategoryTitle);
 
-        ViewUtilities.formatComponent(this.newTagsTextField, newTagsName);
+        ViewUtilities.formatComponent(this.newTagsTextField, newTagsTitle);
     } //formatComponents
 
     /**
      * Adds the components of this edit view to the panel of this edit view.
      */
     private void addComponentsToPanel() {
-        GridBagConstraints constraints = new GridBagConstraints();
         int idRow = 0;
         int column = 0;
         int fieldRow = 1;
         int clearRow = 2;
 
-        ViewUtilities.addComponentToPanel(this.panel, this.idTextField, constraints, idRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.idTextField, idRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.fieldComboBox, constraints, fieldRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.fieldComboBox, fieldRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.clearButton, constraints, clearRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.clearButton, clearRow, column);
     } //addComponentsToPanel
 
     /**
@@ -136,18 +134,18 @@ public final class EditView {
      */
     public static EditView newEditView() {
         EditView editView = new EditView();
-        String idName = "ID";
-        String categoryName = "Category";
-        String subcategoryName = "Subcategory";
-        String tagsName = "Tags";
+        String idItem = "ID";
+        String categoryItem = "Category";
+        String subcategoryItem = "Subcategory";
+        String tagsItem = "Tags";
 
-        editView.fieldComboBox.addItem(idName);
+        editView.fieldComboBox.addItem(idItem);
 
-        editView.fieldComboBox.addItem(categoryName);
+        editView.fieldComboBox.addItem(categoryItem);
 
-        editView.fieldComboBox.addItem(subcategoryName);
+        editView.fieldComboBox.addItem(subcategoryItem);
 
-        editView.fieldComboBox.addItem(tagsName);
+        editView.fieldComboBox.addItem(tagsItem);
 
         editView.formatComponents();
 

@@ -5,13 +5,12 @@ import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 
 /**
  * An add view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 8, 2020
+ * @version May 9, 2020
  */
 public final class AddView {
     /**
@@ -89,7 +88,6 @@ public final class AddView {
      * Adds the components of this add view to the panel of this add view.
      */
     private void addComponentsToPanel() {
-        GridBagConstraints constraints = new GridBagConstraints();
         int idRow = 0;
         int column = 0;
         int categoryRow = 1;
@@ -98,17 +96,17 @@ public final class AddView {
         int addRow = 4;
         int clearRow = 5;
 
-        ViewUtilities.addComponentToPanel(this.panel, this.idTextField, constraints, idRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.idTextField, idRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.categoryComboBox, constraints, categoryRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.categoryComboBox, categoryRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.subcategoryComboBox, constraints, subcategoryRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.subcategoryComboBox, subcategoryRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.tagsTextField, constraints, tagsRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.tagsTextField, tagsRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.addButton, constraints, addRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.addButton, addRow, column);
 
-        ViewUtilities.addComponentToPanel(this.panel, this.clearButton, constraints, clearRow, column);
+        ViewUtilities.addComponentToPanel(this.panel, this.clearButton, clearRow, column);
     } //addComponentsToPanel
 
     /**

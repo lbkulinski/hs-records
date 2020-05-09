@@ -14,7 +14,7 @@ import java.awt.Insets;
  * A set of utility methods used by the views in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 7, 2020
+ * @version May 9, 2020
  */
 public final class ViewUtilities {
     /**
@@ -51,25 +51,22 @@ public final class ViewUtilities {
     } //formatComponent
 
     /**
-     * Adds the specified component to the specified panel using the specified constraints, row, and column.
+     * Adds the specified component to the specified panel using the specified row and column.
      *
      * @param panel the panel to be used in the operation
      * @param component the component to be used in the operation
-     * @param constraints the constraints to be used in the operation
      * @param row the row to be used in the operation
      * @param column the column to be used in the operation
-     * @throws NullPointerException if the specified panel, component, or constraints is {@code null}
+     * @throws NullPointerException if the specified panel or component is {@code null}
      * @throws IllegalArgumentException if the specified row or column is negative
      */
-    public static void addComponentToPanel(JPanel panel, JComponent component, GridBagConstraints constraints, int row,
-                                           int column) {
-        int pixelCount = 5;
+    public static void addComponentToPanel(JPanel panel, JComponent component, int row, int column) {
+        GridBagConstraints constraints;
+        int pixelCount;
 
         Objects.requireNonNull(panel, "the specified panel is null");
 
         Objects.requireNonNull(component, "the specified component is null");
-
-        Objects.requireNonNull(constraints, "the specified constraints are null");
 
         if (row < 0) {
             throw new IllegalArgumentException("the specified row is negative");
@@ -78,6 +75,10 @@ public final class ViewUtilities {
         if (column < 0) {
             throw new IllegalArgumentException("the specified column is negative");
         } //end if
+
+        constraints = new GridBagConstraints();
+
+        pixelCount = 5;
 
         constraints.gridx = row;
 
