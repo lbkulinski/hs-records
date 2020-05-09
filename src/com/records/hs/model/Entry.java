@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * An entry in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 8, 2020
+ * @version May 9, 2020
  */
 public final class Entry implements Serializable {
     /**

@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 7, 2020
+ * @version May 9, 2020
  */
 public final class Model implements Serializable {
     /**
