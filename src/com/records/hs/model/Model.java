@@ -628,9 +628,9 @@ public final class Model implements Serializable {
     } //findEntriesWithTag
 
     /**
-     * Returns a new {@code SerializationProxy} object in place of this model.
+     * Returns a {@code SerializationProxy} object in place of this model.
      *
-     * @return a new {@code SerializationProxy} object in place of this model
+     * @return a {@code SerializationProxy} object in place of this model
      */
     private Object writeReplace() {
         return new SerializationProxy(this.idsToEntries, this.catsToSubcats);
