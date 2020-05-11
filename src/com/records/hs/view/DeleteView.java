@@ -81,8 +81,6 @@ public final class DeleteView {
         String categoryTitle = "Category";
         String subcategoryTitle = "Subcategory";
         String tagTitle = "Tag";
-        String deleteTitle = "Delete";
-        String clearTitle = "Clear";
 
         ViewUtilities.formatComponent(this.fieldComboBox, fieldTitle);
 
@@ -93,10 +91,6 @@ public final class DeleteView {
         ViewUtilities.formatComponent(this.subcategoryComboBox, subcategoryTitle);
 
         ViewUtilities.formatComponent(this.tagTextField, tagTitle);
-
-        ViewUtilities.formatComponent(this.deleteButton, deleteTitle);
-
-        ViewUtilities.formatComponent(this.clearButton, clearTitle);
     } //formatComponents
 
     /**

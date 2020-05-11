@@ -14,7 +14,7 @@ import java.awt.Insets;
  * A set of utility methods used by the views in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 9, 2020
+ * @version May 11, 2020
  */
 public final class ViewUtilities {
     /**
@@ -80,9 +80,9 @@ public final class ViewUtilities {
 
         pixelCount = 5;
 
-        constraints.gridx = row;
+        constraints.gridx = column;
 
-        constraints.gridy = column;
+        constraints.gridy = row;
 
         constraints.insets = new Insets(pixelCount, pixelCount, pixelCount, pixelCount);
 

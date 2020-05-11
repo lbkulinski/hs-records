@@ -96,8 +96,6 @@ public final class FindView {
         String subcategoryTitle = "Subcategory";
         String tagTitle = "Tag";
         String resultsTitle = "Results";
-        String findTitle = "Find";
-        String clearTitle = "Clear";
 
         ViewUtilities.formatComponent(this.fieldComboBox, fieldTitle);
 
@@ -110,10 +108,6 @@ public final class FindView {
         ViewUtilities.formatComponent(this.tagTextField, tagTitle);
 
         ViewUtilities.formatComponent(this.resultsScrollPane, resultsTitle);
-
-        ViewUtilities.formatComponent(this.findButton, findTitle);
-
-        ViewUtilities.formatComponent(this.clearButton, clearTitle);
     } //formatComponents
 
     /**

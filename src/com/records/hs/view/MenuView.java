@@ -139,6 +139,12 @@ public final class MenuView {
         this.subcategoriesMenu.add(new JSeparator());
 
         this.subcategoriesMenu.add(this.deleteSubcategoryMenuItem);
+
+        this.menuBar.add(this.fileMenu);
+
+        this.menuBar.add(this.categoriesMenu);
+
+        this.menuBar.add(this.subcategoriesMenu);
     } //addComponentsToMenuBar
 
     /**
