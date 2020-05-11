@@ -18,6 +18,16 @@ public final class MenuView {
     private final JMenuItem saveMenuItem;
 
     /**
+     * The latest menu item of this menu view.
+     */
+    private final JMenuItem latestMenuItem;
+
+    /**
+     * The total menu item of this menu view.
+     */
+    private final JMenuItem totalMenuItem;
+
+    /**
      * The import menu item of this menu view.
      */
     private final JMenuItem importMenuItem;
@@ -63,6 +73,11 @@ public final class MenuView {
     private final JMenu fileMenu;
 
     /**
+     * The display menu of this menu view.
+     */
+    private final JMenu displayMenu;
+
+    /**
      * The categories menu of this menu view.
      */
     private final JMenu categoriesMenu;
@@ -82,16 +97,21 @@ public final class MenuView {
      */
     private MenuView() {
         String saveName = "Save";
+        String latestName = "Latest entry ID";
+        String totalName = "Total entry count";
         String importName = "Import from CSV";
         String exportName = "Export to CSV";
         String addName = "Add";
         String editName = "Edit";
         String deleteName = "Delete";
         String fileName = "File";
+        String displayName = "Display";
         String categoriesName = "Categories";
         String subcategoriesName = "Subcategories";
 
         this.saveMenuItem = new JMenuItem(saveName);
+        this.latestMenuItem = new JMenuItem(latestName);
+        this.totalMenuItem = new JMenuItem(totalName);
         this.importMenuItem = new JMenuItem(importName);
         this.exportMenuItem = new JMenuItem(exportName);
         this.addCategoryMenuItem = new JMenuItem(addName);
@@ -101,6 +121,7 @@ public final class MenuView {
         this.editSubcategoryMenuItem = new JMenuItem(editName);
         this.deleteSubcategoryMenuItem = new JMenuItem(deleteName);
         this.fileMenu = new JMenu(fileName);
+        this.displayMenu = new JMenu(displayName);
         this.categoriesMenu = new JMenu(categoriesName);
         this.subcategoriesMenu = new JMenu(subcategoriesName);
         this.menuBar = new JMenuBar();
@@ -119,6 +140,12 @@ public final class MenuView {
         this.fileMenu.add(new JSeparator());
 
         this.fileMenu.add(this.exportMenuItem);
+
+        this.displayMenu.add(this.latestMenuItem);
+
+        this.displayMenu.add(new JSeparator());
+
+        this.displayMenu.add(this.totalMenuItem);
 
         this.categoriesMenu.add(this.addCategoryMenuItem);
 
@@ -141,6 +168,8 @@ public final class MenuView {
         this.subcategoriesMenu.add(this.deleteSubcategoryMenuItem);
 
         this.menuBar.add(this.fileMenu);
+
+        this.menuBar.add(this.displayMenu);
 
         this.menuBar.add(this.categoriesMenu);
 
@@ -168,6 +197,24 @@ public final class MenuView {
     public JMenuItem getSaveMenuItem() {
         return this.saveMenuItem;
     } //getSaveMenuItem
+
+    /**
+     * Returns the latest menu item of this menu view.
+     *
+     * @return the latest menu item of this menu view
+     */
+    public JMenuItem getLatestMenuItem() {
+        return this.latestMenuItem;
+    } //getLatestMenuItem
+
+    /**
+     * Returns the total menu item of this menu view.
+     *
+     * @return the total menu item of this menu view
+     */
+    public JMenuItem getTotalMenuItem() {
+        return this.totalMenuItem;
+    } //getTotalMenuItem
 
     /**
      * Returns the import menu item of this menu view.
@@ -249,6 +296,15 @@ public final class MenuView {
     public JMenu getFileMenu() {
         return this.fileMenu;
     } //getFileMenu
+
+    /**
+     * Returns the display menu of this menu view.
+     *
+     * @return the display menu of this menu view
+     */
+    public JMenu getDisplayMenu() {
+        return this.displayMenu;
+    } //getDisplayMenu
 
     /**
      * Returns the categories menu of this menu view.
