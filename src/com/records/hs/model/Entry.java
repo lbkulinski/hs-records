@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * An entry in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 9, 2020
+ * @version May 11, 2020
  */
 public final class Entry implements Serializable {
     /**
@@ -207,36 +207,36 @@ public final class Entry implements Serializable {
      *
      * @return the ID of this entry
      */
-    public String id() {
+    public String getId() {
         return this.id;
-    } //id
+    } //getId
 
     /**
      * Returns the category of this entry.
      *
      * @return the category of this entry
      */
-    public String category() {
+    public String getCategory() {
         return this.category;
-    } //category
+    } //getCategory
 
     /**
      * Returns the subcategory of this entry.
      *
      * @return the subcategory of this entry
      */
-    public String subcategory() {
+    public String getSubcategory() {
         return this.subcategory;
-    } //subcategory
+    } //getSubcategory
 
     /**
      * Returns the tags of this entry.
      *
      * @return the tags of this entry
      */
-    public Set<String> tags() {
+    public Set<String> getTags() {
         return this.tags;
-    } //tags
+    } //getTags
 
     /**
      * Returns a {@code SerializationProxy} object in place of this entry.

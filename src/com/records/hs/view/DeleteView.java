@@ -10,7 +10,7 @@ import java.awt.GridBagLayout;
  * A delete view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 9, 2020
+ * @version May 11, 2020
  */
 public final class DeleteView {
     /**
@@ -144,70 +144,70 @@ public final class DeleteView {
      *
      * @return the field combo box of this delete view
      */
-    public JComboBox<String> fieldComboBox() {
+    public JComboBox<String> getFieldComboBox() {
         return this.fieldComboBox;
-    } //fieldComboBox
+    } //getFieldComboBox
 
     /**
      * Returns the ID text field of this delete view.
      *
      * @return the ID text field of this delete view
      */
-    public JTextField idTextField() {
+    public JTextField getIdTextField() {
         return this.idTextField;
-    } //idTextField
+    } //getIdTextField
 
     /**
      * Returns the category combo box of this delete view.
      *
      * @return the category combo box of this delete view
      */
-    public JComboBox<String> categoryComboBox() {
+    public JComboBox<String> getCategoryComboBox() {
         return this.categoryComboBox;
-    } //categoryComboBox
+    } //getCategoryComboBox
 
     /**
      * Returns the subcategory combo box of this delete view.
      *
      * @return the subcategory combo box of this delete view
      */
-    public JComboBox<String> subcategoryComboBox() {
+    public JComboBox<String> getSubcategoryComboBox() {
         return this.subcategoryComboBox;
-    } //subcategoryComboBox
+    } //getSubcategoryComboBox
 
     /**
      * Returns the tag text field of this delete view.
      *
      * @return the tag text field of this delete view
      */
-    public JTextField tagTextField() {
+    public JTextField getTagTextField() {
         return this.tagTextField;
-    } //tagTextField
+    } //getTagTextField
 
     /**
      * Returns the delete button of this delete view.
      *
      * @return the delete button of this delete view
      */
-    public JButton deleteButton() {
+    public JButton getDeleteButton() {
         return this.deleteButton;
-    } //deleteButton
+    } //getDeleteButton
 
     /**
      * Returns the clear button of this delete view.
      *
      * @return the clear button of this delete view
      */
-    public JButton clearButton() {
+    public JButton getClearButton() {
         return this.clearButton;
-    } //clearButton
+    } //getClearButton
 
     /**
      * Returns the panel of this delete view.
      *
      * @return the panel of this delete view
      */
-    public JPanel panel() {
+    public JPanel getPanel() {
         return this.panel;
-    } //Panel
+    } //getPanel
 }

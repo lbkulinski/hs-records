@@ -161,88 +161,88 @@ public final class FindView {
      *
      * @return the field combo box of this find view
      */
-    public JComboBox<String> fieldComboBox() {
+    public JComboBox<String> getFieldComboBox() {
         return this.fieldComboBox;
-    } //fieldComboBox
+    } //getFieldComboBox
 
     /**
      * Returns the ID text field of this find view.
      *
      * @return the ID text field of this find view
      */
-    public JTextField idTextField() {
+    public JTextField getIdTextField() {
         return this.idTextField;
-    } //idTextField
+    } //getIdTextField
 
     /**
      * Returns the category combo box of this find view.
      *
      * @return the category combo box of this find view
      */
-    public JComboBox<String> categoryComboBox() {
+    public JComboBox<String> getCategoryComboBox() {
         return this.categoryComboBox;
-    } //categoryComboBox
+    } //getCategoryComboBox
 
     /**
      * Returns the subcategory combo box of this find view.
      *
      * @return the subcategory combo box of this find view
      */
-    public JComboBox<String> subcategoryComboBox() {
+    public JComboBox<String> getSubcategoryComboBox() {
         return this.subcategoryComboBox;
-    } //subcategoryComboBox
+    } //getSubcategoryComboBox
 
     /**
      * Returns the tag text field of this find view.
      *
      * @return the tag text field of this find view
      */
-    public JTextField tagTextField() {
+    public JTextField getTagTextField() {
         return this.tagTextField;
-    } //tagTextField
+    } //getTagTextField
 
     /**
      * Returns the results text pane of this find view.
      *
      * @return the results text pane of this find view
      */
-    public JTextPane resultsTextPane() {
+    public JTextPane getResultsTextPane() {
         return this.resultsTextPane;
-    } //resultsTextPane
+    } //getResultsTextPane
 
     /**
      * Returns the results scroll pane of this find view.
      *
      * @return the results scroll pane of this find view
      */
-    public JScrollPane resultsScrollPane() {
+    public JScrollPane getResultsScrollPane() {
         return this.resultsScrollPane;
-    } //resultsScrollPane
+    } //getResultsScrollPane
 
     /**
      * Returns the find button of this find view.
      *
      * @return the find button of this find view
      */
-    public JButton findButton() {
+    public JButton getFindButton() {
         return this.findButton;
-    } //findButton
+    } //getFindButton
 
     /**
      * Returns the clear button of this find view.
      *
      * @return the clear button of this find view
      */
-    public JButton clearButton() {
+    public JButton getClearButton() {
         return this.clearButton;
-    } //clearButton
+    } //getClearButton
 
     /**
      * Returns the panel of this find view.
      *
      * @return the panel of this find view
      */
-    public JPanel panel() {
+    public JPanel getPanel() {
         return this.panel;
-    } //panel
+    } //getPanel
 }

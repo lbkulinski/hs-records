@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 9, 2020
+ * @version May 11, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -191,7 +191,7 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(entry, "the specified entry is null");
 
-        id = entry.id();
+        id = entry.getId();
 
         currentEntry = this.idsToEntries.putIfAbsent(id, entry);
 
@@ -276,7 +276,7 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(newEntry, "the specified new entry is null");
 
-        if (Objects.equals(newEntry.id(), id)) {
+        if (Objects.equals(newEntry.getId(), id)) {
             Entry currentEntry = this.idsToEntries.get(id);
 
             if (currentEntry == null) {
@@ -403,11 +403,11 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             String entryCategory = entry.category();
+                             String entryCategory = entry.getCategory();
 
                              return entryCategory.equalsIgnoreCase(category);
                          })
-                         .map(Entry::id)
+                         .map(Entry::getId)
                          .forEach(this.idsToEntries::remove);
 
         currentSize = this.idsToEntries.size();
@@ -435,11 +435,11 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             String entrySubcategory = entry.subcategory();
+                             String entrySubcategory = entry.getSubcategory();
 
                              return entrySubcategory.equalsIgnoreCase(subcategory);
                          })
-                         .map(Entry::id)
+                         .map(Entry::getId)
                          .forEach(this.idsToEntries::remove);
 
         currentSize = this.idsToEntries.size();
@@ -467,12 +467,12 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             Set<String> entryTags = entry.tags();
+                             Set<String> entryTags = entry.getTags();
                              String searchTag = tag.toUpperCase();
 
                              return entryTags.contains(searchTag);
                          })
-                         .map(Entry::id)
+                         .map(Entry::getId)
                          .forEach(this.idsToEntries::remove);
 
         currentSize = this.idsToEntries.size();
@@ -560,7 +560,7 @@ public final class Model implements Serializable {
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
-                                            String entryCategory = entry.category();
+                                            String entryCategory = entry.getCategory();
 
                                             return entryCategory.equalsIgnoreCase(category);
                                         })
@@ -588,12 +588,12 @@ public final class Model implements Serializable {
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
-                                            String entryCategory = entry.category();
+                                            String entryCategory = entry.getCategory();
 
                                             return entryCategory.equalsIgnoreCase(category);
                                         })
                                         .filter(entry -> {
-                                            String entrySubcategory = entry.subcategory();
+                                            String entrySubcategory = entry.getSubcategory();
 
                                             return entrySubcategory.equalsIgnoreCase(subcategory);
                                         })
@@ -617,7 +617,7 @@ public final class Model implements Serializable {
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
-                                            Set<String> entryTags = entry.tags();
+                                            Set<String> entryTags = entry.getTags();
                                             String searchTag = tag.toUpperCase();
 
                                             return entryTags.contains(searchTag);

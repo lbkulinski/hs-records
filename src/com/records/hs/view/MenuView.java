@@ -159,115 +159,115 @@ public final class MenuView {
      *
      * @return the save menu item of this menu view
      */
-    public JMenuItem saveMenuItem() {
+    public JMenuItem getSaveMenuItem() {
         return this.saveMenuItem;
-    } //saveMenuItem
+    } //getSaveMenuItem
 
     /**
      * Returns the import menu item of this menu view.
      *
      * @return the import menu item of this menu view
      */
-    public JMenuItem importMenuItem() {
+    public JMenuItem getImportMenuItem() {
         return this.importMenuItem;
-    } //importMenuItem
+    } //getImportMenuItem
 
     /**
      * Returns the export menu item of this menu view.
      *
      * @return the export menu item of this menu view
      */
-    public JMenuItem exportMenuItem() {
+    public JMenuItem getExportMenuItem() {
         return this.exportMenuItem;
-    } //exportMenuItem
+    } //getExportMenuItem
 
     /**
      * Returns the add category menu item of this menu view.
      *
      * @return the add category menu item of this menu view
      */
-    public JMenuItem addCategoryMenuItem() {
+    public JMenuItem getAddCategoryMenuItem() {
         return this.addCategoryMenuItem;
-    } //addCategoryMenuItem
+    } //getAddCategoryMenuItem
 
     /**
      * Returns the edit category menu item of this menu view.
      *
      * @return the edit category menu item of this menu view
      */
-    public JMenuItem editCategoryMenuItem() {
+    public JMenuItem getEditCategoryMenuItem() {
         return this.editCategoryMenuItem;
-    } //editCategoryMenuItem
+    } //getEditCategoryMenuItem
 
     /**
      * Returns the delete category menu item of this menu view.
      *
      * @return the delete category menu item of this menu view
      */
-    public JMenuItem deleteCategoryMenuItem() {
+    public JMenuItem getDeleteCategoryMenuItem() {
         return this.deleteCategoryMenuItem;
-    } //deleteCategoryMenuItem
+    } //getDeleteCategoryMenuItem
 
     /**
      * Returns the add subcategory menu item of this menu view.
      *
      * @return the add subcategory menu item of this menu view
      */
-    public JMenuItem addSubcategoryMenuItem() {
+    public JMenuItem getAddSubcategoryMenuItem() {
         return this.addSubcategoryMenuItem;
-    } //addSubcategoryMenuItem
+    } //getAddSubcategoryMenuItem
 
     /**
      * Returns the edit subcategory menu item of this menu view.
      *
      * @return the edit subcategory menu item of this menu view
      */
-    public JMenuItem editSubcategoryMenuItem() {
+    public JMenuItem getEditSubcategoryMenuItem() {
         return this.editSubcategoryMenuItem;
-    } //editSubcategoryMenuItem
+    } //getEditSubcategoryMenuItem
 
     /**
      * Returns the delete subcategory menu item of this menu view.
      *
      * @return the delete subcategory menu item of this menu view
      */
-    public JMenuItem deleteSubcategoryMenuItem() {
+    public JMenuItem getDeleteSubcategoryMenuItem() {
         return this.deleteSubcategoryMenuItem;
-    } //deleteSubcategoryMenuItem
+    } //getDeleteSubcategoryMenuItem
 
     /**
      * Returns the file menu of this menu view.
      *
      * @return the file menu of this menu view
      */
-    public JMenu fileMenu() {
+    public JMenu getFileMenu() {
         return this.fileMenu;
-    } //fileMenu
+    } //getFileMenu
 
     /**
      * Returns the categories menu of this menu view.
      *
      * @return the categories menu of this menu view
      */
-    public JMenu categoriesMenu() {
+    public JMenu getCategoriesMenu() {
         return this.categoriesMenu;
-    } //categoriesMenu
+    } //getCategoriesMenu
 
     /**
      * Returns the subcategories menu of this menu view.
      *
      * @return the subcategories menu of this menu view
      */
-    public JMenu subcategoriesMenu() {
+    public JMenu getSubcategoriesMenu() {
         return this.subcategoriesMenu;
-    } //subcategoriesMenu
+    } //getSubcategoriesMenu
 
     /**
      * Returns the menu bar of this menu view.
      *
      * @return the menu bar of this menu view
      */
-    public JMenuBar menuBar() {
+    public JMenuBar getMenuBar() {
         return this.menuBar;
-    } //menuBar
+    } //getMenuBar
 }

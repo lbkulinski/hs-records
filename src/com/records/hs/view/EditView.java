@@ -10,7 +10,7 @@ import java.awt.GridBagLayout;
  * An edit view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 9, 2020
+ * @version May 11, 2020
  */
 public final class EditView {
     /**
@@ -159,88 +159,88 @@ public final class EditView {
      *
      * @return the ID text field of this edit view
      */
-    public JTextField idTextField() {
+    public JTextField getIdTextField() {
         return this.idTextField;
-    } //idTextField
+    } //getIdTextField
 
     /**
      * Returns the field combo box of this edit view.
      *
      * @return the field combo box of this edit view
      */
-    public JComboBox<String> fieldComboBox() {
+    public JComboBox<String> getFieldComboBox() {
         return this.fieldComboBox;
-    } //fieldComboBox
+    } //getFieldComboBox
 
     /**
      * Returns the new ID text field of this edit view.
      *
      * @return the new ID text field of this edit view
      */
-    public JTextField newIdTextField() {
+    public JTextField getNewIdTextField() {
         return this.newIdTextField;
-    } //newIdTextField
+    } //getNewIdTextField
 
     /**
      * Returns the new category combo box of this edit view.
      *
      * @return the new category combo box of this edit view
      */
-    public JComboBox<String> newCategoryComboBox() {
+    public JComboBox<String> getNewCategoryComboBox() {
         return this.newCategoryComboBox;
-    } //newCategoryComboBox
+    } //getNewCategoryComboBox
 
     /**
      * Returns the category combo box of this edit view.
      *
      * @return the category combo box of this edit view
      */
-    public JComboBox<String> categoryComboBox() {
+    public JComboBox<String> getCategoryComboBox() {
         return this.categoryComboBox;
-    } //categoryComboBox
+    } //getCategoryComboBox
 
     /**
      * Returns the new subcategory combo box of this edit view.
      *
      * @return the new subcategory combo box of this edit view
      */
-    public JComboBox<String> newSubcategoryComboBox() {
+    public JComboBox<String> getNewSubcategoryComboBox() {
         return this.newSubcategoryComboBox;
-    } //newSubcategoryComboBox
+    } //getNewSubcategoryComboBox
 
     /**
      * Returns the new tags text field of this edit view.
      *
      * @return the new tags text field of this edit view
      */
-    public JTextField newTagsTextField() {
+    public JTextField getNewTagsTextField() {
         return this.newTagsTextField;
-    } //newTagsTextField
+    } //getNewTagsTextField
 
     /**
      * Returns the edit button of this edit view.
      *
      * @return the edit button of this edit view
      */
-    public JButton editButton() {
+    public JButton getEditButton() {
         return this.editButton;
-    } //editButton
+    } //getEditButton
 
     /**
      * Returns the clear button of this edit view.
      *
      * @return the clear button of this edit view
      */
-    public JButton clearButton() {
+    public JButton getClearButton() {
         return this.clearButton;
-    } //clearButton
+    } //getClearButton
 
     /**
      * Returns the panel of this edit view.
      *
      * @return the panel of this edit view
      */
-    public JPanel panel() {
+    public JPanel getPanel() {
         return this.panel;
-    } //panel
+    } //getPanel
 }

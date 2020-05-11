@@ -10,7 +10,7 @@ import java.awt.GridBagLayout;
  * An add view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 9, 2020
+ * @version May 11, 2020
  */
 public final class AddView {
     /**
@@ -129,61 +129,61 @@ public final class AddView {
      *
      * @return the ID text field of this add view
      */
-    public JTextField idTextField() {
+    public JTextField getIdTextField() {
         return this.idTextField;
-    } //idTextField
+    } //getIdTextField
 
     /**
      * Returns the category combo box of this add view.
      *
      * @return the category combo box of this add view
      */
-    public JComboBox<String> categoryComboBox() {
+    public JComboBox<String> getCategoryComboBox() {
         return this.categoryComboBox;
-    } //categoryComboBox
+    } //getCategoryComboBox
 
     /**
      * Returns the subcategory combo box of this add view.
      *
      * @return the subcategory combo box of this add view
      */
-    public JComboBox<String> subcategoryComboBox() {
+    public JComboBox<String> getSubcategoryComboBox() {
         return this.subcategoryComboBox;
-    } //subcategoryComboBox
+    } //getSubcategoryComboBox
 
     /**
      * Returns the tags text field of this add view.
      *
      * @return the tags text field of this add view
      */
-    public JTextField tagsTextField() {
+    public JTextField getTagsTextField() {
         return this.tagsTextField;
-    } //tagsTextField
+    } //getTagsTextField
 
     /**
      * Returns the add button of this add view.
      *
      * @return the add button of this add view
      */
-    public JButton addButton() {
+    public JButton getAddButton() {
         return this.addButton;
-    } //addButton
+    } //getAddButton
 
     /**
      * Returns the clear button of this add view.
      *
      * @return the clear button of this add view
      */
-    public JButton clearButton() {
+    public JButton getClearButton() {
         return this.clearButton;
-    } //clearButton
+    } //getClearButton
 
     /**
      * Returns the panel of this add view.
      *
      * @return the panel of this add view
      */
-    public JPanel panel() {
+    public JPanel getPanel() {
         return this.panel;
-    } //panel
+    } //getPanel
 }
