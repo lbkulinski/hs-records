@@ -6,14 +6,12 @@ import javax.swing.JFrame;
 import java.awt.GridBagLayout;
 import javax.swing.JMenuBar;
 import java.awt.GridBagConstraints;
-import javax.swing.SwingUtilities;
-import java.awt.Dimension;
 
 /**
  * A view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 12, 2020
  */
 public final class View {
     /**
@@ -196,25 +194,4 @@ public final class View {
     public JFrame getFrame() {
         return this.frame;
     } //getFrame
-
-    public static void main(String[] args) {
-        View view = View.newView();
-
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = view.getFrame();
-            Dimension size;
-
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            frame.pack();
-
-            size = frame.getSize();
-
-            frame.setMinimumSize(size);
-
-            frame.setLocationRelativeTo(null);
-
-            frame.setVisible(true);
-        });
-    } //main
 }
