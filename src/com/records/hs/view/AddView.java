@@ -10,13 +10,18 @@ import java.awt.GridBagLayout;
  * An add view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 12, 2020
  */
 public final class AddView {
     /**
      * The ID text field of this add view.
      */
     private final JTextField idTextField;
+
+    /**
+     * The type combo box of this add view.
+     */
+    private final JComboBox<String> typeComboBox;
 
     /**
      * The category combo box of this add view.
@@ -58,6 +63,7 @@ public final class AddView {
         GridBagLayout layout = new GridBagLayout();
 
         this.idTextField = new JTextField(length);
+        this.typeComboBox = new JComboBox<>();
         this.categoryComboBox = new JComboBox<>();
         this.subcategoryComboBox = new JComboBox<>();
         this.tagsTextField = new JTextField(length);
@@ -71,11 +77,14 @@ public final class AddView {
      */
     private void formatComponents() {
         String idTitle = "ID";
+        String typeTitle = "Type";
         String categoryTitle = "Category";
         String subcategoryTitle = "Subcategory";
         String tagsTitle = "Tags";
 
         ViewUtilities.formatComponent(this.idTextField, idTitle);
+
+        ViewUtilities.formatComponent(this.typeComboBox, typeTitle);
 
         ViewUtilities.formatComponent(this.categoryComboBox, categoryTitle);
 
@@ -90,13 +99,16 @@ public final class AddView {
     private void addComponentsToPanel() {
         int idRow = 0;
         int column = 0;
-        int categoryRow = 1;
-        int subcategoryRow = 2;
-        int tagsRow = 3;
-        int addRow = 4;
-        int clearRow = 5;
+        int typeRow = 1;
+        int categoryRow = 2;
+        int subcategoryRow = 3;
+        int tagsRow = 4;
+        int addRow = 5;
+        int clearRow = 6;
 
         ViewUtilities.addComponentToPanel(this.panel, this.idTextField, idRow, column);
+
+        ViewUtilities.addComponentToPanel(this.panel, this.typeComboBox, typeRow, column);
 
         ViewUtilities.addComponentToPanel(this.panel, this.categoryComboBox, categoryRow, column);
 
@@ -132,6 +144,15 @@ public final class AddView {
     public JTextField getIdTextField() {
         return this.idTextField;
     } //getIdTextField
+
+    /**
+     * Returns the type combo box of this add view.
+     *
+     * @return the type combo box of this add view
+     */
+    public JComboBox<String> getTypeComboBox() {
+        return this.typeComboBox;
+    } //getTypeComboBox
 
     /**
      * Returns the category combo box of this add view.
