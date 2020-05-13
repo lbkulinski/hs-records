@@ -10,7 +10,7 @@ import java.awt.GridBagLayout;
  * A delete view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 12, 2020
  */
 public final class DeleteView {
     /**
@@ -22,6 +22,11 @@ public final class DeleteView {
      * The ID text field of this delete view.
      */
     private final JTextField idTextField;
+
+    /**
+     * The type combo box of this delete view.
+     */
+    private final JComboBox<String> typeComboBox;
 
     /**
      * The category combo box of this delete view.
@@ -64,6 +69,7 @@ public final class DeleteView {
 
         this.fieldComboBox = new JComboBox<>();
         this.idTextField = new JTextField(length);
+        this.typeComboBox = new JComboBox<>();
         this.categoryComboBox = new JComboBox<>();
         this.subcategoryComboBox = new JComboBox<>();
         this.tagTextField = new JTextField(length);
@@ -78,6 +84,7 @@ public final class DeleteView {
     private void formatComponents() {
         String fieldTitle = "Field";
         String idTitle = "ID";
+        String typeTitle = "Type";
         String categoryTitle = "Category";
         String subcategoryTitle = "Subcategory";
         String tagTitle = "Tag";
@@ -85,6 +92,8 @@ public final class DeleteView {
         ViewUtilities.formatComponent(this.fieldComboBox, fieldTitle);
 
         ViewUtilities.formatComponent(this.idTextField, idTitle);
+
+        ViewUtilities.formatComponent(this.typeComboBox, typeTitle);
 
         ViewUtilities.formatComponent(this.categoryComboBox, categoryTitle);
 
@@ -150,6 +159,15 @@ public final class DeleteView {
     public JTextField getIdTextField() {
         return this.idTextField;
     } //getIdTextField
+
+    /**
+     * Returns the type combo box of this delete view.
+     *
+     * @return the type combo box of this delete view
+     */
+    public JComboBox<String> getTypeComboBox() {
+        return this.typeComboBox;
+    } //getTypeComboBox
 
     /**
      * Returns the category combo box of this delete view.
