@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 12, 2020
+ * @version May 13, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -24,6 +24,11 @@ public final class Model implements Serializable {
          * The serial version UID of the class.
          */
         private static final long serialVersionUID;
+
+        /**
+         * The latest ID of this serialization proxy.
+         */
+        private final String latestId;
 
         /**
          * The mapping from IDs to entries of this serialization proxy.
@@ -43,22 +48,22 @@ public final class Model implements Serializable {
          * Constructs a newly allocated {@code SerializationProxy} object with the specified mapping from IDs to
          * entries and mapping from categories to subcategories.
          *
+         * @param latestId the latest ID to be used in construction
          * @param idsToEntries the mapping from IDs to entries to be used in construction
          * @param catsToSubcats the mapping from categories to subcategories to be used in construction
          * @throws NullPointerException if the specified mapping from IDs to entries or mapping from categories to
          * subcategories is {@code null}
          */
-        public SerializationProxy(Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
+        private SerializationProxy(String latestId, Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
+            Objects.requireNonNull(latestId, "the specified latest ID is null");
+
             Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
 
             Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
 
-            this.idsToEntries = new HashMap<>(idsToEntries);
-            this.catsToSubcats = new HashMap<>();
-
-            for (Map.Entry<String, Set<String>> entry : catsToSubcats.entrySet()) {
-                this.catsToSubcats.put(entry.getKey(), new HashSet<>(entry.getValue()));
-            } //end for
+            this.latestId = latestId;
+            this.idsToEntries = idsToEntries;
+            this.catsToSubcats = catsToSubcats;
         } //SerializationProxy
 
         /**
@@ -67,7 +72,7 @@ public final class Model implements Serializable {
          * @return a {@code Model} object in place of this serialization proxy
          */
         private Object readResolve() {
-            return new Model(this.idsToEntries, this.catsToSubcats);
+            return new Model(this.latestId, this.idsToEntries, this.catsToSubcats);
         } //readResolve
 
         /**
@@ -80,6 +85,8 @@ public final class Model implements Serializable {
             int result = 23;
             int prime = 31;
 
+            result = prime * result + Objects.hashCode(this.latestId);
+
             result = prime * result + Objects.hashCode(this.idsToEntries);
 
             result = prime * result + Objects.hashCode(this.catsToSubcats);
@@ -89,8 +96,8 @@ public final class Model implements Serializable {
 
         /**
          * Determines whether or not the specified object is equal to this serialization proxy. {@code true} is
-         * returned if and only if the specified object is an instance of {@code SerializationProxy} and its mapping
-         * from IDs to entries and mapping from categories to subcategories are equal to this serialization proxy's.
+         * returned if and only if the specified object is an instance of {@code SerializationProxy} and its latest ID,
+         * mapping from IDs to entries, and mapping from categories to subcategories are equal to this serialization proxy's.
          *
          * @param object the object to be used in the comparisons
          * @return {@code true}, if the specified object is equal to this serialization proxy and {@code false}
@@ -103,7 +110,9 @@ public final class Model implements Serializable {
             } else if (object instanceof SerializationProxy) {
                 boolean equal;
 
-                equal = Objects.equals(this.idsToEntries, ((SerializationProxy) object).idsToEntries);
+                equal = Objects.equals(this.latestId, ((SerializationProxy) object).latestId);
+
+                equal &= Objects.equals(this.idsToEntries, ((SerializationProxy) object).idsToEntries);
 
                 equal &= Objects.equals(this.catsToSubcats, ((SerializationProxy) object).catsToSubcats);
 
@@ -123,9 +132,9 @@ public final class Model implements Serializable {
          */
         @Override
         public String toString() {
-            String format = "SerializationProxy[idsToEntries=%s, catsToSubcats=%s]";
+            String format = "SerializationProxy[latestId=%s, idsToEntries=%s, catsToSubcats=%s]";
 
-            return String.format(format, this.idsToEntries, this.catsToSubcats);
+            return String.format(format, this.latestId, this.idsToEntries, this.catsToSubcats);
         } //toString
     } //SerializationProxy
 
@@ -133,6 +142,11 @@ public final class Model implements Serializable {
      * The serial version UID of the class.
      */
     private static final long serialVersionUID;
+
+    /**
+     * The latest ID of this model.
+     */
+    private String latestId;
 
     /**
      * The mapping from IDs to entries of this model.
@@ -149,33 +163,52 @@ public final class Model implements Serializable {
     } //static
 
     /**
-     * Constructs a newly allocated {@code Model} object with the specified mapping from IDs to entries and mapping
-     * from categories to subcategories.
+     * Constructs a newly allocated {@code Model} object with the specified latest ID, mapping from IDs to entries, and
+     * mapping from categories to subcategories.
      *
+     * @param latestId the latest ID to be used in construction
      * @param idsToEntries the mapping from IDs to entries to be used in construction
      * @param catsToSubcats the mapping from categories to subcategories to be used in construction
-     * @throws NullPointerException if the specified mapping from IDs to entries, categories, or mapping from
-     * categories to subcategories is {@code null}
+     * @throws NullPointerException if the specified latest ID, mapping from IDs to entries, or mapping from categories
+     * to subcategories is {@code null}
      */
-    public Model(Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
+    private Model(String latestId, Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
+        Objects.requireNonNull(latestId, "the specified latest ID is null");
+
         Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
 
         Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
 
-        this.idsToEntries = new HashMap<>(idsToEntries);
-        this.catsToSubcats = new HashMap<>();
-
-        for (Map.Entry<String, Set<String>> entry : catsToSubcats.entrySet()) {
-            this.catsToSubcats.put(entry.getKey(), new HashSet<>(entry.getValue()));
-        } //end for
+        this.latestId = latestId;
+        this.idsToEntries = idsToEntries;
+        this.catsToSubcats = catsToSubcats;
     } //Model
 
     /**
      * Constructs a newly allocated {@code Model} object.
      */
     public Model() {
-        this(new HashMap<>(), new HashMap<>());
+        this(null, new HashMap<>(), new HashMap<>());
     } //Model
+
+    /**
+     * Returns the latest ID of this model. If an entry has not been previously added to this model, {@code null} is
+     * returned.
+     *
+     * @return the latest ID of this model
+     */
+    public String getLatestId() {
+        return this.latestId;
+    } //getLatestId
+
+    /**
+     * Returns the entry count of this model.
+     *
+     * @return the entry count of this model
+     */
+    public int getEntryCount() {
+        return this.idsToEntries.size();
+    } //getEntryCount
 
     /**
      * Attempts to add the specified entry to this model. If this model already contains an entry with the ID of the
@@ -192,6 +225,8 @@ public final class Model implements Serializable {
         Objects.requireNonNull(entry, "the specified entry is null");
 
         id = entry.getId();
+
+        this.latestId = id;
 
         currentEntry = this.idsToEntries.putIfAbsent(id, entry);
 
@@ -689,7 +724,7 @@ public final class Model implements Serializable {
      * @return a {@code SerializationProxy} object in place of this model
      */
     private Object writeReplace() {
-        return new SerializationProxy(this.idsToEntries, this.catsToSubcats);
+        return new SerializationProxy(this.latestId, this.idsToEntries, this.catsToSubcats);
     } //writeReplace
 
     /**
@@ -702,6 +737,8 @@ public final class Model implements Serializable {
         int result = 23;
         int prime = 31;
 
+        result = prime * result + Objects.hashCode(this.latestId);
+
         result = prime * result + Objects.hashCode(this.idsToEntries);
 
         result = prime * result + Objects.hashCode(this.catsToSubcats);
@@ -711,12 +748,11 @@ public final class Model implements Serializable {
 
     /**
      * Determines whether or not the specified object is equal to this model. {@code true} is returned if and only if
-     * the specified object is an instance of {@code Model} and its mapping from IDs to entries and mapping from
-     * categories to subcategories are equal to this model's.
+     * the specified object is an instance of {@code Model} and its latest ID, mapping from IDs to entries, and mapping
+     * from categories to subcategories are equal to this model's.
      *
      * @param object the object to be used in the comparisons
-     * @return {@code true}, if the specified object is equal to this model and {@code false}
-     * otherwise
+     * @return {@code true}, if the specified object is equal to this model and {@code false} otherwise
      */
     @Override
     public boolean equals(Object object) {
@@ -725,7 +761,9 @@ public final class Model implements Serializable {
         } else if (object instanceof Model) {
             boolean equal;
 
-            equal = Objects.equals(this.idsToEntries, ((Model) object).idsToEntries);
+            equal = Objects.equals(this.latestId, ((Model) object).latestId);
+
+            equal &= Objects.equals(this.idsToEntries, ((Model) object).idsToEntries);
 
             equal &= Objects.equals(this.catsToSubcats, ((Model) object).catsToSubcats);
 
@@ -744,8 +782,8 @@ public final class Model implements Serializable {
      */
     @Override
     public String toString() {
-        String format = "Model[idsToEntries=%s, catsToSubcats=%s]";
+        String format = "Model[latestId=%s, idsToEntries=%s, catsToSubcats=%s]";
 
-        return String.format(format, this.idsToEntries, this.catsToSubcats);
+        return String.format(format, this.latestId, this.idsToEntries, this.catsToSubcats);
     } //toString
 }
