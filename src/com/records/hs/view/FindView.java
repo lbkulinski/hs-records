@@ -12,7 +12,7 @@ import java.awt.GridBagLayout;
  * A find view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 12, 2020
+ * @version May 13, 2020
  */
 public final class FindView {
     /**
@@ -142,7 +142,11 @@ public final class FindView {
         String idItem = "ID";
         String categoryItem = "Category";
         String subcategoryItem = "Subcategory";
-        String tagsItem = "Tags";
+        String tagItem = "Tag";
+        String photoItem = "Photo";
+        String articleItem = "Article";
+        String documentItem = "Document";
+        String objectItem = "Object";
 
         findView.fieldComboBox.addItem(idItem);
 
@@ -150,9 +154,19 @@ public final class FindView {
 
         findView.fieldComboBox.addItem(subcategoryItem);
 
-        findView.fieldComboBox.addItem(tagsItem);
+        findView.fieldComboBox.addItem(tagItem);
 
         findView.fieldComboBox.setSelectedIndex(-1);
+
+        findView.typeComboBox.addItem(photoItem);
+
+        findView.typeComboBox.addItem(articleItem);
+
+        findView.typeComboBox.addItem(documentItem);
+
+        findView.typeComboBox.addItem(objectItem);
+
+        findView.typeComboBox.setSelectedIndex(-1);
 
         findView.formatComponents();
 

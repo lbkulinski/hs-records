@@ -10,7 +10,7 @@ import java.awt.GridBagLayout;
  * A delete view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 12, 2020
+ * @version May 13, 2020
  */
 public final class DeleteView {
     /**
@@ -126,6 +126,10 @@ public final class DeleteView {
         String categoryItem = "Category";
         String subcategoryItem = "Subcategory";
         String tagItem = "Tag";
+        String photoItem = "Photo";
+        String articleItem = "Article";
+        String documentItem = "Document";
+        String objectItem = "Object";
 
         deleteView.fieldComboBox.addItem(idItem);
 
@@ -136,6 +140,16 @@ public final class DeleteView {
         deleteView.fieldComboBox.addItem(tagItem);
 
         deleteView.fieldComboBox.setSelectedIndex(-1);
+
+        deleteView.typeComboBox.addItem(photoItem);
+
+        deleteView.typeComboBox.addItem(articleItem);
+
+        deleteView.typeComboBox.addItem(documentItem);
+
+        deleteView.typeComboBox.addItem(objectItem);
+
+        deleteView.typeComboBox.setSelectedIndex(-1);
 
         deleteView.formatComponents();
 

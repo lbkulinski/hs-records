@@ -10,7 +10,7 @@ import java.awt.GridBagLayout;
  * An edit view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 12, 2020
+ * @version May 13, 2020
  */
 public final class EditView {
     /**
@@ -147,6 +147,10 @@ public final class EditView {
         String categoryItem = "Category";
         String subcategoryItem = "Subcategory";
         String tagsItem = "Tags";
+        String photoItem = "Photo";
+        String articleItem = "Article";
+        String documentItem = "Document";
+        String objectItem = "Object";
 
         editView.fieldComboBox.addItem(idItem);
 
@@ -157,6 +161,16 @@ public final class EditView {
         editView.fieldComboBox.addItem(tagsItem);
 
         editView.fieldComboBox.setSelectedIndex(-1);
+
+        editView.newTypeComboBox.addItem(photoItem);
+
+        editView.newTypeComboBox.addItem(articleItem);
+
+        editView.newTypeComboBox.addItem(documentItem);
+
+        editView.newTypeComboBox.addItem(objectItem);
+
+        editView.newTypeComboBox.setSelectedIndex(-1);
 
         editView.formatComponents();
 
