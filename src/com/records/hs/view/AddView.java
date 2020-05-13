@@ -128,6 +128,18 @@ public final class AddView {
      */
     public static AddView newAddView() {
         AddView addView = new AddView();
+        String photoItem = "Photo";
+        String articleItem = "Article";
+        String documentItem = "Document";
+        String objectItem = "Object";
+
+        addView.typeComboBox.addItem(photoItem);
+
+        addView.typeComboBox.addItem(articleItem);
+
+        addView.typeComboBox.addItem(documentItem);
+
+        addView.typeComboBox.addItem(objectItem);
 
         addView.formatComponents();
 
