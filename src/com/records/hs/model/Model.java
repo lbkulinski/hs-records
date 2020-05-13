@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 12, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -384,6 +384,38 @@ public final class Model implements Serializable {
     } //removeEntry
 
     /**
+     * Attempts to remove all of the entries with the specified type from this model. If an entry with the specified
+     * type has not been previously added to this model, no removals will not occur.
+     *
+     * @param type the type to be used in the operation
+     * @return {@code true}, if at least one entry with the specified type was removed from this model and
+     * {@code false} otherwise
+     * @throws NullPointerException if the specified type is {@code null}
+     */
+    public boolean removeEntriesWithType(Type type) {
+        int previousSize;
+        int currentSize;
+
+        Objects.requireNonNull(type, "the specified type is null");
+
+        previousSize = this.idsToEntries.size();
+
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             Type entryType = entry.getType();
+
+                             return Objects.equals(entryType, type);
+                         })
+                         .map(Entry::getId)
+                         .forEach(this.idsToEntries::remove);
+
+        currentSize = this.idsToEntries.size();
+
+        return currentSize != previousSize;
+    } //removeEntriesWithType
+
+    /**
      * Attempts to remove all of the entries with the specified category from this model. If an entry with the
      * specified category has not been previously added to this model, no removals will not occur.
      *
@@ -392,7 +424,7 @@ public final class Model implements Serializable {
      * {@code false} otherwise
      * @throws NullPointerException if the specified category is {@code null}
      */
-    public boolean removeAllEntriesWithCategory(String category) {
+    public boolean removeEntriesWithCategory(String category) {
         int previousSize;
         int currentSize;
 
@@ -413,7 +445,7 @@ public final class Model implements Serializable {
         currentSize = this.idsToEntries.size();
 
         return currentSize != previousSize;
-    } //removeAllEntriesWithCategory
+    } //removeEntriesWithCategory
 
     /**
      * Attempts to remove all of the entries with the specified subcategory from this model. If an entry with the
@@ -424,7 +456,7 @@ public final class Model implements Serializable {
      * {@code false} otherwise
      * @throws NullPointerException if the specified subcategory is {@code null}
      */
-    public boolean removeAllEntriesWithSubcategory(String subcategory) {
+    public boolean removeEntriesWithSubcategory(String subcategory) {
         int previousSize;
         int currentSize;
 
@@ -445,7 +477,7 @@ public final class Model implements Serializable {
         currentSize = this.idsToEntries.size();
 
         return currentSize != previousSize;
-    } //removeAllEntriesWithSubcategory
+    } //removeEntriesWithSubcategory
 
     /**
      * Attempts to remove all of the entries with the specified tag from this model. If an entry with the specified tag
@@ -456,7 +488,7 @@ public final class Model implements Serializable {
      * otherwise
      * @throws NullPointerException if the specified tag is {@code null}
      */
-    public boolean removeAllEntriesWithTag(String tag) {
+    public boolean removeEntriesWithTag(String tag) {
         int previousSize;
         int currentSize;
 
@@ -478,7 +510,7 @@ public final class Model implements Serializable {
         currentSize = this.idsToEntries.size();
 
         return currentSize != previousSize;
-    } //removeAllEntriesWithTag
+    } //removeEntriesWithTag
 
     /**
      * Attempts to remove the specified category from this model. If the specified category has not been previously
@@ -544,6 +576,30 @@ public final class Model implements Serializable {
 
         return Optional.ofNullable(foundEntry);
     } //findEntryWithId
+
+    /**
+     * Attempts to find entries with the specified type in this model.
+     *
+     * @param type the type to be used in the operation
+     * @return an unmodifiable {@code Set} containing the found entries (if any)
+     * @throws NullPointerException if the specified type is {@code null}
+     */
+    public Set<Entry> findEntriesWithType(Type type) {
+        Set<Entry> foundEntries;
+
+        Objects.requireNonNull(type, "the specified type is null");
+
+        foundEntries = this.idsToEntries.values()
+                                        .stream()
+                                        .filter(entry -> {
+                                            Type entryType = entry.getType();
+
+                                            return Objects.equals(entryType, type);
+                                        })
+                                        .collect(Collectors.toUnmodifiableSet());
+
+        return foundEntries;
+    } //findEntriesWithType
 
     /**
      * Attempts to find entries with the specified category in this model.

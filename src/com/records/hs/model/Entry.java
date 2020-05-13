@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
  * An entry in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 12, 2020
  */
 public final class Entry implements Serializable {
     /**
@@ -25,6 +25,11 @@ public final class Entry implements Serializable {
          * The ID of this serialization proxy.
          */
         private final String id;
+
+        /**
+         * The type of this serialization proxy.
+         */
+        private final Type type;
 
         /**
          * The category of this serialization proxy.
@@ -46,17 +51,21 @@ public final class Entry implements Serializable {
         } //static
 
         /**
-         * Constructs a newly allocated {@code SerializationProxy} object with the specified ID, category, subcategory,
-         * and tags.
+         * Constructs a newly allocated {@code SerializationProxy} object with the specified ID, type, category,
+         * subcategory, and tags.
          *
          * @param id the ID to be used in construction
+         * @param type the type to be used in construction
          * @param category the category to be used in construction
          * @param subcategory the subcategory to be used in construction
          * @param tags the tags to be used in construction
-         * @throws NullPointerException if the specified ID, category, subcategory, or set of tags is {@code null}
+         * @throws NullPointerException if the specified ID, type, category, subcategory, or set of tags is
+         * {@code null}
          */
-        public SerializationProxy(String id, String category, String subcategory, Set<String> tags) {
+        public SerializationProxy(String id, Type type, String category, String subcategory, Set<String> tags) {
             Objects.requireNonNull(id, "the specified ID is null");
+
+            Objects.requireNonNull(type, "the specified type is null");
 
             Objects.requireNonNull(category, "the specified category is null");
 
@@ -65,6 +74,7 @@ public final class Entry implements Serializable {
             Objects.requireNonNull(tags, "the specified set of tags is null");
 
             this.id = id;
+            this.type = type;
             this.category = category;
             this.subcategory = subcategory;
             this.tags = tags;
@@ -76,7 +86,7 @@ public final class Entry implements Serializable {
          * @return an {@code Entry} object in place of this serialization proxy
          */
         private Object readResolve() {
-            return new Entry(this.id, this.category, this.subcategory, this.tags);
+            return new Entry(this.id, this.type, this.category, this.subcategory, this.tags);
         } //readResolve
 
         /**
@@ -91,6 +101,8 @@ public final class Entry implements Serializable {
 
             result = prime * result + Objects.hashCode(this.id);
 
+            result = prime * result + Objects.hashCode(this.type);
+
             result = prime * result + Objects.hashCode(this.category);
 
             result = prime * result + Objects.hashCode(this.subcategory);
@@ -102,7 +114,7 @@ public final class Entry implements Serializable {
 
         /**
          * Determines whether or not the specified object is equal to this serialization proxy. {@code true} is
-         * returned if and only if the specified object is an instance of {@code SerializationProxy} and its ID,
+         * returned if and only if the specified object is an instance of {@code SerializationProxy} and its ID, type,
          * category, subcategory, and tags are equal to this serialization proxy's.
          *
          * @param object the object to be used in the comparisons
@@ -117,6 +129,8 @@ public final class Entry implements Serializable {
                 boolean equal;
 
                 equal = Objects.equals(this.id, ((SerializationProxy) object).id);
+
+                equal &= Objects.equals(this.type, ((SerializationProxy) object).type);
 
                 equal &= Objects.equals(this.category, ((SerializationProxy) object).category);
 
@@ -140,9 +154,9 @@ public final class Entry implements Serializable {
          */
         @Override
         public String toString() {
-            String format = "SerializationProxy[id=%s, category=%s, subcategory=%s, tags=%s]";
+            String format = "SerializationProxy[id=%s, type=%s, category=%s, subcategory=%s, tags=%s]";
 
-            return String.format(format, this.id, this.category, this.subcategory, this.tags);
+            return String.format(format, this.id, this.type, this.category, this.subcategory, this.tags);
         } //toString
     } //SerializationProxy
 
@@ -155,6 +169,11 @@ public final class Entry implements Serializable {
      * The ID of this entry.
      */
     private final String id;
+
+    /**
+     * The type of this entry.
+     */
+    private final Type type;
 
     /**
      * The category of this entry.
@@ -176,17 +195,20 @@ public final class Entry implements Serializable {
     } //static
 
     /**
-     * Constructs a newly allocated {@code Entry} object with the specified ID, category, subcategory, and tags. Each
-     * {@code String} will be transformed to use all uppercase letters.
+     * Constructs a newly allocated {@code Entry} object with the specified ID, type, category, subcategory, and tags.
+     * Each {@code String} will be transformed to use all uppercase letters.
      *
      * @param id the ID to be used in construction
+     * @param type the type to be used in construction
      * @param category the category to be used in construction
      * @param subcategory the subcategory to be used in construction
      * @param tags the tags to be used in construction
-     * @throws NullPointerException if the specified ID, category, subcategory, or set of tags is {@code null}
+     * @throws NullPointerException if the specified ID, type, category, subcategory, or set of tags is {@code null}
      */
-    public Entry(String id, String category, String subcategory, Set<String> tags) {
+    public Entry(String id, Type type, String category, String subcategory, Set<String> tags) {
         Objects.requireNonNull(id, "the specified ID is null");
+
+        Objects.requireNonNull(type, "the specified type is null");
 
         Objects.requireNonNull(category, "the specified category is null");
 
@@ -195,6 +217,7 @@ public final class Entry implements Serializable {
         Objects.requireNonNull(tags, "the specified set of tags is null");
 
         this.id = id.toUpperCase();
+        this.type = type;
         this.category = category.toUpperCase();
         this.subcategory = subcategory.toUpperCase();
         this.tags = tags.stream()
@@ -210,6 +233,15 @@ public final class Entry implements Serializable {
     public String getId() {
         return this.id;
     } //getId
+
+    /**
+     * Returns the type of this entry.
+     *
+     * @return the type of this entry
+     */
+    public Type getType() {
+        return this.type;
+    } //getType
 
     /**
      * Returns the category of this entry.
@@ -244,7 +276,7 @@ public final class Entry implements Serializable {
      * @return a {@code SerializationProxy} object in place of this entry
      */
     private Object writeReplace() {
-        return new SerializationProxy(this.id, this.category, this.subcategory, this.tags);
+        return new SerializationProxy(this.id, this.type, this.category, this.subcategory, this.tags);
     } //writeReplace
 
     /**
@@ -259,6 +291,8 @@ public final class Entry implements Serializable {
 
         result = prime * result + Objects.hashCode(this.id);
 
+        result = prime * result + Objects.hashCode(this.type);
+
         result = prime * result + Objects.hashCode(this.category);
 
         result = prime * result + Objects.hashCode(this.subcategory);
@@ -270,8 +304,8 @@ public final class Entry implements Serializable {
 
     /**
      * Determines whether or not the specified object is equal to this entry. {@code true} is returned if and only if
-     * the specified object is an instance of {@code Entry} and its ID, category, subcategory, and tags are equal to
-     * this entry's.
+     * the specified object is an instance of {@code Entry} and its ID, type, category, subcategory, and tags are equal
+     * to this entry's.
      *
      * @param object the object to be used in the comparisons
      * @return {@code true}, if the specified object is equal to this entry and {@code false} otherwise
@@ -284,6 +318,8 @@ public final class Entry implements Serializable {
             boolean equal;
 
             equal = Objects.equals(this.id, ((Entry) object).id);
+
+            equal &= Objects.equals(this.type, ((Entry) object).type);
 
             equal &= Objects.equals(this.category, ((Entry) object).category);
 
@@ -306,8 +342,8 @@ public final class Entry implements Serializable {
      */
     @Override
     public String toString() {
-        String format = "Entry[id=%s, category=%s, subcategory=%s, tags=%s]";
+        String format = "Entry[id=%s, type=%s, category=%s, subcategory=%s, tags=%s]";
 
-        return String.format(format, this.id, this.category, this.subcategory, this.tags);
+        return String.format(format, this.id, this.type, this.category, this.subcategory, this.tags);
     } //toString
 }
