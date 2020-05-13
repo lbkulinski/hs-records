@@ -141,6 +141,8 @@ public final class AddView {
 
         addView.typeComboBox.addItem(objectItem);
 
+        addView.typeComboBox.setSelectedIndex(-1);
+
         addView.formatComponents();
 
         addView.addComponentsToPanel();

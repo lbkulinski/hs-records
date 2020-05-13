@@ -156,6 +156,8 @@ public final class EditView {
 
         editView.fieldComboBox.addItem(tagsItem);
 
+        editView.fieldComboBox.setSelectedIndex(-1);
+
         editView.formatComponents();
 
         editView.addComponentsToPanel();

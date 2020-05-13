@@ -152,6 +152,8 @@ public final class FindView {
 
         findView.fieldComboBox.addItem(tagsItem);
 
+        findView.fieldComboBox.setSelectedIndex(-1);
+
         findView.formatComponents();
 
         findView.addComponentsToPanel();

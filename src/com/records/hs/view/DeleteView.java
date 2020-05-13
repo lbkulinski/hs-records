@@ -135,6 +135,8 @@ public final class DeleteView {
 
         deleteView.fieldComboBox.addItem(tagItem);
 
+        deleteView.fieldComboBox.setSelectedIndex(-1);
+
         deleteView.formatComponents();
 
         deleteView.addComponentsToPanel();
