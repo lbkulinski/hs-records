@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Objects;
 import java.util.HashMap;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,8 +56,6 @@ public final class Model implements Serializable {
          * subcategories is {@code null}
          */
         private SerializationProxy(String latestId, Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
-            Objects.requireNonNull(latestId, "the specified latest ID is null");
-
             Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
 
             Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
@@ -169,12 +168,10 @@ public final class Model implements Serializable {
      * @param latestId the latest ID to be used in construction
      * @param idsToEntries the mapping from IDs to entries to be used in construction
      * @param catsToSubcats the mapping from categories to subcategories to be used in construction
-     * @throws NullPointerException if the specified latest ID, mapping from IDs to entries, or mapping from categories
-     * to subcategories is {@code null}
+     * @throws NullPointerException if the specified mapping from IDs to entries or mapping from categories to
+     * subcategories is {@code null}
      */
     private Model(String latestId, Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
-        Objects.requireNonNull(latestId, "the specified latest ID is null");
-
         Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
 
         Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
@@ -200,6 +197,38 @@ public final class Model implements Serializable {
     public String getLatestId() {
         return this.latestId;
     } //getLatestId
+
+    /**
+     * Returns the categories of this model.
+     *
+     * @return the categories of this model
+     */
+    public Set<String> getCategories() {
+        Set<String> categories = this.catsToSubcats.keySet();
+
+        return Collections.unmodifiableSet(categories);
+    } //getCategories
+
+    /**
+     * Returns the subcategories of this model that are mapped from the specified category.
+     *
+     * @param category the category to be used in the operation
+     * @return the subcategories of this model that are mapped from the specified category
+     * @throws NullPointerException if the specified category is {@code null}
+     */
+    public Set<String> getSubcategories(String category) {
+        Set<String> subcategories;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        subcategories = this.catsToSubcats.get(category);
+
+        if (subcategories == null) {
+            return Set.of();
+        } else {
+            return Collections.unmodifiableSet(subcategories);
+        } //end if
+    } //getSubcategories
 
     /**
      * Returns the entry count of this model.
@@ -235,7 +264,8 @@ public final class Model implements Serializable {
 
     /**
      * Attempts to add the specified category to this model. If this model already contains the specified category, the
-     * addition will not occur.
+     * addition will not occur. The specified category will be transformed into all uppercase letters if they are
+     * added.
      *
      * @param category the category to be used in the operation
      * @return {@code true}, if the specified category was added to this model and {@code false} otherwise
@@ -246,6 +276,8 @@ public final class Model implements Serializable {
         boolean added;
 
         Objects.requireNonNull(category, "the specified category is null");
+
+        category = category.toUpperCase();
 
         currentSubcats = this.catsToSubcats.get(category);
 
@@ -262,7 +294,8 @@ public final class Model implements Serializable {
 
     /**
      * Attempts to add the specified subcategory to this model. If this model already contains the specified
-     * subcategory that is mapped from the specified category, the addition will not occur.
+     * subcategory that is mapped from the specified category, the addition will not occur. The specified category and
+     * subcategory will be transformed into all uppercase letters if they are added.
      *
      * @param category the category to be used in the operation
      * @param subcategory the subcategory to be used in the operation
@@ -276,6 +309,10 @@ public final class Model implements Serializable {
         Objects.requireNonNull(category, "the specified category is null");
 
         Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        category = category.toUpperCase();
+
+        subcategory = subcategory.toUpperCase();
 
         currentSubcats = this.catsToSubcats.get(category);
 
@@ -345,6 +382,10 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(newCategory, "the specified new category is null");
 
+        category = category.toUpperCase();
+
+        newCategory = newCategory.toUpperCase();
+
         currentSubcats = this.catsToSubcats.get(category);
 
         if (currentSubcats == null) {
@@ -380,6 +421,12 @@ public final class Model implements Serializable {
         Objects.requireNonNull(subcategory, "the specified subcategory is null");
 
         Objects.requireNonNull(newSubcategory, "the specified new subcategory is null");
+
+        category = category.toUpperCase();
+
+        subcategory = subcategory.toUpperCase();
+
+        newSubcategory = newSubcategory.toUpperCase();
 
         currentSubcats = this.catsToSubcats.get(category);
 
@@ -560,6 +607,8 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(category, "the specified category is null");
 
+        category = category.toUpperCase();
+
         removedSubcats = this.catsToSubcats.remove(category);
 
         return removedSubcats != null;
@@ -582,6 +631,10 @@ public final class Model implements Serializable {
         Objects.requireNonNull(category, "the specified category is null");
 
         Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        category = category.toUpperCase();
+
+        subcategory = subcategory.toUpperCase();
 
         currentSubcats = this.catsToSubcats.get(category);
 
