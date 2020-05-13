@@ -12,7 +12,7 @@ import java.awt.GridBagLayout;
  * A find view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 12, 2020
  */
 public final class FindView {
     /**
@@ -24,6 +24,11 @@ public final class FindView {
      * The ID text field of this find view.
      */
     private final JTextField idTextField;
+
+    /**
+     * The type combo box of this find view.
+     */
+    private final JComboBox<String> typeComboBox;
 
     /**
      * The category combo box of this find view.
@@ -76,6 +81,7 @@ public final class FindView {
 
         this.fieldComboBox = new JComboBox<>();
         this.idTextField = new JTextField(length);
+        this.typeComboBox = new JComboBox<>();
         this.categoryComboBox = new JComboBox<>();
         this.subcategoryComboBox = new JComboBox<>();
         this.tagTextField = new JTextField(length);
@@ -92,6 +98,7 @@ public final class FindView {
     private void formatComponents() {
         String fieldTitle = "Field";
         String idTitle = "ID";
+        String typeTitle = "Type";
         String categoryTitle = "Category";
         String subcategoryTitle = "Subcategory";
         String tagTitle = "Tag";
@@ -100,6 +107,8 @@ public final class FindView {
         ViewUtilities.formatComponent(this.fieldComboBox, fieldTitle);
 
         ViewUtilities.formatComponent(this.idTextField, idTitle);
+
+        ViewUtilities.formatComponent(this.typeComboBox, typeTitle);
 
         ViewUtilities.formatComponent(this.categoryComboBox, categoryTitle);
 
@@ -167,6 +176,15 @@ public final class FindView {
     public JTextField getIdTextField() {
         return this.idTextField;
     } //getIdTextField
+
+    /**
+     * Returns the type combo box of this find view.
+     *
+     * @return the type combo box of this find view
+     */
+    public JComboBox<String> getTypeComboBox() {
+        return this.typeComboBox;
+    } //getTypeComboBox
 
     /**
      * Returns the category combo box of this find view.
