@@ -10,7 +10,7 @@ import java.awt.GridBagLayout;
  * An edit view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 12, 2020
  */
 public final class EditView {
     /**
@@ -27,6 +27,11 @@ public final class EditView {
      * The new ID text field of this edit view.
      */
     private final JTextField newIdTextField;
+
+    /**
+     * The new type combo box of this edit view.
+     */
+    private final JComboBox<String> newTypeComboBox;
 
     /**
      * The new category combo box of this edit view.
@@ -75,6 +80,7 @@ public final class EditView {
         this.idTextField = new JTextField(length);
         this.fieldComboBox = new JComboBox<>();
         this.newIdTextField = new JTextField(length);
+        this.newTypeComboBox = new JComboBox<>();
         this.newCategoryComboBox = new JComboBox<>();
         this.categoryComboBox = new JComboBox<>();
         this.newSubcategoryComboBox = new JComboBox<>();
@@ -91,6 +97,7 @@ public final class EditView {
         String idTitle = "ID";
         String fieldTitle = "Field";
         String newIdTitle = "New ID";
+        String newTypeTitle = "New Type";
         String newCategoryTitle = "New Category";
         String categoryTitle = "Category";
         String newSubcategoryTitle = "New Subcategory";
@@ -101,6 +108,8 @@ public final class EditView {
         ViewUtilities.formatComponent(this.fieldComboBox, fieldTitle);
 
         ViewUtilities.formatComponent(this.newIdTextField, newIdTitle);
+
+        ViewUtilities.formatComponent(this.newTypeComboBox, newTypeTitle);
 
         ViewUtilities.formatComponent(this.newCategoryComboBox, newCategoryTitle);
 
@@ -180,6 +189,15 @@ public final class EditView {
     public JTextField getNewIdTextField() {
         return this.newIdTextField;
     } //getNewIdTextField
+
+    /**
+     * Returns the new type combo box of this edit view.
+     *
+     * @return the new type combo box of this edit view
+     */
+    public JComboBox<String> getNewTypeComboBox() {
+        return this.newTypeComboBox;
+    } //getNewTypeComboBox
 
     /**
      * Returns the new category combo box of this edit view.
