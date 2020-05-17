@@ -5,4 +5,5 @@
  */
 module com.records.hs {
     requires java.desktop;
+    requires java.logging;
 }
