@@ -9,9 +9,34 @@ import javax.swing.JSeparator;
  * A menu view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 11, 2020
+ * @version May 17, 2020
  */
 public final class MenuView {
+    /**
+     * The create directory menu item of this menu view.
+     */
+    private final JMenuItem createDirectoryMenuItem;
+
+    /**
+     * The open record menu item of this menu view.
+     */
+    private final JMenuItem openRecordMenuItem;
+
+    /**
+     * The open directory menu item of this menu view.
+     */
+    private final JMenuItem openDirectoryMenuItem;
+
+    /**
+     * The import menu item of this menu view.
+     */
+    private final JMenuItem importMenuItem;
+
+    /**
+     * The export menu item of this menu view.
+     */
+    private final JMenuItem exportMenuItem;
+
     /**
      * The save menu item of this menu view.
      */
@@ -26,16 +51,6 @@ public final class MenuView {
      * The total menu item of this menu view.
      */
     private final JMenuItem totalMenuItem;
-
-    /**
-     * The import menu item of this menu view.
-     */
-    private final JMenuItem importMenuItem;
-
-    /**
-     * The export menu item of this menu view.
-     */
-    private final JMenuItem exportMenuItem;
 
     /**
      * The add category menu item of this menu view.
@@ -73,6 +88,11 @@ public final class MenuView {
     private final JMenu fileMenu;
 
     /**
+     * The open menu of this menu view.
+     */
+    private final JMenu openMenu;
+
+    /**
      * The display menu of this menu view.
      */
     private final JMenu displayMenu;
@@ -96,6 +116,9 @@ public final class MenuView {
      * Constructs a newly allocated {@code MenuView} object.
      */
     private MenuView() {
+        String createDirectoryName = "Create Directory";
+        String openRecordName = "Record";
+        String openDirectoryName = "Directory";
         String saveName = "Save";
         String latestName = "Latest entry ID";
         String totalName = "Total entry count";
@@ -105,10 +128,14 @@ public final class MenuView {
         String editName = "Edit";
         String deleteName = "Delete";
         String fileName = "File";
+        String openName = "Open";
         String displayName = "Display";
         String categoriesName = "Categories";
         String subcategoriesName = "Subcategories";
 
+        this.createDirectoryMenuItem = new JMenuItem(createDirectoryName);
+        this.openRecordMenuItem = new JMenuItem(openRecordName);
+        this.openDirectoryMenuItem = new JMenuItem(openDirectoryName);
         this.saveMenuItem = new JMenuItem(saveName);
         this.latestMenuItem = new JMenuItem(latestName);
         this.totalMenuItem = new JMenuItem(totalName);
@@ -121,6 +148,7 @@ public final class MenuView {
         this.editSubcategoryMenuItem = new JMenuItem(editName);
         this.deleteSubcategoryMenuItem = new JMenuItem(deleteName);
         this.fileMenu = new JMenu(fileName);
+        this.openMenu = new JMenu(openName);
         this.displayMenu = new JMenu(displayName);
         this.categoriesMenu = new JMenu(categoriesName);
         this.subcategoriesMenu = new JMenu(subcategoriesName);
@@ -131,7 +159,17 @@ public final class MenuView {
      * Adds the components of this menu view to the menu bar of this menu view.
      */
     private void addComponentsToMenuBar() {
-        this.fileMenu.add(this.saveMenuItem);
+        this.openMenu.add(this.openRecordMenuItem);
+
+        this.openMenu.add(new JSeparator());
+
+        this.openMenu.add(this.openDirectoryMenuItem);
+
+        this.fileMenu.add(this.createDirectoryMenuItem);
+
+        this.fileMenu.add(new JSeparator());
+
+        this.fileMenu.add(this.openMenu);
 
         this.fileMenu.add(new JSeparator());
 
@@ -140,6 +178,10 @@ public final class MenuView {
         this.fileMenu.add(new JSeparator());
 
         this.fileMenu.add(this.exportMenuItem);
+
+        this.fileMenu.add(new JSeparator());
+
+        this.fileMenu.add(this.saveMenuItem);
 
         this.displayMenu.add(this.latestMenuItem);
 
@@ -190,6 +232,51 @@ public final class MenuView {
     } //newMenuView
 
     /**
+     * Returns the create directory menu item of this menu view.
+     *
+     * @return the create directory menu item of this menu view
+     */
+    public JMenuItem getCreateDirectoryMenuItem() {
+        return this.createDirectoryMenuItem;
+    } //getCreateDirectoryMenuItem
+
+    /**
+     * Returns the open record menu item of this menu view.
+     *
+     * @return the open record menu item of this menu view
+     */
+    public JMenuItem getOpenRecordMenuItem() {
+        return this.openRecordMenuItem;
+    } //getOpenRecordMenuItem
+
+    /**
+     * Returns the open directory menu item of this menu view.
+     *
+     * @return the open directory menu item of this menu view
+     */
+    public JMenuItem getOpenDirectoryMenuItem() {
+        return this.openDirectoryMenuItem;
+    } //getOpenDirectoryMenuItem
+
+    /**
+     * Returns the import menu item of this menu view.
+     *
+     * @return the import menu item of this menu view
+     */
+    public JMenuItem getImportMenuItem() {
+        return this.importMenuItem;
+    } //getImportMenuItem
+
+    /**
+     * Returns the export menu item of this menu view.
+     *
+     * @return the export menu item of this menu view
+     */
+    public JMenuItem getExportMenuItem() {
+        return this.exportMenuItem;
+    } //getExportMenuItem
+
+    /**
      * Returns the save menu item of this menu view.
      *
      * @return the save menu item of this menu view
@@ -215,24 +302,6 @@ public final class MenuView {
     public JMenuItem getTotalMenuItem() {
         return this.totalMenuItem;
     } //getTotalMenuItem
-
-    /**
-     * Returns the import menu item of this menu view.
-     *
-     * @return the import menu item of this menu view
-     */
-    public JMenuItem getImportMenuItem() {
-        return this.importMenuItem;
-    } //getImportMenuItem
-
-    /**
-     * Returns the export menu item of this menu view.
-     *
-     * @return the export menu item of this menu view
-     */
-    public JMenuItem getExportMenuItem() {
-        return this.exportMenuItem;
-    } //getExportMenuItem
 
     /**
      * Returns the add category menu item of this menu view.
@@ -296,6 +365,15 @@ public final class MenuView {
     public JMenu getFileMenu() {
         return this.fileMenu;
     } //getFileMenu
+
+    /**
+     * Returns the open menu of this menu view.
+     *
+     * @return the open menu of this menu view
+     */
+    public JMenu getOpenMenu() {
+        return this.openMenu;
+    } //getOpenMenu
 
     /**
      * Returns the display menu of this menu view.
