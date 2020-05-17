@@ -493,6 +493,7 @@ public final class AddController {
      * @param model the model to be used in construction
      * @param addView the add view to be used in construction
      * @return a new {@code AddController} object with the specified model and add view
+     * @throws NullPointerException if the specified model or add view is {@code null}
      */
     public static AddController newAddController(Model model, AddView addView) {
         AddController addController;
