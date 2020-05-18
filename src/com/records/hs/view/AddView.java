@@ -2,15 +2,17 @@ package com.records.hs.view;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import com.records.hs.model.Type;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import java.util.Arrays;
 
 /**
  * An add view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 12, 2020
+ * @version May 18, 2020
  */
 public final class AddView {
     /**
@@ -21,7 +23,7 @@ public final class AddView {
     /**
      * The type combo box of this add view.
      */
-    private final JComboBox<String> typeComboBox;
+    private final JComboBox<Type> typeComboBox;
 
     /**
      * The category combo box of this add view.
@@ -127,19 +129,15 @@ public final class AddView {
      * @return a new {@code AddView} object
      */
     public static AddView newAddView() {
-        AddView addView = new AddView();
-        String photoItem = "Photo";
-        String articleItem = "Article";
-        String documentItem = "Document";
-        String objectItem = "Object";
+        Type[] types;
+        AddView addView;
 
-        addView.typeComboBox.addItem(photoItem);
+        types = Type.values();
 
-        addView.typeComboBox.addItem(articleItem);
+        addView = new AddView();
 
-        addView.typeComboBox.addItem(documentItem);
-
-        addView.typeComboBox.addItem(objectItem);
+        Arrays.stream(types)
+              .forEach(addView.typeComboBox::addItem);
 
         addView.typeComboBox.setSelectedIndex(-1);
 
@@ -164,7 +162,7 @@ public final class AddView {
      *
      * @return the type combo box of this add view
      */
-    public JComboBox<String> getTypeComboBox() {
+    public JComboBox<Type> getTypeComboBox() {
         return this.typeComboBox;
     } //getTypeComboBox
 
