@@ -21,7 +21,7 @@ import javax.swing.JButton;
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 17, 2020
+ * @version May 18, 2020
  */
 public final class AddController {
     /**
@@ -218,7 +218,7 @@ public final class AddController {
      */
     private void clearFields() {
         JTextField idTextField;
-        JComboBox<String> typeComboBox;
+        JComboBox<Type> typeComboBox;
         JComboBox<String> subcategoryComboBox;
         JTextField tagsTextField;
 
@@ -283,20 +283,19 @@ public final class AddController {
      * @return the type input of this add controller's add view
      */
     private Type getTypeInput() {
-        JComboBox<String> typeComboBox;
+        JComboBox<Type> typeComboBox;
         JPanel panel;
-        String typeString;
+        Type type;
         String message;
         String title = "HS Records";
-        Type type;
 
         typeComboBox = this.addView.getTypeComboBox();
 
         panel = this.addView.getPanel();
 
-        typeString = (String) typeComboBox.getSelectedItem();
+        type = (Type) typeComboBox.getSelectedItem();
 
-        if (typeString == null) {
+        if (type == null) {
             message = "Error: The specified type is blank!";
 
             JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
@@ -305,22 +304,6 @@ public final class AddController {
 
             return null;
         } //end if
-
-        try {
-            type = Type.valueOf(typeString);
-        } catch (IllegalArgumentException e) {
-            String exceptionMessage = e.getMessage();
-
-            this.logger.log(Level.INFO, exceptionMessage, e);
-
-            message = "Error: The selected type is not valid! Please contact support!";
-
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
-
-            typeComboBox.requestFocus();
-
-            return null;
-        } //end try catch
 
         return type;
     } //getTypeInput
