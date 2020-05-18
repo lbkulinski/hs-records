@@ -2,15 +2,17 @@ package com.records.hs.view;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import com.records.hs.model.Type;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import java.util.Arrays;
 
 /**
  * An edit view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 13, 2020
+ * @version May 18, 2020
  */
 public final class EditView {
     /**
@@ -21,7 +23,7 @@ public final class EditView {
     /**
      * The field combo box of this edit view.
      */
-    private final JComboBox<String> fieldComboBox;
+    private final JComboBox<Field> fieldComboBox;
 
     /**
      * The new ID text field of this edit view.
@@ -31,7 +33,7 @@ public final class EditView {
     /**
      * The new type combo box of this edit view.
      */
-    private final JComboBox<String> newTypeComboBox;
+    private final JComboBox<Type> newTypeComboBox;
 
     /**
      * The new category combo box of this edit view.
@@ -142,33 +144,21 @@ public final class EditView {
      * @return a new {@code EditView} object
      */
     public static EditView newEditView() {
+        Field[] fields;
+        Type[] types;
         EditView editView = new EditView();
-        String idItem = "ID";
-        String categoryItem = "Category";
-        String subcategoryItem = "Subcategory";
-        String tagsItem = "Tags";
-        String photoItem = "Photo";
-        String articleItem = "Article";
-        String documentItem = "Document";
-        String objectItem = "Object";
 
-        editView.fieldComboBox.addItem(idItem);
+        fields = Field.values();
 
-        editView.fieldComboBox.addItem(categoryItem);
+        types = Type.values();
 
-        editView.fieldComboBox.addItem(subcategoryItem);
-
-        editView.fieldComboBox.addItem(tagsItem);
+        Arrays.stream(fields)
+              .forEach(editView.fieldComboBox::addItem);
 
         editView.fieldComboBox.setSelectedIndex(-1);
 
-        editView.newTypeComboBox.addItem(photoItem);
-
-        editView.newTypeComboBox.addItem(articleItem);
-
-        editView.newTypeComboBox.addItem(documentItem);
-
-        editView.newTypeComboBox.addItem(objectItem);
+        Arrays.stream(types)
+              .forEach(editView.newTypeComboBox::addItem);
 
         editView.newTypeComboBox.setSelectedIndex(-1);
 
@@ -193,7 +183,7 @@ public final class EditView {
      *
      * @return the field combo box of this edit view
      */
-    public JComboBox<String> getFieldComboBox() {
+    public JComboBox<Field> getFieldComboBox() {
         return this.fieldComboBox;
     } //getFieldComboBox
 
@@ -211,7 +201,7 @@ public final class EditView {
      *
      * @return the new type combo box of this edit view
      */
-    public JComboBox<String> getNewTypeComboBox() {
+    public JComboBox<Type> getNewTypeComboBox() {
         return this.newTypeComboBox;
     } //getNewTypeComboBox
 

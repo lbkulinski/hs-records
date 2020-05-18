@@ -2,21 +2,23 @@ package com.records.hs.view;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import com.records.hs.model.Type;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import java.util.Arrays;
 
 /**
  * A delete view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 13, 2020
+ * @version May 18, 2020
  */
 public final class DeleteView {
     /**
      * The field combo box of this delete view.
      */
-    private final JComboBox<String> fieldComboBox;
+    private final JComboBox<Field> fieldComboBox;
 
     /**
      * The ID text field of this delete view.
@@ -26,7 +28,7 @@ public final class DeleteView {
     /**
      * The type combo box of this delete view.
      */
-    private final JComboBox<String> typeComboBox;
+    private final JComboBox<Type> typeComboBox;
 
     /**
      * The category combo box of this delete view.
@@ -121,33 +123,21 @@ public final class DeleteView {
      * @return a new {@code DeleteView} object
      */
     public static DeleteView newDeleteView() {
+        Field[] fields;
+        Type[] types;
         DeleteView deleteView = new DeleteView();
-        String idItem = "ID";
-        String categoryItem = "Category";
-        String subcategoryItem = "Subcategory";
-        String tagItem = "Tag";
-        String photoItem = "Photo";
-        String articleItem = "Article";
-        String documentItem = "Document";
-        String objectItem = "Object";
 
-        deleteView.fieldComboBox.addItem(idItem);
+        fields = Field.values();
 
-        deleteView.fieldComboBox.addItem(categoryItem);
+        types = Type.values();
 
-        deleteView.fieldComboBox.addItem(subcategoryItem);
-
-        deleteView.fieldComboBox.addItem(tagItem);
+        Arrays.stream(fields)
+              .forEach(deleteView.fieldComboBox::addItem);
 
         deleteView.fieldComboBox.setSelectedIndex(-1);
 
-        deleteView.typeComboBox.addItem(photoItem);
-
-        deleteView.typeComboBox.addItem(articleItem);
-
-        deleteView.typeComboBox.addItem(documentItem);
-
-        deleteView.typeComboBox.addItem(objectItem);
+        Arrays.stream(types)
+              .forEach(deleteView.typeComboBox::addItem);
 
         deleteView.typeComboBox.setSelectedIndex(-1);
 
@@ -163,7 +153,7 @@ public final class DeleteView {
      *
      * @return the field combo box of this delete view
      */
-    public JComboBox<String> getFieldComboBox() {
+    public JComboBox<Field> getFieldComboBox() {
         return this.fieldComboBox;
     } //getFieldComboBox
 
@@ -181,7 +171,7 @@ public final class DeleteView {
      *
      * @return the type combo box of this delete view
      */
-    public JComboBox<String> getTypeComboBox() {
+    public JComboBox<Type> getTypeComboBox() {
         return this.typeComboBox;
     } //getTypeComboBox
 

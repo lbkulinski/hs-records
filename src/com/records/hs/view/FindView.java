@@ -2,23 +2,25 @@ package com.records.hs.view;
 
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import com.records.hs.model.Type;
 import javax.swing.JTextPane;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import java.util.Arrays;
 
 /**
  * A find view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 13, 2020
+ * @version May 18, 2020
  */
 public final class FindView {
     /**
      * The field combo box of this find view.
      */
-    private final JComboBox<String> fieldComboBox;
+    private final JComboBox<Field> fieldComboBox;
 
     /**
      * The ID text field of this find view.
@@ -28,7 +30,7 @@ public final class FindView {
     /**
      * The type combo box of this find view.
      */
-    private final JComboBox<String> typeComboBox;
+    private final JComboBox<Type> typeComboBox;
 
     /**
      * The category combo box of this find view.
@@ -138,33 +140,21 @@ public final class FindView {
      * @return a new {@code FindView} object
      */
     public static FindView newFindView() {
+        Field[] fields;
+        Type[] types;
         FindView findView = new FindView();
-        String idItem = "ID";
-        String categoryItem = "Category";
-        String subcategoryItem = "Subcategory";
-        String tagItem = "Tag";
-        String photoItem = "Photo";
-        String articleItem = "Article";
-        String documentItem = "Document";
-        String objectItem = "Object";
 
-        findView.fieldComboBox.addItem(idItem);
+        fields = Field.values();
 
-        findView.fieldComboBox.addItem(categoryItem);
+        types = Type.values();
 
-        findView.fieldComboBox.addItem(subcategoryItem);
-
-        findView.fieldComboBox.addItem(tagItem);
+        Arrays.stream(fields)
+              .forEach(findView.fieldComboBox::addItem);
 
         findView.fieldComboBox.setSelectedIndex(-1);
 
-        findView.typeComboBox.addItem(photoItem);
-
-        findView.typeComboBox.addItem(articleItem);
-
-        findView.typeComboBox.addItem(documentItem);
-
-        findView.typeComboBox.addItem(objectItem);
+        Arrays.stream(types)
+              .forEach(findView.typeComboBox::addItem);
 
         findView.typeComboBox.setSelectedIndex(-1);
 
@@ -180,7 +170,7 @@ public final class FindView {
      *
      * @return the field combo box of this find view
      */
-    public JComboBox<String> getFieldComboBox() {
+    public JComboBox<Field> getFieldComboBox() {
         return this.fieldComboBox;
     } //getFieldComboBox
 
@@ -198,7 +188,7 @@ public final class FindView {
      *
      * @return the type combo box of this find view
      */
-    public JComboBox<String> getTypeComboBox() {
+    public JComboBox<Type> getTypeComboBox() {
         return this.typeComboBox;
     } //getTypeComboBox
 
