@@ -89,6 +89,7 @@ public final class MenuController {
      *
      * @param category the category to be used in the operation
      * @return the subcategory input of this menu controller's menu view
+     * @throws NullPointerException if the specified category is {@code null}
      */
     private String getSubcategoryInput(String category) {
         Set<String> subcategories;
@@ -97,6 +98,8 @@ public final class MenuController {
         String title = "HS Records";
         Object[] subcategoryArray;
         String subcategory;
+
+        Objects.requireNonNull(category, "the specified category is null");
 
         subcategories = this.model.getSubcategories(category);
 
@@ -182,6 +185,7 @@ public final class MenuController {
      *
      * @param category the category to be used in the operation
      * @return the new subcategory input of this menu controller's menu view
+     * @throws NullPointerException if the specified category is {@code null}
      */
     private String getNewSubcategoryInput(String category) {
         JMenuBar menuBar;
@@ -189,6 +193,8 @@ public final class MenuController {
         String title = "HS Records";
         String subcategory;
         Set<String> subcategories;
+
+        Objects.requireNonNull(category, "the specified category is null");
 
         menuBar = this.menuView.getMenuBar();
 
