@@ -21,7 +21,7 @@ import javax.swing.JButton;
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 18, 2020
+ * @version May 19, 2020
  */
 public final class AddController {
     /**
@@ -407,9 +407,9 @@ public final class AddController {
     } //getTagsInput
 
     /**
-     * Adds a new entry to this add controller's model using the input of this add controller's add view.
+     * Adds an entry to this add controller's model using the input of this add controller's add view.
      */
-    private void addNewEntry() {
+    private void addEntry() {
         String id;
         Type type;
         String category;
@@ -458,17 +458,17 @@ public final class AddController {
         panel = this.addView.getPanel();
 
         if (added) {
-            message = "The new record was successfully added!";
+            message = "The record was successfully added!";
 
             JOptionPane.showMessageDialog(panel, message, title, JOptionPane.INFORMATION_MESSAGE);
 
             this.clearFields();
         } else {
-            message = "Error: The new record could not be added! Please contact support!";
+            message = "Error: The record could not be added! Please contact support!";
 
             JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
-    } //addNewEntry
+    } //addEntry
 
     /**
      * Returns a new {@code AddController} object with the specified model and add view.
@@ -494,7 +494,7 @@ public final class AddController {
 
         categoryComboBox.addActionListener(actionEvent -> addController.fillSubcategoryComboBox());
 
-        addButton.addActionListener(actionEvent -> addController.addNewEntry());
+        addButton.addActionListener(actionEvent -> addController.addEntry());
 
         clearButton.addActionListener(actionEvent -> addController.clearFields());
 
