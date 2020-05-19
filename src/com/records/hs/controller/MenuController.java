@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 18, 2020
+ * @version May 19, 2020
  */
 public final class MenuController {
     /**
@@ -87,18 +87,16 @@ public final class MenuController {
     /**
      * Returns the subcategory input of this menu controller's menu view.
      *
+     * @param category the category to be used in the operation
      * @return the subcategory input of this menu controller's menu view
      */
-    private String getSubcategoryInput() {
-        String category;
+    private String getSubcategoryInput(String category) {
         Set<String> subcategories;
         JMenuBar menuBar;
         String message;
         String title = "HS Records";
         Object[] subcategoryArray;
         String subcategory;
-
-        category = this.getCategoryInput();
 
         subcategories = this.model.getSubcategories(category);
 
@@ -178,4 +176,38 @@ public final class MenuController {
 
         return category;
     } //getNewCategoryInput
+
+    /**
+     * Returns the new subcategory input of this menu controller's menu view.
+     *
+     * @param category the category to be used in the operation
+     * @return the new subcategory input of this menu controller's menu view
+     */
+    private String getNewSubcategoryInput(String category) {
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+        String subcategory;
+        Set<String> subcategories;
+
+        menuBar = this.menuView.getMenuBar();
+
+        message = "Enter the new subcategory:";
+
+        subcategory = JOptionPane.showInputDialog(menuBar, message, title, JOptionPane.QUESTION_MESSAGE);
+
+        subcategory = subcategory.toUpperCase();
+
+        subcategories = this.model.getSubcategories(category);
+
+        if (subcategories.contains(subcategory)) {
+            message = "Error: The specified new subcategory already exists!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        } //end if
+
+        return subcategory;
+    } //getNewSubcategoryInput
 }
