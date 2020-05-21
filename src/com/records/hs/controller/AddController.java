@@ -256,6 +256,9 @@ public final class AddController {
         JTextField idTextField;
         JPanel panel;
         String id;
+        String message;
+        String title = "HS Records";
+        String comma = ",";
 
         idTextField = this.addView.getIdTextField();
 
@@ -264,8 +267,15 @@ public final class AddController {
         id = idTextField.getText();
 
         if (id.isBlank()) {
-            String message = "Error: The specified ID is blank!";
-            String title = "HS Records";
+            message = "Error: The specified ID is blank!";
+
+            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+
+            idTextField.requestFocus();
+
+            return null;
+        } else if (id.contains(comma)) {
+            message = "Error: The specified ID contains a comma!";
 
             JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
 
