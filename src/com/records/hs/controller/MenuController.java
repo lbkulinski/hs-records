@@ -18,17 +18,19 @@ import com.records.hs.model.Entry;
 import com.records.hs.model.Type;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.util.List;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
+import java.util.LinkedHashSet;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import javax.swing.JMenuItem;
 
 /**
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 20, 2020
+ * @version May 21, 2020
  */
 public final class MenuController {
     /**
@@ -104,8 +106,6 @@ public final class MenuController {
         category = (String) JOptionPane.showInputDialog(menuBar, message, title, JOptionPane.QUESTION_MESSAGE, null,
                                                         categoryArray, null);
 
-        category = category.toUpperCase();
-
         return category;
     } //getCategoryInput
 
@@ -145,8 +145,6 @@ public final class MenuController {
         subcategory = (String) JOptionPane.showInputDialog(menuBar, message, title, JOptionPane.QUESTION_MESSAGE, null,
                                                            subcategoryArray, null);
 
-        subcategory = subcategory.toUpperCase();
-
         return subcategory;
     } //getSubcategoryInput
 
@@ -182,6 +180,7 @@ public final class MenuController {
         String message;
         String title = "HS Records";
         String category;
+        String comma = ",";
 
         menuBar = this.menuView.getMenuBar();
 
@@ -189,10 +188,22 @@ public final class MenuController {
 
         category = JOptionPane.showInputDialog(menuBar, message, title, JOptionPane.QUESTION_MESSAGE);
 
-        category = category.toUpperCase();
+        if (category == null) {
+            return null;
+        } else if (category.isBlank()) {
+            message = "Error: The specified category is blank!";
 
-        if (this.model.containsCategory(category)) {
-            message = "Error: The specified new category already exists!";
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        } else if (category.contains(comma)) {
+            message = "Error: The specified category contains a comma!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        } else if (this.model.containsCategory(category)) {
+            message = "Error: The specified category already exists!";
 
             JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
 
@@ -216,6 +227,7 @@ public final class MenuController {
         String message;
         String title = "HS Records";
         String subcategory;
+        String comma = ",";
 
         Objects.requireNonNull(category, "the specified category is null");
 
@@ -225,10 +237,22 @@ public final class MenuController {
 
         subcategory = JOptionPane.showInputDialog(menuBar, message, title, JOptionPane.QUESTION_MESSAGE);
 
-        subcategory = subcategory.toUpperCase();
+        if (subcategory == null) {
+            return null;
+        } else if (subcategory.isBlank()) {
+            message = "Error: The specified subcategory is blank!";
 
-        if (this.model.containsSubcategory(category, subcategory)) {
-            message = "Error: The specified new subcategory already exists!";
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        } else if (subcategory.contains(comma)) {
+            message = "Error: The specified subcategory contains a comma!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        } else if (this.model.containsSubcategory(category, subcategory)) {
+            message = "Error: The specified subcategory already exists!";
 
             JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
 
@@ -329,9 +353,10 @@ public final class MenuController {
      * Opens a record using the input of this menu controller's menu view.
      */
     private void openRecord() {
+        int entryCount;
+        JMenuBar menuBar;
         String id;
         Optional<Entry> optional;
-        JMenuBar menuBar;
         String message;
         String title = "HS Records";
         Entry entry;
@@ -342,11 +367,21 @@ public final class MenuController {
         Desktop desktop;
         File file;
 
+        entryCount = this.model.getEntryCount();
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (entryCount == 0) {
+            message = "Error: No records have been previously added!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return;
+        } //end if
+
         id = this.getIdInput();
 
         optional = this.model.findEntryWithId(id);
-
-        menuBar = this.menuView.getMenuBar();
 
         if (optional.isEmpty()) {
             message = "Error: The record does not exist!";
@@ -562,12 +597,11 @@ public final class MenuController {
         List<String> lines;
         String message;
         String title = "HS Records";
+        Entry parsedEntry;
         Set<Entry> entries;
-        boolean added;
         String category;
         String subcategory;
-        boolean categoryAdded = false;
-        boolean subcategoryAdded = false;
+        boolean added;
 
         filter = new FileNameExtensionFilter(description, extension);
 
@@ -605,22 +639,48 @@ public final class MenuController {
             return;
         } //end try catch
 
-        entries = lines.stream()
-                       .map(this::parseEntry)
-                       .collect(Collectors.toSet());
+        entries = new LinkedHashSet<>();
 
-        if (entries.contains(null)) {
-            message = "The CSV file was could not be imported, as it contains improperly formatted entries!";
+        for (String line : lines) {
+            parsedEntry = this.parseEntry(line);
 
-            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+            if (parsedEntry == null) {
+                return;
+            } //end if
+
+            entries.add(parsedEntry);
         } //end if
 
         for (Entry entry : entries) {
-            added = this.model.addEntry(entry);
-
             category = entry.getCategory();
 
             subcategory = entry.getSubcategory();
+
+            if (!this.model.containsCategory(category)) {
+                added = this.model.addCategory(category);
+
+                if (!added) {
+                    message = "Error: The CSV file could not be fully imported! Please contact support!";
+
+                    JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+                    return;
+                } //end if
+            } //end if
+
+            if (!this.model.containsSubcategory(category, subcategory)) {
+                added = this.model.addSubcategory(category, subcategory);
+
+                if (!added) {
+                    message = "Error: The CSV file could not be fully imported! Please contact support!";
+
+                    JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+                    return;
+                } //end if
+            } //end if
+
+            added = this.model.addEntry(entry);
 
             if (!added) {
                 message = "Error: The CSV file could not be fully imported! Please contact support!";
@@ -629,27 +689,9 @@ public final class MenuController {
 
                 return;
             } //end if
-
-            if (!this.model.containsCategory(category)) {
-                this.model.addCategory(category);
-
-                categoryAdded = true;
-            } //end if
-
-            if (!this.model.containsSubcategory(category, subcategory)) {
-                this.model.addSubcategory(category, subcategory);
-
-                subcategoryAdded = true;
-            } //end if
         } //end for
 
-        if (categoryAdded) {
-            this.addController.fillCategoryComboBox();
-        } //end if
-
-        if (subcategoryAdded) {
-            this.addController.fillSubcategoryComboBox();
-        } //end if
+        this.addController.clearFields();
 
         message = "The CSV file was successfully imported!";
 
@@ -801,4 +843,393 @@ public final class MenuController {
 
         JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
     } //exportToCsv
+
+    /**
+     * Saves the model of this menu controller to a file.
+     */
+    private void save() {
+        boolean saved;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        saved = ControllerUtilities.writeModelToFile(this.model);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (saved) {
+            message = "The save was successful!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            message = "Error: The save was unsuccessful! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //save
+
+    /**
+     * Shows the latest ID of the model of this menu controller.
+     */
+    private void showLatestId() {
+        String latestId;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        latestId = this.model.getLatestId();
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (latestId == null) {
+            message = "Error: No entries have been added!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } else {
+            String format = "Latest ID: %s";
+
+            message = String.format(format, latestId);
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } //end if
+    } //showLatestId
+
+    /**
+     * Shows the entry count of the model of this menu controller.
+     */
+    private void showEntryCount() {
+        int entryCount;
+        JMenuBar menuBar;
+        String message;
+        String format = "Record count: %d";
+        String title = "HS Records";
+
+        entryCount = this.model.getEntryCount();
+
+        menuBar = this.menuView.getMenuBar();
+
+        message = String.format(format, entryCount);
+
+        JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+    } //showEntryCount
+
+    /**
+     * Adds a category to the model of this menu controller using the input of this menu controller's menu view.
+     */
+    private void addCategory() {
+        String newCategory;
+        boolean added;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        newCategory = this.getNewCategoryInput();
+
+        if (newCategory == null) {
+            return;
+        } //end if
+
+        added = this.model.addCategory(newCategory);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (added) {
+            this.addController.fillCategoryComboBox();
+
+            message = "The category was successfully added!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            message = "Error: The category could not be added! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //addCategory
+
+    /**
+     * Edits a category to the model of this menu controller using the input of this menu controller's menu view.
+     */
+    private void editCategory() {
+        String category;
+        String newCategory;
+        boolean edited;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        category = this.getCategoryInput();
+
+        if (category == null) {
+            return;
+        } //end if
+
+        newCategory = this.getNewCategoryInput();
+
+        if (newCategory == null) {
+            return;
+        } //end if
+
+        edited = this.model.editCategory(category, newCategory);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (edited) {
+            this.addController.fillCategoryComboBox();
+
+            message = "The category was successfully edited!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            message = "Error: The category could not be edited! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //editCategory
+
+    /**
+     * Deletes a category to the model of this menu controller using the input of this menu controller's menu view.
+     */
+    private void deleteCategory() {
+        String category;
+        boolean deleted;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        category = this.getCategoryInput();
+
+        if (category == null) {
+            return;
+        } //end if
+
+        deleted = this.model.deleteCategory(category);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (deleted) {
+            this.addController.fillCategoryComboBox();
+
+            message = "The category was successfully deleted!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            message = "Error: The category could not be deleted! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //deleteCategory
+
+    /**
+     * Adds a subcategory to the model of this menu controller using the input of this menu controller's menu view.
+     */
+    private void addSubcategory() {
+        String category;
+        String newSubcategory;
+        boolean added;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        category = this.getCategoryInput();
+
+        if (category == null) {
+            return;
+        } //end if
+
+        newSubcategory = this.getNewSubcategoryInput(category);
+
+        if (newSubcategory == null) {
+            return;
+        } //end if
+
+        added = this.model.addSubcategory(category, newSubcategory);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (added) {
+            this.addController.fillSubcategoryComboBox();
+
+            message = "The subcategory was successfully added!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            message = "Error: The subcategory could not be added! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //addSubcategory
+
+    /**
+     * Edits a subcategory to the model of this menu controller using the input of this menu controller's menu view.
+     */
+    private void editSubcategory() {
+        String category;
+        String subcategory;
+        String newSubcategory;
+        boolean edited;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        category = this.getCategoryInput();
+
+        if (category == null) {
+            return;
+        } //end if
+
+        subcategory = this.getSubcategoryInput(category);
+
+        if (subcategory == null) {
+            return;
+        } //end if
+
+        newSubcategory = this.getNewSubcategoryInput(category);
+
+        if (newSubcategory == null) {
+            return;
+        } //end if
+
+        edited = this.model.editSubcategory(category, subcategory, newSubcategory);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (edited) {
+            this.addController.fillSubcategoryComboBox();
+
+            message = "The subcategory was successfully edited!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            message = "Error: The subcategory could not be edited! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //editSubcategory
+
+    /**
+     * Deletes a subcategory to the model of this menu controller using the input of this menu controller's menu view.
+     */
+    private void deleteSubcategory() {
+        String category;
+        String subcategory;
+        boolean deleted;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+
+        category = this.getCategoryInput();
+
+        if (category == null) {
+            return;
+        } //end if
+
+        subcategory = this.getSubcategoryInput(category);
+
+        if (subcategory == null) {
+            return;
+        } //end if
+
+        deleted = this.model.deleteSubcategory(category, subcategory);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (deleted) {
+            this.addController.fillSubcategoryComboBox();
+
+            message = "The subcategory was successfully deleted!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            message = "Error: The subcategory could not be deleted! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //deleteSubcategory
+
+    /**
+     * Returns a new {@code MenuController} with the specified model, menu view, and add controller.
+     *
+     * @param model the model to be used in the operation
+     * @param menuView the menu view to be used in the operation
+     * @param addController the add controller to be used in the operation
+     * @return a new {@code MenuController} with the specified model, menu view, and add controller
+     * @throws NullPointerException if the specified model, menu view, or add controller is {@code null}
+     */
+    public static MenuController newMenuController(Model model, MenuView menuView, AddController addController) {
+        MenuController menuController;
+        JMenuItem createDirectoryMenuItem;
+        JMenuItem openRecordMenuItem;
+        JMenuItem openDirectoryMenuItem;
+        JMenuItem importMenuItem;
+        JMenuItem exportMenuItem;
+        JMenuItem saveMenuItem;
+        JMenuItem latestMenuItem;
+        JMenuItem countMenuItem;
+        JMenuItem addCategoryMenuItem;
+        JMenuItem editCategoryMenuItem;
+        JMenuItem deleteCategoryMenuItem;
+        JMenuItem addSubcategoryMenuItem;
+        JMenuItem editSubcategoryMenuItem;
+        JMenuItem deleteSubcategoryMenuItem;
+
+        menuController = new MenuController(model, menuView, addController);
+
+        createDirectoryMenuItem = menuController.menuView.getCreateDirectoryMenuItem();
+
+        openRecordMenuItem = menuController.menuView.getOpenRecordMenuItem();
+
+        openDirectoryMenuItem = menuController.menuView.getOpenDirectoryMenuItem();
+
+        importMenuItem = menuController.menuView.getImportMenuItem();
+
+        exportMenuItem = menuController.menuView.getExportMenuItem();
+
+        saveMenuItem = menuController.menuView.getSaveMenuItem();
+
+        latestMenuItem = menuController.menuView.getLatestMenuItem();
+
+        countMenuItem = menuController.menuView.getCountMenuItem();
+
+        addCategoryMenuItem = menuController.menuView.getAddCategoryMenuItem();
+
+        editCategoryMenuItem = menuController.menuView.getEditCategoryMenuItem();
+
+        deleteCategoryMenuItem = menuController.menuView.getDeleteCategoryMenuItem();
+
+        addSubcategoryMenuItem = menuController.menuView.getAddSubcategoryMenuItem();
+
+        editSubcategoryMenuItem = menuController.menuView.getEditSubcategoryMenuItem();
+
+        deleteSubcategoryMenuItem = menuController.menuView.getDeleteSubcategoryMenuItem();
+
+        createDirectoryMenuItem.addActionListener(actionEvent -> menuController.createDirectory());
+
+        openRecordMenuItem.addActionListener(actionEvent -> menuController.openRecord());
+
+        openDirectoryMenuItem.addActionListener(actionEvent -> menuController.openDirectory());
+
+        importMenuItem.addActionListener(actionEvent -> menuController.importFromCsv());
+
+        exportMenuItem.addActionListener(actionEvent -> menuController.exportToCsv());
+
+        saveMenuItem.addActionListener(actionEvent -> menuController.save());
+
+        latestMenuItem.addActionListener(actionEvent -> menuController.showLatestId());
+
+        countMenuItem.addActionListener(actionEvent -> menuController.showEntryCount());
+
+        addCategoryMenuItem.addActionListener(actionEvent -> menuController.addCategory());
+
+        editCategoryMenuItem.addActionListener(actionEvent -> menuController.editCategory());
+
+        deleteCategoryMenuItem.addActionListener(actionEvent -> menuController.deleteCategory());
+
+        addSubcategoryMenuItem.addActionListener(actionEvent -> menuController.addSubcategory());
+
+        editSubcategoryMenuItem.addActionListener(actionEvent -> menuController.editSubcategory());
+
+        deleteSubcategoryMenuItem.addActionListener(actionEvent -> menuController.deleteSubcategory());
+
+        return menuController;
+    } //newMenuController
 }

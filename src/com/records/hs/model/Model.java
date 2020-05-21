@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 20, 2020
+ * @version May 21, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -452,9 +452,9 @@ public final class Model implements Serializable {
         if (subcategories == null) {
             edited = false;
         }  else {
-            boolean removed = subcategories.remove(subcategory);
+            boolean deleted = subcategories.remove(subcategory);
 
-            if (removed) {
+            if (deleted) {
                 subcategories.add(newSubcategory);
 
                 edited = true;
@@ -467,35 +467,35 @@ public final class Model implements Serializable {
     } //editSubcategory
 
     /**
-     * Attempts to remove an entry with the specified ID from this model. If an entry with the specified ID has not
-     * been previously added to this model, the removal will not occur.
+     * Attempts to delete an entry with the specified ID from this model. If an entry with the specified ID has not
+     * been previously added to this model, the deletion will not occur.
      *
      * @param id the ID to be used in the operation
-     * @return {@code true}, if an entry with the specified ID was removed from this model and {@code false} otherwise
+     * @return {@code true}, if an entry with the specified ID was deleted from this model and {@code false} otherwise
      * @throws NullPointerException if the specified ID is {@code null}
      */
-    public boolean removeEntry(String id) {
-        Entry removedEntry;
+    public boolean deleteEntry(String id) {
+        Entry deletedEntry;
 
         Objects.requireNonNull(id, "the specified ID is null");
 
         id = id.toUpperCase();
 
-        removedEntry = this.idsToEntries.remove(id);
+        deletedEntry = this.idsToEntries.remove(id);
 
-        return removedEntry != null;
-    } //removeEntry
+        return deletedEntry != null;
+    } //deleteEntry
 
     /**
-     * Attempts to remove all of the entries with the specified type from this model. If an entry with the specified
-     * type has not been previously added to this model, no removals will not occur.
+     * Attempts to delete all of the entries with the specified type from this model. If an entry with the specified
+     * type has not been previously added to this model, no deletions will not occur.
      *
      * @param type the type to be used in the operation
-     * @return {@code true}, if at least one entry with the specified type was removed from this model and
+     * @return {@code true}, if at least one entry with the specified type was deleted from this model and
      * {@code false} otherwise
      * @throws NullPointerException if the specified type is {@code null}
      */
-    public boolean removeEntriesWithType(Type type) {
+    public boolean deleteEntriesWithType(Type type) {
         int previousSize;
         int currentSize;
 
@@ -516,18 +516,18 @@ public final class Model implements Serializable {
         currentSize = this.idsToEntries.size();
 
         return currentSize != previousSize;
-    } //removeEntriesWithType
+    } //deleteEntriesWithType
 
     /**
-     * Attempts to remove all of the entries with the specified category from this model. If an entry with the
-     * specified category has not been previously added to this model, no removals will not occur.
+     * Attempts to delete all of the entries with the specified category from this model. If an entry with the
+     * specified category has not been previously added to this model, no deletions will not occur.
      *
      * @param category the category to be used in the operation
-     * @return {@code true}, if at least one entry with the specified category was removed from this model and
+     * @return {@code true}, if at least one entry with the specified category was deleted from this model and
      * {@code false} otherwise
      * @throws NullPointerException if the specified category is {@code null}
      */
-    public boolean removeEntriesWithCategory(String category) {
+    public boolean deleteEntriesWithCategory(String category) {
         String categoryUpper;
         int previousSize;
         int currentSize;
@@ -551,18 +551,18 @@ public final class Model implements Serializable {
         currentSize = this.idsToEntries.size();
 
         return currentSize != previousSize;
-    } //removeEntriesWithCategory
+    } //deleteEntriesWithCategory
 
     /**
-     * Attempts to remove all of the entries with the specified subcategory from this model. If an entry with the
-     * specified subcategory has not been previously added to this model, no removals will not occur.
+     * Attempts to delete all of the entries with the specified subcategory from this model. If an entry with the
+     * specified subcategory has not been previously added to this model, no deletions will not occur.
      *
      * @param subcategory the subcategory to be used in the operation
-     * @return {@code true}, if at least one entry with the specified subcategory was removed from this model and
+     * @return {@code true}, if at least one entry with the specified subcategory was deleted from this model and
      * {@code false} otherwise
      * @throws NullPointerException if the specified subcategory is {@code null}
      */
-    public boolean removeEntriesWithSubcategory(String subcategory) {
+    public boolean deleteEntriesWithSubcategory(String subcategory) {
         String subcategoryUpper;
         int previousSize;
         int currentSize;
@@ -586,18 +586,18 @@ public final class Model implements Serializable {
         currentSize = this.idsToEntries.size();
 
         return currentSize != previousSize;
-    } //removeEntriesWithSubcategory
+    } //deleteEntriesWithSubcategory
 
     /**
-     * Attempts to remove all of the entries with the specified tag from this model. If an entry with the specified tag
-     * has not been previously added to this model, no removals will not occur.
+     * Attempts to delete all of the entries with the specified tag from this model. If an entry with the specified tag
+     * has not been previously added to this model, no deletions will not occur.
      *
      * @param tag the tag to be used in the operation
-     * @return {@code true}, if at least one entry with the specified tag was removed from this model and {@code false}
+     * @return {@code true}, if at least one entry with the specified tag was deleted from this model and {@code false}
      * otherwise
      * @throws NullPointerException if the specified tag is {@code null}
      */
-    public boolean removeEntriesWithTag(String tag) {
+    public boolean deleteEntriesWithTag(String tag) {
         String tagUpper;
         int previousSize;
         int currentSize;
@@ -621,17 +621,17 @@ public final class Model implements Serializable {
         currentSize = this.idsToEntries.size();
 
         return currentSize != previousSize;
-    } //removeEntriesWithTag
+    } //deleteEntriesWithTag
 
     /**
-     * Attempts to remove the specified category from this model. If the specified category has not been previously
-     * added to this model, the removal will not occur.
+     * Attempts to delete the specified category from this model. If the specified category has not been previously
+     * added to this model, the deletion will not occur.
      *
      * @param category the category to be used in the operation
-     * @return {@code true}, if the specified category was removed from this model and {@code false} otherwise
+     * @return {@code true}, if the specified category was deleted from this model and {@code false} otherwise
      * @throws NullPointerException if the specified category is {@code null}
      */
-    public boolean removeCategory(String category) {
+    public boolean deleteCategory(String category) {
         Set<String> subcategories;
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -641,21 +641,21 @@ public final class Model implements Serializable {
         subcategories = this.catsToSubcats.remove(category);
 
         return subcategories != null;
-    } //removeCategory
+    } //deleteCategory
 
     /**
-     * Attempts to remove the specified subcategory from this model. If the specified category has not been previously
-     * added to this model or the specified subcategory is not mapped from the specified category, the removal will not
-     * occur.
+     * Attempts to delete the specified subcategory from this model. If the specified category has not been previously
+     * added to this model or the specified subcategory is not mapped from the specified category, the deletion will
+     * not occur.
      *
      * @param category the category to be used in the operation
      * @param subcategory the subcategory to be used in the operation
-     * @return {@code true}, if the specified subcategory was removed from this model and {@code false} otherwise
+     * @return {@code true}, if the specified subcategory was deleted from this model and {@code false} otherwise
      * @throws NullPointerException if the specified category or subcategory is {@code null}
      */
-    public boolean removeSubcategory(String category, String subcategory) {
+    public boolean deleteSubcategory(String category, String subcategory) {
         Set<String> subcategories;
-        boolean removed;
+        boolean deleted;
 
         Objects.requireNonNull(category, "the specified category is null");
 
@@ -668,13 +668,13 @@ public final class Model implements Serializable {
         subcategories = this.catsToSubcats.get(category);
 
         if (subcategories == null) {
-            removed = false;
+            deleted = false;
         } else {
-            removed = subcategories.remove(subcategory);
+            deleted = subcategories.remove(subcategory);
         } //end if
 
-        return removed;
-    } //removeSubcategory
+        return deleted;
+    } //deleteSubcategory
 
     /**
      * Attempts to find an entry with the specified ID in this model.

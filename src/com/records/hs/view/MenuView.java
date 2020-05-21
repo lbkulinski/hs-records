@@ -9,7 +9,7 @@ import javax.swing.JSeparator;
  * A menu view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 17, 2020
+ * @version May 21, 2020
  */
 public final class MenuView {
     /**
@@ -48,9 +48,9 @@ public final class MenuView {
     private final JMenuItem latestMenuItem;
 
     /**
-     * The total menu item of this menu view.
+     * The count menu item of this menu view.
      */
-    private final JMenuItem totalMenuItem;
+    private final JMenuItem countMenuItem;
 
     /**
      * The add category menu item of this menu view.
@@ -120,8 +120,8 @@ public final class MenuView {
         String openRecordName = "Record";
         String openDirectoryName = "Directory";
         String saveName = "Save";
-        String latestName = "Latest entry ID";
-        String totalName = "Total entry count";
+        String latestName = "Latest ID";
+        String countName = "Record count";
         String importName = "Import from CSV";
         String exportName = "Export to CSV";
         String addName = "Add";
@@ -138,7 +138,7 @@ public final class MenuView {
         this.openDirectoryMenuItem = new JMenuItem(openDirectoryName);
         this.saveMenuItem = new JMenuItem(saveName);
         this.latestMenuItem = new JMenuItem(latestName);
-        this.totalMenuItem = new JMenuItem(totalName);
+        this.countMenuItem = new JMenuItem(countName);
         this.importMenuItem = new JMenuItem(importName);
         this.exportMenuItem = new JMenuItem(exportName);
         this.addCategoryMenuItem = new JMenuItem(addName);
@@ -187,7 +187,7 @@ public final class MenuView {
 
         this.displayMenu.add(new JSeparator());
 
-        this.displayMenu.add(this.totalMenuItem);
+        this.displayMenu.add(this.countMenuItem);
 
         this.categoriesMenu.add(this.addCategoryMenuItem);
 
@@ -295,13 +295,13 @@ public final class MenuView {
     } //getLatestMenuItem
 
     /**
-     * Returns the total menu item of this menu view.
+     * Returns the count menu item of this menu view.
      *
-     * @return the total menu item of this menu view
+     * @return the count menu item of this menu view
      */
-    public JMenuItem getTotalMenuItem() {
-        return this.totalMenuItem;
-    } //getTotalMenuItem
+    public JMenuItem getCountMenuItem() {
+        return this.countMenuItem;
+    } //getCountMenuItem
 
     /**
      * Returns the add category menu item of this menu view.

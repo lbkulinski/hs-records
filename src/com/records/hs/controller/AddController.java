@@ -21,7 +21,7 @@ import javax.swing.JButton;
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 20, 2020
+ * @version May 21, 2020
  */
 public final class AddController {
     /**
@@ -199,6 +199,12 @@ public final class AddController {
         category = (String) categoryComboBox.getSelectedItem();
 
         if (category == null) {
+            subcategoryComboBox.setEnabled(false);
+
+            subcategoryComboBox.setSelectedIndex(-1);
+
+            subcategoryComboBox.removeAllItems();
+
             return;
         } //end if
 
@@ -216,17 +222,14 @@ public final class AddController {
     /**
      * Clears the fields of this add controller's add view.
      */
-    private void clearFields() {
+    void clearFields() {
         JTextField idTextField;
         JComboBox<Type> typeComboBox;
-        JComboBox<String> subcategoryComboBox;
         JTextField tagsTextField;
 
         idTextField = this.addView.getIdTextField();
 
         typeComboBox = this.addView.getTypeComboBox();
-
-        subcategoryComboBox = this.addView.getSubcategoryComboBox();
 
         tagsTextField = this.addView.getTagsTextField();
 
@@ -236,11 +239,7 @@ public final class AddController {
 
         this.fillCategoryComboBox();
 
-        subcategoryComboBox.removeAllItems();
-
-        subcategoryComboBox.setSelectedIndex(-1);
-
-        subcategoryComboBox.setEnabled(false);
+        this.fillSubcategoryComboBox();
 
         tagsTextField.setText(null);
 
