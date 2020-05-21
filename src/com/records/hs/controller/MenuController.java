@@ -566,6 +566,8 @@ public final class MenuController {
         boolean added;
         String category;
         String subcategory;
+        boolean categoryAdded = false;
+        boolean subcategoryAdded = false;
 
         filter = new FileNameExtensionFilter(description, extension);
 
@@ -630,12 +632,24 @@ public final class MenuController {
 
             if (!this.model.containsCategory(category)) {
                 this.model.addCategory(category);
+
+                categoryAdded = true;
             } //end if
 
             if (!this.model.containsSubcategory(category, subcategory)) {
                 this.model.addSubcategory(category, subcategory);
+
+                subcategoryAdded = true;
             } //end if
         } //end for
+
+        if (categoryAdded) {
+            this.addController.fillCategoryComboBox();
+        } //end if
+
+        if (subcategoryAdded) {
+            this.addController.fillSubcategoryComboBox();
+        } //end if
 
         message = "The CSV file was successfully imported!";
 
