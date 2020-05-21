@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 import java.util.Objects;
-import java.util.HashMap;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 19, 2020
+ * @version May 20, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -197,6 +198,22 @@ public final class Model implements Serializable {
     public String getLatestId() {
         return this.latestId;
     } //getLatestId
+
+    /**
+     * Returns the entries of this model.
+     *
+     * @return the entries of this model
+     */
+    public Set<Entry> getEntries() {
+        Collection<Entry> elements;
+        Set<Entry> entries;
+
+        elements = this.idsToEntries.values();
+
+        entries = new HashSet<>(elements);
+
+        return Collections.unmodifiableSet(entries);
+    } //getEntries
 
     /**
      * Returns the categories of this model.

@@ -21,6 +21,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.List;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  * A menu controller in the HS Records application.
@@ -548,6 +550,8 @@ public final class MenuController {
      * Imports a CSV file using the input of this menu controller's menu view.
      */
     private void importFromCsv() {
+        String description = "CSV Files";
+        String extension = "csv";
         String dialogTitle = "HS Records";
         FileNameExtensionFilter filter;
         JMenuBar menuBar;
@@ -558,12 +562,12 @@ public final class MenuController {
         List<String> lines;
         String message;
         String title = "HS Records";
-        List<Entry> entries;
+        Set<Entry> entries;
         boolean added;
         String category;
         String subcategory;
 
-        filter = new FileNameExtensionFilter("CSV Files", "csv");
+        filter = new FileNameExtensionFilter(description, extension);
 
         menuBar = this.menuView.getMenuBar();
 
@@ -601,7 +605,7 @@ public final class MenuController {
 
         entries = lines.stream()
                        .map(this::parseEntry)
-                       .collect(Collectors.toList());
+                       .collect(Collectors.toSet());
 
         if (entries.contains(null)) {
             message = "The CSV file was could not be imported, as it contains improperly formatted entries!";
@@ -700,4 +704,87 @@ public final class MenuController {
 
         return stringBuilder.toString();
     } //convertToString
+
+    /**
+     * Exports a CSV file using the input of this menu controller's menu view.
+     */
+    private void exportToCsv() {
+        String description = "CSV Files";
+        String extension = "csv";
+        String dialogTitle = "HS Records";
+        FileNameExtensionFilter filter;
+        JMenuBar menuBar;
+        JFileChooser fileChooser;
+        int state;
+        File file;
+        String name;
+        String patternString = "(.)*.csv";
+        String message;
+        String title = "HS Records";
+        Pattern pattern;
+        Matcher matcher;
+        Path path;
+        Set<Entry> entries;
+        Set<String> strings;
+
+        filter = new FileNameExtensionFilter(description, extension);
+
+        menuBar = this.menuView.getMenuBar();
+
+        fileChooser = new JFileChooser();
+
+        fileChooser.setDialogTitle(dialogTitle);
+
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        fileChooser.setFileFilter(filter);
+
+        state = fileChooser.showSaveDialog(menuBar);
+
+        if (state != JFileChooser.APPROVE_OPTION) {
+            return;
+        } //end if
+
+        file = fileChooser.getSelectedFile();
+
+        name = file.getName();
+
+        pattern = Pattern.compile(patternString, Pattern.CASE_INSENSITIVE);
+
+        matcher = pattern.matcher(name);
+
+        if (!matcher.matches()) {
+            message = "Error: The selected file is not a CSV file!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return;
+        } //end if
+
+        path = file.toPath();
+
+        entries = this.model.getEntries();
+
+        strings = entries.stream()
+                         .map(this::convertToString)
+                         .collect(Collectors.toUnmodifiableSet());
+
+        try {
+            Files.write(path, strings);
+        } catch (IOException e) {
+            String exceptionMessage = e.getMessage();
+
+            this.logger.log(Level.INFO, exceptionMessage, e);
+
+            message = "Error: The CSV file could not be exported! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return;
+        } //end try catch
+
+        message = "The CSV file was successfully exported!";
+
+        JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+    } //exportToCsv
 }
