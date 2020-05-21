@@ -15,12 +15,18 @@ import java.io.File;
 import java.awt.Desktop;
 import java.util.Optional;
 import com.records.hs.model.Entry;
+import com.records.hs.model.Type;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.util.List;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 19, 2020
+ * @version May 20, 2020
  */
 public final class MenuController {
     /**
@@ -34,6 +40,11 @@ public final class MenuController {
     private final MenuView menuView;
 
     /**
+     * The add controller of this menu controller.
+     */
+    private final AddController addController;
+
+    /**
      * The logger of this menu controller.
      */
     private final Logger logger;
@@ -43,15 +54,19 @@ public final class MenuController {
      *
      * @param model the model to be used in construction
      * @param menuView the menu view to be used in construction
-     * @throws NullPointerException if the specified model or menu view is {@code null}
+     * @param addController the add controller to be used in construction
+     * @throws NullPointerException if the specified model, menu view, or add controller is {@code null}
      */
-    private MenuController(Model model, MenuView menuView) {
+    private MenuController(Model model, MenuView menuView, AddController addController) {
         Objects.requireNonNull(model, "the specified model is null");
 
         Objects.requireNonNull(menuView, "the specified menu view is null");
 
+        Objects.requireNonNull(addController, "the specified add controller is null");
+
         this.model = model;
         this.menuView = menuView;
+        this.addController = addController;
         this.logger = Logger.getGlobal();
     } //MenuController
 
@@ -165,7 +180,6 @@ public final class MenuController {
         String message;
         String title = "HS Records";
         String category;
-        Set<String> categories;
 
         menuBar = this.menuView.getMenuBar();
 
@@ -175,9 +189,7 @@ public final class MenuController {
 
         category = category.toUpperCase();
 
-        categories = this.model.getCategories();
-
-        if (categories.contains(category)) {
+        if (this.model.containsCategory(category)) {
             message = "Error: The specified new category already exists!";
 
             JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
@@ -202,7 +214,6 @@ public final class MenuController {
         String message;
         String title = "HS Records";
         String subcategory;
-        Set<String> subcategories;
 
         Objects.requireNonNull(category, "the specified category is null");
 
@@ -214,9 +225,7 @@ public final class MenuController {
 
         subcategory = subcategory.toUpperCase();
 
-        subcategories = this.model.getSubcategories(category);
-
-        if (subcategories.contains(subcategory)) {
+        if (this.model.containsSubcategory(category, subcategory)) {
             message = "Error: The specified new subcategory already exists!";
 
             JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
@@ -451,4 +460,244 @@ public final class MenuController {
             JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
         } //end try catch
     } //openDirectory
+
+    /**
+     * Parses the specified {@code String} as an {@code Entry} object. If the specified {@code String} is not properly
+     * formatted, {@code null} is returned.
+     *
+     * @param string the {@code String} to be used in the operation
+     * @return the specified {@code String} as an {@code Entry} object.
+     * @throws NullPointerException if the specified {@code String} is {@code null}
+     */
+    private Entry parseEntry(String string) {
+        String[] parts;
+        String delimiter = ",";
+        int limit = 5;
+        String id;
+        String typeString;
+        String category;
+        String subcategory;
+        String tagsString;
+        Optional<Entry> optional;
+        JMenuBar menuBar;
+        String message;
+        String title = "HS Records";
+        Type type;
+        String[] tagArray;
+        Set<String> tags;
+        Entry entry;
+
+        Objects.requireNonNull(string, "the specified String is null");
+
+        parts = string.split(delimiter, limit);
+
+        if (parts.length != limit) {
+            return null;
+        } //end if
+
+        id = parts[0];
+
+        typeString = parts[1];
+
+        category = parts[2];
+
+        subcategory = parts[3];
+
+        tagsString = parts[4];
+
+        optional = this.model.findEntryWithId(id);
+
+        menuBar = this.menuView.getMenuBar();
+
+        if (optional.isPresent()) {
+            message = "Error: An entry in the CSV file has an ID that already exists!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        } //end if
+
+        typeString = typeString.toUpperCase();
+
+        try {
+            type = Type.valueOf(typeString);
+        } catch (IllegalArgumentException e) {
+            String exceptionMessage = e.getMessage();
+
+            this.logger.log(Level.INFO, exceptionMessage, e);
+
+            message = "Error: An entry in the CSV file has a type that is invalid!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return null;
+        } //end try catch
+
+        tagArray = tagsString.split(delimiter);
+
+        tags = Arrays.stream(tagArray)
+                     .map(String::trim)
+                     .collect(Collectors.toUnmodifiableSet());
+
+        entry = new Entry(id, type, category, subcategory, tags);
+
+        return entry;
+    } //parseEntry
+
+    /**
+     * Imports a CSV file using the input of this menu controller's menu view.
+     */
+    private void importFromCsv() {
+        String dialogTitle = "HS Records";
+        FileNameExtensionFilter filter;
+        JMenuBar menuBar;
+        JFileChooser fileChooser;
+        int state;
+        File file;
+        Path path;
+        List<String> lines;
+        String message;
+        String title = "HS Records";
+        List<Entry> entries;
+        boolean added;
+        String category;
+        String subcategory;
+
+        filter = new FileNameExtensionFilter("CSV Files", "csv");
+
+        menuBar = this.menuView.getMenuBar();
+
+        fileChooser = new JFileChooser();
+
+        fileChooser.setDialogTitle(dialogTitle);
+
+        fileChooser.setAcceptAllFileFilterUsed(false);
+
+        fileChooser.setFileFilter(filter);
+
+        state = fileChooser.showOpenDialog(menuBar);
+
+        if (state != JFileChooser.APPROVE_OPTION) {
+            return;
+        } //end if
+
+        file = fileChooser.getSelectedFile();
+
+        path = file.toPath();
+
+        try {
+            lines = Files.readAllLines(path);
+        } catch (IOException e) {
+            String exceptionMessage = e.getMessage();
+
+            this.logger.log(Level.INFO, exceptionMessage, e);
+
+            message = "Error: The CSV file could not be imported! Please contact support!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+            return;
+        } //end try catch
+
+        entries = lines.stream()
+                       .map(this::parseEntry)
+                       .collect(Collectors.toList());
+
+        if (entries.contains(null)) {
+            message = "The CSV file was could not be imported, as it contains improperly formatted entries!";
+
+            JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+
+        for (Entry entry : entries) {
+            added = this.model.addEntry(entry);
+
+            category = entry.getCategory();
+
+            subcategory = entry.getSubcategory();
+
+            if (!added) {
+                message = "Error: The CSV file could not be fully imported! Please contact support!";
+
+                JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.ERROR_MESSAGE);
+
+                return;
+            } //end if
+
+            if (!this.model.containsCategory(category)) {
+                this.model.addCategory(category);
+            } //end if
+
+            if (!this.model.containsSubcategory(category, subcategory)) {
+                this.model.addSubcategory(category, subcategory);
+            } //end if
+        } //end for
+
+        message = "The CSV file was successfully imported!";
+
+        JOptionPane.showMessageDialog(menuBar, message, title, JOptionPane.INFORMATION_MESSAGE);
+    } //importFromCsv
+
+    /**
+     * Returns the conversion of the specified entry to a {@code String}. The returned {@code String} will be of the
+     * form of a line in a CSV file.
+     *
+     * @param entry the entry to be used in the operation
+     * @return the conversion of the specified entry to a {@code String}
+     */
+    private String convertToString(Entry entry) {
+        String id;
+        Type type;
+        String category;
+        String subcategory;
+        Set<String> tags;
+        StringBuilder stringBuilder;
+        String delimiter = ",";
+        int length;
+        int lastIndex;
+
+        Objects.requireNonNull(entry, "the specified entry is null");
+
+        id = entry.getId();
+
+        type = entry.getType();
+
+        category = entry.getCategory();
+
+        subcategory = entry.getSubcategory();
+
+        tags = entry.getTags();
+
+        stringBuilder = new StringBuilder();
+
+        stringBuilder.append(id);
+
+        stringBuilder.append(delimiter);
+
+        stringBuilder.append(type);
+
+        stringBuilder.append(delimiter);
+
+        stringBuilder.append(category);
+
+        stringBuilder.append(delimiter);
+
+        stringBuilder.append(subcategory);
+
+        stringBuilder.append(delimiter);
+
+        for (String tag : tags) {
+            stringBuilder.append(tag);
+
+            stringBuilder.append(delimiter);
+        } //end for
+
+        length = stringBuilder.length();
+
+        lastIndex = length - 1;
+
+        stringBuilder.deleteCharAt(lastIndex);
+
+        return stringBuilder.toString();
+    } //convertToString
 }

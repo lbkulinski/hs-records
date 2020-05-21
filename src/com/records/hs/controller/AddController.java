@@ -21,7 +21,7 @@ import javax.swing.JButton;
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 19, 2020
+ * @version May 20, 2020
  */
 public final class AddController {
     /**
@@ -161,7 +161,7 @@ public final class AddController {
      * Fills the category combo box of this add controller's add view with the categories of this add controller's
      * model.
      */
-    private void fillCategoryComboBox() {
+    void fillCategoryComboBox() {
         JComboBox<String> categoryComboBox;
         Set<String> categories;
 
@@ -186,7 +186,7 @@ public final class AddController {
      * Fills the subcategory combo box of this add controller's add view with the subcategories of this add
      * controller's model that are mapped from the user selected category.
      */
-    private void fillSubcategoryComboBox() {
+    void fillSubcategoryComboBox() {
         JComboBox<String> subcategoryComboBox;
         JComboBox<String> categoryComboBox;
         String category;

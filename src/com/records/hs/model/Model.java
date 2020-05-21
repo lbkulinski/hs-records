@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 13, 2020
+ * @version May 19, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -272,16 +272,16 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category is {@code null}
      */
     public boolean addCategory(String category) {
-        Set<String> currentSubcats;
+        Set<String> subcategories;
         boolean added;
 
         Objects.requireNonNull(category, "the specified category is null");
 
         category = category.toUpperCase();
 
-        currentSubcats = this.catsToSubcats.get(category);
+        subcategories = this.catsToSubcats.get(category);
 
-        if (currentSubcats == null) {
+        if (subcategories == null) {
             this.catsToSubcats.put(category, new HashSet<>());
 
             added = true;
@@ -303,7 +303,7 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category or subcategory is {@code null}
      */
     public boolean addSubcategory(String category, String subcategory) {
-        Set<String> currentSubcats;
+        Set<String> subcategories;
         boolean added;
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -314,18 +314,18 @@ public final class Model implements Serializable {
 
         subcategory = subcategory.toUpperCase();
 
-        currentSubcats = this.catsToSubcats.get(category);
+        subcategories = this.catsToSubcats.get(category);
 
-        if (currentSubcats == null) {
-            Set<String> newSubcats = new HashSet<>();
+        if (subcategories == null) {
+            Set<String> newSubcategories = new HashSet<>();
 
-            newSubcats.add(subcategory);
+            newSubcategories.add(subcategory);
 
-            this.catsToSubcats.put(category, newSubcats);
+            this.catsToSubcats.put(category, newSubcategories);
 
             added = true;
         } else {
-            added = currentSubcats.add(subcategory);
+            added = subcategories.add(subcategory);
         } //end if
 
         return added;
@@ -347,6 +347,8 @@ public final class Model implements Serializable {
         Objects.requireNonNull(id, "the specified ID is null");
 
         Objects.requireNonNull(newEntry, "the specified new entry is null");
+
+        id = id.toUpperCase();
 
         if (Objects.equals(newEntry.getId(), id)) {
             Entry currentEntry = this.idsToEntries.get(id);
@@ -375,7 +377,7 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category or new category is {@code null}
      */
     public boolean editCategory(String category, String newCategory) {
-        Set<String> currentSubcats;
+        Set<String> subcategories;
         boolean edited;
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -386,14 +388,14 @@ public final class Model implements Serializable {
 
         newCategory = newCategory.toUpperCase();
 
-        currentSubcats = this.catsToSubcats.get(category);
+        subcategories = this.catsToSubcats.get(category);
 
-        if (currentSubcats == null) {
+        if (subcategories == null) {
             edited = false;
         } else {
             this.catsToSubcats.remove(category);
 
-            this.catsToSubcats.put(newCategory, currentSubcats);
+            this.catsToSubcats.put(newCategory, subcategories);
 
             edited = true;
         } //end if
@@ -413,7 +415,7 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category, subcategory, or new subcategory is {@code null}
      */
     public boolean editSubcategory(String category, String subcategory, String newSubcategory) {
-        Set<String> currentSubcats;
+        Set<String> subcategories;
         boolean edited;
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -428,15 +430,15 @@ public final class Model implements Serializable {
 
         newSubcategory = newSubcategory.toUpperCase();
 
-        currentSubcats = this.catsToSubcats.get(category);
+        subcategories = this.catsToSubcats.get(category);
 
-        if (currentSubcats == null) {
+        if (subcategories == null) {
             edited = false;
         }  else {
-            boolean removed = currentSubcats.remove(subcategory);
+            boolean removed = subcategories.remove(subcategory);
 
             if (removed) {
-                currentSubcats.add(newSubcategory);
+                subcategories.add(newSubcategory);
 
                 edited = true;
             } else {
@@ -459,6 +461,8 @@ public final class Model implements Serializable {
         Entry removedEntry;
 
         Objects.requireNonNull(id, "the specified ID is null");
+
+        id = id.toUpperCase();
 
         removedEntry = this.idsToEntries.remove(id);
 
@@ -507,10 +511,13 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category is {@code null}
      */
     public boolean removeEntriesWithCategory(String category) {
+        String categoryUpper;
         int previousSize;
         int currentSize;
 
         Objects.requireNonNull(category, "the specified category is null");
+
+        categoryUpper = category.toUpperCase();
 
         previousSize = this.idsToEntries.size();
 
@@ -519,7 +526,7 @@ public final class Model implements Serializable {
                          .filter(entry -> {
                              String entryCategory = entry.getCategory();
 
-                             return entryCategory.equalsIgnoreCase(category);
+                             return entryCategory.equals(categoryUpper);
                          })
                          .map(Entry::getId)
                          .forEach(this.idsToEntries::remove);
@@ -539,10 +546,13 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified subcategory is {@code null}
      */
     public boolean removeEntriesWithSubcategory(String subcategory) {
+        String subcategoryUpper;
         int previousSize;
         int currentSize;
 
         Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        subcategoryUpper = subcategory.toUpperCase();
 
         previousSize = this.idsToEntries.size();
 
@@ -551,7 +561,7 @@ public final class Model implements Serializable {
                          .filter(entry -> {
                              String entrySubcategory = entry.getSubcategory();
 
-                             return entrySubcategory.equalsIgnoreCase(subcategory);
+                             return entrySubcategory.equals(subcategoryUpper);
                          })
                          .map(Entry::getId)
                          .forEach(this.idsToEntries::remove);
@@ -571,10 +581,13 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified tag is {@code null}
      */
     public boolean removeEntriesWithTag(String tag) {
+        String tagUpper;
         int previousSize;
         int currentSize;
 
         Objects.requireNonNull(tag, "the specified tag is null");
+
+        tagUpper = tag.toUpperCase();
 
         previousSize = this.idsToEntries.size();
 
@@ -582,9 +595,8 @@ public final class Model implements Serializable {
                          .stream()
                          .filter(entry -> {
                              Set<String> entryTags = entry.getTags();
-                             String searchTag = tag.toUpperCase();
 
-                             return entryTags.contains(searchTag);
+                             return entryTags.contains(tagUpper);
                          })
                          .map(Entry::getId)
                          .forEach(this.idsToEntries::remove);
@@ -603,15 +615,15 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category is {@code null}
      */
     public boolean removeCategory(String category) {
-        Set<String> removedSubcats;
+        Set<String> subcategories;
 
         Objects.requireNonNull(category, "the specified category is null");
 
         category = category.toUpperCase();
 
-        removedSubcats = this.catsToSubcats.remove(category);
+        subcategories = this.catsToSubcats.remove(category);
 
-        return removedSubcats != null;
+        return subcategories != null;
     } //removeCategory
 
     /**
@@ -625,7 +637,7 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category or subcategory is {@code null}
      */
     public boolean removeSubcategory(String category, String subcategory) {
-        Set<String> currentSubcats;
+        Set<String> subcategories;
         boolean removed;
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -636,12 +648,12 @@ public final class Model implements Serializable {
 
         subcategory = subcategory.toUpperCase();
 
-        currentSubcats = this.catsToSubcats.get(category);
+        subcategories = this.catsToSubcats.get(category);
 
-        if (currentSubcats == null) {
+        if (subcategories == null) {
             removed = false;
         } else {
-            removed = currentSubcats.remove(subcategory);
+            removed = subcategories.remove(subcategory);
         } //end if
 
         return removed;
@@ -659,6 +671,8 @@ public final class Model implements Serializable {
         Entry foundEntry;
 
         Objects.requireNonNull(id, "the specified ID is null");
+
+        id = id.toUpperCase();
 
         foundEntry = this.idsToEntries.get(id);
 
@@ -697,16 +711,19 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category is {@code null}
      */
     public Set<Entry> findEntriesWithCategory(String category) {
+        String categoryUpper;
         Set<Entry> foundEntries;
 
         Objects.requireNonNull(category, "the specified category is null");
+
+        categoryUpper = category.toUpperCase();
 
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
                                             String entryCategory = entry.getCategory();
 
-                                            return entryCategory.equalsIgnoreCase(category);
+                                            return entryCategory.equals(categoryUpper);
                                         })
                                         .collect(Collectors.toUnmodifiableSet());
 
@@ -723,23 +740,29 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified category or subcategory is {@code null}
      */
     public Set<Entry> findEntriesWithSubcategory(String category, String subcategory) {
+        String categoryUpper;
+        String subcategoryUpper;
         Set<Entry> foundEntries;
 
         Objects.requireNonNull(category, "the specified category is null");
 
         Objects.requireNonNull(subcategory, "the specified subcategory is null");
 
+        categoryUpper = category.toUpperCase();
+
+        subcategoryUpper = subcategory.toUpperCase();
+
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
                                             String entryCategory = entry.getCategory();
 
-                                            return entryCategory.equalsIgnoreCase(category);
+                                            return entryCategory.equals(categoryUpper);
                                         })
                                         .filter(entry -> {
                                             String entrySubcategory = entry.getSubcategory();
 
-                                            return entrySubcategory.equalsIgnoreCase(subcategory);
+                                            return entrySubcategory.equals(subcategoryUpper);
                                         })
                                         .collect(Collectors.toUnmodifiableSet());
 
@@ -754,22 +777,69 @@ public final class Model implements Serializable {
      * @throws NullPointerException if the specified tag is {@code null}
      */
     public Set<Entry> findEntriesWithTag(String tag) {
+        String tagUpper;
         Set<Entry> foundEntries;
 
         Objects.requireNonNull(tag, "the specified tag is null");
+
+        tagUpper = tag.toUpperCase();
 
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
                                             Set<String> entryTags = entry.getTags();
-                                            String searchTag = tag.toUpperCase();
 
-                                            return entryTags.contains(searchTag);
+                                            return entryTags.contains(tagUpper);
                                         })
                                         .collect(Collectors.toUnmodifiableSet());
 
         return foundEntries;
     } //findEntriesWithTag
+
+    /**
+     * Determines whether or not this model contains the specified category.
+     *
+     * @param category the category to be used in the operation
+     * @return {@code true}, if this model contains the specified category and {@code false} otherwise
+     * @throws NullPointerException if the specified category is {@code null}
+     */
+    public boolean containsCategory(String category) {
+        Objects.requireNonNull(category, "the specified category is null");
+
+        category = category.toUpperCase();
+
+        return this.catsToSubcats.containsKey(category);
+    } //containsCategory
+
+    /**
+     * Determines whether or not this model contains the specified subcategory that is mapped from the specified
+     * category.
+     *
+     * @param category the category to be used in the operation
+     * @param subcategory the subcategory to be used in the operation
+     * @return {@code true}, if this model contains the specified subcategory that is mapped from the specified
+     * category and {@code false} otherwise
+     * @throws NullPointerException if the specified category or subcategory is {@code null}
+     */
+    public boolean containsSubcategory(String category, String subcategory) {
+        Set<String> subcategories;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        category = category.toUpperCase();
+
+        subcategory = subcategory.toUpperCase();
+
+        subcategories = this.catsToSubcats.get(category);
+
+        if (subcategories == null) {
+            return false;
+        } //end if
+
+        return subcategories.contains(subcategory);
+    } //containsSubcategory
 
     /**
      * Returns a {@code SerializationProxy} object in place of this model.
