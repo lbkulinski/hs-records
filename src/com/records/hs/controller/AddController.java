@@ -210,11 +210,15 @@ public final class AddController {
 
         subcategories = this.model.getSubcategories(category);
 
-        subcategoryComboBox.setEnabled(true);
-
         subcategoryComboBox.removeAllItems();
 
-        subcategories.forEach(subcategoryComboBox::addItem);
+        if (subcategories.isEmpty()) {
+            subcategoryComboBox.setEnabled(false);
+        } else {
+            subcategoryComboBox.setEnabled(true);
+
+            subcategories.forEach(subcategoryComboBox::addItem);
+        } //end if
 
         subcategoryComboBox.setSelectedIndex(-1);
     } //fillSubcategoryComboBox
