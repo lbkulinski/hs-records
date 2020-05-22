@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.Objects;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Optional;
@@ -15,7 +17,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 21, 2020
+ * @version May 22, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -221,9 +223,14 @@ public final class Model implements Serializable {
      * @return the categories of this model
      */
     public Set<String> getCategories() {
-        Set<String> categories = this.catsToSubcats.keySet();
+        Set<String> categories;
+        SortedSet<String> sortedCategories;
 
-        return Collections.unmodifiableSet(categories);
+        categories = this.catsToSubcats.keySet();
+
+        sortedCategories = new TreeSet<>(categories);
+
+        return Collections.unmodifiableSortedSet(sortedCategories);
     } //getCategories
 
     /**
@@ -243,7 +250,11 @@ public final class Model implements Serializable {
         if (subcategories == null) {
             return Set.of();
         } else {
-            return Collections.unmodifiableSet(subcategories);
+            SortedSet<String> sortedSubcategories;
+
+            sortedSubcategories = new TreeSet<>(subcategories);
+
+            return Collections.unmodifiableSortedSet(sortedSubcategories);
         } //end if
     } //getSubcategories
 
