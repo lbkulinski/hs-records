@@ -9,7 +9,7 @@ import javax.swing.JSeparator;
  * A menu view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 21, 2020
+ * @version May 22, 2020
  */
 public final class MenuView {
     /**
@@ -41,6 +41,11 @@ public final class MenuView {
      * The save menu item of this menu view.
      */
     private final JMenuItem saveMenuItem;
+
+    /**
+     * The exit menu item of this menu view.
+     */
+    private final JMenuItem exitMenuItem;
 
     /**
      * The latest menu item of this menu view.
@@ -119,11 +124,12 @@ public final class MenuView {
         String createDirectoryName = "Create Directory";
         String openRecordName = "Record";
         String openDirectoryName = "Directory";
-        String saveName = "Save";
-        String latestName = "Latest ID";
-        String countName = "Record count";
         String importName = "Import from CSV";
         String exportName = "Export to CSV";
+        String saveName = "Save";
+        String exitName = "Exit";
+        String latestName = "Latest ID";
+        String countName = "Record count";
         String addName = "Add";
         String editName = "Edit";
         String deleteName = "Delete";
@@ -136,11 +142,12 @@ public final class MenuView {
         this.createDirectoryMenuItem = new JMenuItem(createDirectoryName);
         this.openRecordMenuItem = new JMenuItem(openRecordName);
         this.openDirectoryMenuItem = new JMenuItem(openDirectoryName);
-        this.saveMenuItem = new JMenuItem(saveName);
-        this.latestMenuItem = new JMenuItem(latestName);
-        this.countMenuItem = new JMenuItem(countName);
         this.importMenuItem = new JMenuItem(importName);
         this.exportMenuItem = new JMenuItem(exportName);
+        this.saveMenuItem = new JMenuItem(saveName);
+        this.exitMenuItem = new JMenuItem(exitName);
+        this.latestMenuItem = new JMenuItem(latestName);
+        this.countMenuItem = new JMenuItem(countName);
         this.addCategoryMenuItem = new JMenuItem(addName);
         this.editCategoryMenuItem = new JMenuItem(editName);
         this.deleteCategoryMenuItem = new JMenuItem(deleteName);
@@ -182,6 +189,10 @@ public final class MenuView {
         this.fileMenu.add(new JSeparator());
 
         this.fileMenu.add(this.saveMenuItem);
+
+        this.fileMenu.add(new JSeparator());
+
+        this.fileMenu.add(this.exitMenuItem);
 
         this.displayMenu.add(this.latestMenuItem);
 
@@ -284,6 +295,15 @@ public final class MenuView {
     public JMenuItem getSaveMenuItem() {
         return this.saveMenuItem;
     } //getSaveMenuItem
+
+    /**
+     * Returns the exit menu item of this menu view.
+     *
+     * @return the exit menu item of this menu view
+     */
+    public JMenuItem getExitMenuItem() {
+        return this.exitMenuItem;
+    } //getExitMenuItem
 
     /**
      * Returns the latest menu item of this menu view.

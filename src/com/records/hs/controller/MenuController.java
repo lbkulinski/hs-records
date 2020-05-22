@@ -6,7 +6,8 @@ import java.util.logging.Logger;
 import java.util.Objects;
 import java.util.Set;
 import javax.swing.JMenuBar;
-import java.awt.Container;
+import java.awt.Window;
+import javax.swing.SwingUtilities;
 import javax.swing.JOptionPane;
 import java.nio.file.Path;
 import java.nio.file.Files;
@@ -83,7 +84,7 @@ public final class MenuController {
     private String getCategoryInput() {
         Set<String> categories;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         Object[] categoryArray;
@@ -93,12 +94,12 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (categories.isEmpty()) {
             message = "Error: No categories have been previously added!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } //end if
@@ -107,7 +108,7 @@ public final class MenuController {
 
         categoryArray = categories.toArray();
 
-        category = (String) JOptionPane.showInputDialog(container, message, title, JOptionPane.QUESTION_MESSAGE, null,
+        category = (String) JOptionPane.showInputDialog(window, message, title, JOptionPane.QUESTION_MESSAGE, null,
                                                         categoryArray, null);
 
         return category;
@@ -123,7 +124,7 @@ public final class MenuController {
     private String getSubcategoryInput(String category) {
         Set<String> subcategories;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         Object[] subcategoryArray;
@@ -135,12 +136,12 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (subcategories.isEmpty()) {
             message = "Error: No subcategories have been previously added!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } //end if
@@ -149,7 +150,7 @@ public final class MenuController {
 
         subcategoryArray = subcategories.toArray();
 
-        subcategory = (String) JOptionPane.showInputDialog(container, message, title, JOptionPane.QUESTION_MESSAGE, null,
+        subcategory = (String) JOptionPane.showInputDialog(window, message, title, JOptionPane.QUESTION_MESSAGE, null,
                                                            subcategoryArray, null);
 
         return subcategory;
@@ -162,18 +163,18 @@ public final class MenuController {
      */
     private String getIdInput() {
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         String id;
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         message = "Enter the ID:";
 
-        id = JOptionPane.showInputDialog(container, message, title, JOptionPane.QUESTION_MESSAGE);
+        id = JOptionPane.showInputDialog(window, message, title, JOptionPane.QUESTION_MESSAGE);
 
         id = id.toUpperCase();
 
@@ -187,7 +188,7 @@ public final class MenuController {
      */
     private String getNewCategoryInput() {
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         String category;
@@ -195,30 +196,30 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         message = "Enter the new category:";
 
-        category = JOptionPane.showInputDialog(container, message, title, JOptionPane.QUESTION_MESSAGE);
+        category = JOptionPane.showInputDialog(window, message, title, JOptionPane.QUESTION_MESSAGE);
 
         if (category == null) {
             return null;
         } else if (category.isBlank()) {
             message = "Error: The specified category is blank!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } else if (category.contains(comma)) {
             message = "Error: The specified category contains a comma!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } else if (this.model.containsCategory(category)) {
             message = "Error: The specified category already exists!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } //end if
@@ -237,7 +238,7 @@ public final class MenuController {
      */
     private String getNewSubcategoryInput(String category) {
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         String subcategory;
@@ -247,30 +248,30 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         message = "Enter the new subcategory:";
 
-        subcategory = JOptionPane.showInputDialog(container, message, title, JOptionPane.QUESTION_MESSAGE);
+        subcategory = JOptionPane.showInputDialog(window, message, title, JOptionPane.QUESTION_MESSAGE);
 
         if (subcategory == null) {
             return null;
         } else if (subcategory.isBlank()) {
             message = "Error: The specified subcategory is blank!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } else if (subcategory.contains(comma)) {
             message = "Error: The specified subcategory contains a comma!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } else if (this.model.containsSubcategory(category, subcategory)) {
             message = "Error: The specified subcategory already exists!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } //end if
@@ -288,7 +289,7 @@ public final class MenuController {
         String subcategory;
         Path path;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         int choice;
@@ -309,12 +310,12 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (Files.exists(path)) {
             message = "Error: The directory already exists!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -328,14 +329,14 @@ public final class MenuController {
 
             message = "Error: The directory could not be created! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end try catch
 
         message = "The directory was successfully created! Would you like to open it?";
 
-        choice = JOptionPane.showConfirmDialog(container, message, title, JOptionPane.YES_NO_OPTION,
+        choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
                                                JOptionPane.QUESTION_MESSAGE);
 
         if (choice == JOptionPane.YES_OPTION) {
@@ -345,7 +346,7 @@ public final class MenuController {
             if (!Desktop.isDesktopSupported()) {
                 message = "Error: The directory could not be opened! Please contact support!";
 
-                JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
                 return;
             } //end if
@@ -363,7 +364,7 @@ public final class MenuController {
 
                 message = "Error: The directory could not be opened! Please contact support!";
 
-                JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
             } //end try catch
         } //end if
     } //createDirectory
@@ -374,7 +375,7 @@ public final class MenuController {
     private void openRecord() {
         int entryCount;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String id;
         Optional<Entry> optional;
         String message;
@@ -391,12 +392,12 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (entryCount == 0) {
             message = "Error: No records have been previously added!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -408,7 +409,7 @@ public final class MenuController {
         if (optional.isEmpty()) {
             message = "Error: The record does not exist!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -428,7 +429,7 @@ public final class MenuController {
         if (Files.notExists(path)) {
             message = "Error: The file associated with the record could not be found!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -436,7 +437,7 @@ public final class MenuController {
         if (!Desktop.isDesktopSupported()) {
             message = "Error: The file associated with the record could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -454,7 +455,7 @@ public final class MenuController {
 
             message = "Error: The file associated with the record could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end try catch
     } //openRecord
 
@@ -466,7 +467,7 @@ public final class MenuController {
         String subcategory;
         Path path;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         Desktop desktop;
@@ -488,12 +489,12 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (Files.notExists(path)) {
             message = "Error: The directory could not be found!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -501,7 +502,7 @@ public final class MenuController {
         if (!Desktop.isDesktopSupported()) {
             message = "Error: The directory could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -519,7 +520,7 @@ public final class MenuController {
 
             message = "Error: The directory could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end try catch
     } //openDirectory
 
@@ -542,7 +543,7 @@ public final class MenuController {
         String tagsString;
         Optional<Entry> optional;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
         Type type;
@@ -572,12 +573,12 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (optional.isPresent()) {
             message = "Error: An entry in the CSV file has an ID that already exists!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } //end if
@@ -593,7 +594,7 @@ public final class MenuController {
 
             message = "Error: An entry in the CSV file has a type that is invalid!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return null;
         } //end try catch
@@ -618,7 +619,7 @@ public final class MenuController {
         String dialogTitle = "HS Records";
         FileNameExtensionFilter filter;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         JFileChooser fileChooser;
         int state;
         File file;
@@ -636,7 +637,7 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         fileChooser = new JFileChooser();
 
@@ -665,7 +666,7 @@ public final class MenuController {
 
             message = "Error: The CSV file could not be imported! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end try catch
@@ -693,7 +694,7 @@ public final class MenuController {
                 if (!added) {
                     message = "Error: The CSV file could not be fully imported! Please contact support!";
 
-                    JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
                     return;
                 } //end if
@@ -705,7 +706,7 @@ public final class MenuController {
                 if (!added) {
                     message = "Error: The CSV file could not be fully imported! Please contact support!";
 
-                    JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
                     return;
                 } //end if
@@ -716,7 +717,7 @@ public final class MenuController {
             if (!added) {
                 message = "Error: The CSV file could not be fully imported! Please contact support!";
 
-                JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
                 return;
             } //end if
@@ -726,7 +727,7 @@ public final class MenuController {
 
         message = "The CSV file was successfully imported!";
 
-        JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
     } //importFromCsv
 
     /**
@@ -801,7 +802,7 @@ public final class MenuController {
         String dialogTitle = "HS Records";
         FileNameExtensionFilter filter;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         JFileChooser fileChooser;
         int state;
         File file;
@@ -819,7 +820,7 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         fileChooser = new JFileChooser();
 
@@ -846,7 +847,7 @@ public final class MenuController {
         if (!matcher.matches()) {
             message = "Error: The selected file is not a CSV file!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end if
@@ -868,14 +869,14 @@ public final class MenuController {
 
             message = "Error: The CSV file could not be exported! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             return;
         } //end try catch
 
         message = "The CSV file was successfully exported!";
 
-        JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
     } //exportToCsv
 
     /**
@@ -884,7 +885,7 @@ public final class MenuController {
     private void save() {
         boolean saved;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -892,18 +893,47 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (saved) {
             message = "The save was successful!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } else {
             message = "Error: The save was unsuccessful! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //save
+
+    /**
+     * Exits the program.
+     */
+    private void exit() {
+        boolean saved;
+        JMenuBar menuBar;
+        Window window;
+        String message;
+        String title = "HS Records";
+
+        saved = ControllerUtilities.writeModelToFile(this.model);
+
+        menuBar = this.menuView.getMenuBar();
+
+        window = SwingUtilities.getWindowAncestor(menuBar);
+
+        if (saved) {
+            int success = 0;
+
+            window.dispose();
+
+            System.exit(success);
+        } else {
+            message = "Error: The save was unsuccessful! Please contact support!";
+
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+        } //end if
+    } //exit
 
     /**
      * Shows the latest ID of the model of this menu controller.
@@ -911,7 +941,7 @@ public final class MenuController {
     private void showLatestId() {
         String latestId;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -919,18 +949,18 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (latestId == null) {
             message = "Error: No entries have been added!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } else {
             String format = "Latest ID: %s";
 
             message = String.format(format, latestId);
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } //end if
     } //showLatestId
 
@@ -940,7 +970,7 @@ public final class MenuController {
     private void showEntryCount() {
         int entryCount;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String format = "Record count: %d";
         String title = "HS Records";
@@ -949,11 +979,11 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         message = String.format(format, entryCount);
 
-        JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
     } //showEntryCount
 
     /**
@@ -963,7 +993,7 @@ public final class MenuController {
         String newCategory;
         boolean added;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -977,18 +1007,18 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (added) {
             this.addController.fillCategoryComboBox();
 
             message = "The category was successfully added!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } else {
             message = "Error: The category could not be added! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //addCategory
 
@@ -1000,7 +1030,7 @@ public final class MenuController {
         String newCategory;
         boolean edited;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -1020,18 +1050,18 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (edited) {
             this.addController.fillCategoryComboBox();
 
             message = "The category was successfully edited!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } else {
             message = "Error: The category could not be edited! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //editCategory
 
@@ -1042,7 +1072,7 @@ public final class MenuController {
         String category;
         boolean deleted;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -1056,18 +1086,18 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (deleted) {
             this.addController.fillCategoryComboBox();
 
             message = "The category was successfully deleted!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } else {
             message = "Error: The category could not be deleted! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //deleteCategory
 
@@ -1079,7 +1109,7 @@ public final class MenuController {
         String newSubcategory;
         boolean added;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -1099,18 +1129,18 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (added) {
             this.addController.fillSubcategoryComboBox();
 
             message = "The subcategory was successfully added!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } else {
             message = "Error: The subcategory could not be added! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //addSubcategory
 
@@ -1123,7 +1153,7 @@ public final class MenuController {
         String newSubcategory;
         boolean edited;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -1149,18 +1179,18 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (edited) {
             this.addController.fillSubcategoryComboBox();
 
             message = "The subcategory was successfully edited!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } else {
             message = "Error: The subcategory could not be edited! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //editSubcategory
 
@@ -1172,7 +1202,7 @@ public final class MenuController {
         String subcategory;
         boolean deleted;
         JMenuBar menuBar;
-        Container container;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -1192,18 +1222,18 @@ public final class MenuController {
 
         menuBar = this.menuView.getMenuBar();
 
-        container = menuBar.getParent();
+        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (deleted) {
             this.addController.fillSubcategoryComboBox();
 
             message = "The subcategory was successfully deleted!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
         } else {
             message = "Error: The subcategory could not be deleted! Please contact support!";
 
-            JOptionPane.showMessageDialog(container, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //deleteSubcategory
 
@@ -1224,6 +1254,7 @@ public final class MenuController {
         JMenuItem importMenuItem;
         JMenuItem exportMenuItem;
         JMenuItem saveMenuItem;
+        JMenuItem exitMenuItem;
         JMenuItem latestMenuItem;
         JMenuItem countMenuItem;
         JMenuItem addCategoryMenuItem;
@@ -1246,6 +1277,8 @@ public final class MenuController {
         exportMenuItem = menuController.menuView.getExportMenuItem();
 
         saveMenuItem = menuController.menuView.getSaveMenuItem();
+
+        exitMenuItem = menuController.menuView.getExitMenuItem();
 
         latestMenuItem = menuController.menuView.getLatestMenuItem();
 
@@ -1274,6 +1307,8 @@ public final class MenuController {
         exportMenuItem.addActionListener(actionEvent -> menuController.exportToCsv());
 
         saveMenuItem.addActionListener(actionEvent -> menuController.save());
+
+        exitMenuItem.addActionListener(actionEvent -> menuController.exit());
 
         latestMenuItem.addActionListener(actionEvent -> menuController.showLatestId());
 
