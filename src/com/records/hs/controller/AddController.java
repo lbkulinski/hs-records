@@ -7,8 +7,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.time.LocalDate;
 import javax.swing.JTextField;
-import java.util.Set;
 import javax.swing.JComboBox;
+import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import com.records.hs.model.Type;
@@ -21,7 +21,7 @@ import javax.swing.JButton;
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 21, 2020
+ * @version May 22, 2020
  */
 public final class AddController {
     /**
