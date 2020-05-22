@@ -9,12 +9,14 @@ import java.time.LocalDate;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.util.Set;
-import javax.swing.JPanel;
+import java.awt.Window;
+import javax.swing.SwingUtilities;
 import javax.swing.JOptionPane;
 import com.records.hs.model.Type;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 import com.records.hs.model.Entry;
+import javax.swing.JPanel;
 import javax.swing.JButton;
 
 /**
@@ -257,7 +259,7 @@ public final class AddController {
      */
     private String getIdInput() {
         JTextField idTextField;
-        JPanel panel;
+        Window window;
         String id;
         String message;
         String title = "HS Records";
@@ -265,14 +267,14 @@ public final class AddController {
 
         idTextField = this.addView.getIdTextField();
 
-        panel = this.addView.getPanel();
+        window = SwingUtilities.getWindowAncestor(idTextField);
 
         id = idTextField.getText();
 
         if (id.isBlank()) {
             message = "Error: The specified ID is blank!";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             idTextField.requestFocus();
 
@@ -280,7 +282,7 @@ public final class AddController {
         } else if (id.contains(comma)) {
             message = "Error: The specified ID contains a comma!";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             idTextField.requestFocus();
 
@@ -297,21 +299,21 @@ public final class AddController {
      */
     private Type getTypeInput() {
         JComboBox<Type> typeComboBox;
-        JPanel panel;
+        Window window;
         Type type;
         String message;
         String title = "HS Records";
 
         typeComboBox = this.addView.getTypeComboBox();
 
-        panel = this.addView.getPanel();
+        window = SwingUtilities.getWindowAncestor(typeComboBox);
 
         type = (Type) typeComboBox.getSelectedItem();
 
         if (type == null) {
             message = "Error: The specified type is blank!";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             typeComboBox.requestFocus();
 
@@ -328,12 +330,12 @@ public final class AddController {
      */
     private String getCategoryInput() {
         JComboBox<String> categoryComboBox;
-        JPanel panel;
+        Window window;
         String category;
 
         categoryComboBox = this.addView.getCategoryComboBox();
 
-        panel = this.addView.getPanel();
+        window = SwingUtilities.getWindowAncestor(categoryComboBox);
 
         category = (String) categoryComboBox.getSelectedItem();
 
@@ -341,7 +343,7 @@ public final class AddController {
             String message = "Error: The specified category is blank!";
             String title = "HS Records";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             categoryComboBox.requestFocus();
 
@@ -358,12 +360,12 @@ public final class AddController {
      */
     private String getSubcategoryInput() {
         JComboBox<String> subcategoryComboBox;
-        JPanel panel;
+        Window window;
         String subcategory;
 
         subcategoryComboBox = this.addView.getSubcategoryComboBox();
 
-        panel = this.addView.getPanel();
+        window = SwingUtilities.getWindowAncestor(subcategoryComboBox);
 
         subcategory = (String) subcategoryComboBox.getSelectedItem();
 
@@ -371,7 +373,7 @@ public final class AddController {
             String message = "Error: The specified subcategory is blank!";
             String title = "HS Records";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             subcategoryComboBox.requestFocus();
 
@@ -388,14 +390,14 @@ public final class AddController {
      */
     private Set<String> getTagsInput() {
         JTextField tagsTextField;
-        JPanel panel;
+        Window window;
         String tagsString;
         String[] tagArray;
         Set<String> tags;
 
         tagsTextField = this.addView.getTagsTextField();
 
-        panel = this.addView.getPanel();
+        window = SwingUtilities.getWindowAncestor(tagsTextField);
 
         tagsString = tagsTextField.getText();
 
@@ -403,7 +405,7 @@ public final class AddController {
             String message = "Error: The specified set of tags is blank!";
             String title = "HS Records";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
 
             tagsTextField.requestFocus();
 
@@ -431,6 +433,7 @@ public final class AddController {
         Entry entry;
         boolean added;
         JPanel panel;
+        Window window;
         String message;
         String title = "HS Records";
 
@@ -470,16 +473,18 @@ public final class AddController {
 
         panel = this.addView.getPanel();
 
+        window = SwingUtilities.getWindowAncestor(panel);
+
         if (added) {
             message = "The record was successfully added!";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
 
             this.clearFields();
         } else {
             message = "Error: The record could not be added! Please contact support!";
 
-            JOptionPane.showMessageDialog(panel, message, title, JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
         } //end if
     } //addEntry
 
