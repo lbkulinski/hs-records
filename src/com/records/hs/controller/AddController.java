@@ -7,9 +7,8 @@ import java.util.Objects;
 import java.util.logging.Level;
 import java.time.LocalDate;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import java.util.Set;
-import java.util.TreeSet;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JOptionPane;
 import com.records.hs.model.Type;
@@ -22,7 +21,7 @@ import javax.swing.JButton;
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 22, 2020
+ * @version May 21, 2020
  */
 public final class AddController {
     /**
@@ -165,22 +164,19 @@ public final class AddController {
     void fillCategoryComboBox() {
         JComboBox<String> categoryComboBox;
         Set<String> categories;
-        Set<String> sortedCategories;
 
         categoryComboBox = this.addView.getCategoryComboBox();
 
         categories = this.model.getCategories();
 
-        sortedCategories = new TreeSet<>(categories);
-
         categoryComboBox.removeAllItems();
 
-        if (sortedCategories.isEmpty()) {
+        if (categories.isEmpty()) {
             categoryComboBox.setEnabled(false);
         } else {
             categoryComboBox.setEnabled(true);
 
-            sortedCategories.forEach(categoryComboBox::addItem);
+            categories.forEach(categoryComboBox::addItem);
         } //end if
 
         categoryComboBox.setSelectedIndex(-1);
@@ -195,7 +191,6 @@ public final class AddController {
         JComboBox<String> categoryComboBox;
         String category;
         Set<String> subcategories;
-        Set<String> sortedSubcategories;
 
         subcategoryComboBox = this.addView.getSubcategoryComboBox();
 
@@ -215,13 +210,11 @@ public final class AddController {
 
         subcategories = this.model.getSubcategories(category);
 
-        sortedSubcategories = new TreeSet<>(subcategories);
-
         subcategoryComboBox.setEnabled(true);
 
         subcategoryComboBox.removeAllItems();
 
-        sortedSubcategories.forEach(subcategoryComboBox::addItem);
+        subcategories.forEach(subcategoryComboBox::addItem);
 
         subcategoryComboBox.setSelectedIndex(-1);
     } //fillSubcategoryComboBox
