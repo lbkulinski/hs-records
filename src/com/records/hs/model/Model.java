@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 22, 2020
+ * @version May 30, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -566,19 +566,26 @@ public final class Model implements Serializable {
 
     /**
      * Attempts to delete all of the entries with the specified subcategory from this model. If an entry with the
-     * specified subcategory has not been previously added to this model, no deletions will not occur.
+     * specified subcategory has not been previously added to this model or the specified subcategory is not mapped
+     * from the specified category, no deletions will not occur.
      *
+     * @param category the category to be used in the operation
      * @param subcategory the subcategory to be used in the operation
      * @return {@code true}, if at least one entry with the specified subcategory was deleted from this model and
      * {@code false} otherwise
      * @throws NullPointerException if the specified subcategory is {@code null}
      */
-    public boolean deleteEntriesWithSubcategory(String subcategory) {
+    public boolean deleteEntriesWithSubcategory(String category, String subcategory) {
+        String categoryUpper;
         String subcategoryUpper;
         int previousSize;
         int currentSize;
 
+        Objects.requireNonNull(category, "the specified category is null");
+
         Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        categoryUpper = category.toUpperCase();
 
         subcategoryUpper = subcategory.toUpperCase();
 
@@ -586,6 +593,11 @@ public final class Model implements Serializable {
 
         this.idsToEntries.values()
                          .stream()
+                         .filter(entry -> {
+                             String entryCategory = entry.getCategory();
+
+                             return entryCategory.equals(categoryUpper);
+                         })
                          .filter(entry -> {
                              String entrySubcategory = entry.getSubcategory();
 
