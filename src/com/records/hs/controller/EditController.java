@@ -12,12 +12,15 @@ import javax.swing.JOptionPane;
 import com.records.hs.view.Field;
 import javax.swing.JComboBox;
 import com.records.hs.model.Type;
+import javax.swing.JPanel;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
 
 /**
  * An edit controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 28, 2020
+ * @version May 30, 2020
  */
 public final class EditController {
     /**
@@ -51,6 +54,39 @@ public final class EditController {
         this.editView = editView;
         this.logger = Logger.getGlobal();
     } //EditController
+
+    /**
+     * Clears the fields of this edit controller's edit view.
+     */
+    private void clearFields() {
+        JPanel panel;
+        JButton editButton;
+        JButton clearButton;
+        ActionListener[] editListeners;
+        ActionListener[] clearListeners;
+
+        panel = this.editView.getPanel();
+
+        editButton = this.editView.getEditButton();
+
+        clearButton = this.editView.getClearButton();
+
+        editListeners = editButton.getActionListeners();
+
+        clearListeners = clearButton.getActionListeners();
+
+        panel.removeAll();
+
+        for (ActionListener listener : editListeners) {
+            editButton.removeActionListener(listener);
+        } //end for
+
+        for (ActionListener listener : clearListeners) {
+            clearButton.removeActionListener(listener);
+        } //end for
+
+        this.editView.addComponentsToPanel();
+    } //clearFields
 
     /**
      * Shows the specified error message that is associated with the specified component.

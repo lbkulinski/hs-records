@@ -12,7 +12,7 @@ import java.util.Arrays;
  * An edit view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 18, 2020
+ * @version May 30, 2020
  */
 public final class EditView {
     /**
@@ -125,7 +125,7 @@ public final class EditView {
     /**
      * Adds the components of this edit view to the panel of this edit view.
      */
-    private void addComponentsToPanel() {
+    public void addComponentsToPanel() {
         int idRow = 0;
         int column = 0;
         int fieldRow = 1;
