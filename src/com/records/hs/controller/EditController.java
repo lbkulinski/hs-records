@@ -2,7 +2,6 @@ package com.records.hs.controller;
 
 import com.records.hs.model.Model;
 import com.records.hs.view.EditView;
-import java.util.logging.Logger;
 import java.util.Objects;
 import javax.swing.JComponent;
 import javax.swing.JTextField;
@@ -20,6 +19,7 @@ import com.records.hs.model.Entry;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Arrays;
+import com.records.hs.view.ViewUtilities;
 
 /**
  * An edit controller in the HS Records application.
@@ -39,11 +39,6 @@ public final class EditController {
     private final EditView editView;
 
     /**
-     * The logger of this edit controller.
-     */
-    private final Logger logger;
-
-    /**
      * Constructs a newly allocated {@code EditController} object.
      *
      * @param model the model to be used in construction
@@ -57,7 +52,6 @@ public final class EditController {
 
         this.model = model;
         this.editView = editView;
-        this.logger = Logger.getGlobal();
     } //EditController
 
     /**
@@ -66,19 +60,16 @@ public final class EditController {
     private void clearFields() {
         JPanel panel;
         JButton editButton;
-        JButton clearButton;
+        Window window;
         ActionListener[] editListeners;
-        ActionListener[] clearListeners;
 
         panel = this.editView.getPanel();
 
         editButton = this.editView.getEditButton();
 
-        clearButton = this.editView.getClearButton();
+        window = SwingUtilities.getWindowAncestor(panel);
 
         editListeners = editButton.getActionListeners();
-
-        clearListeners = clearButton.getActionListeners();
 
         panel.removeAll();
 
@@ -86,11 +77,11 @@ public final class EditController {
             editButton.removeActionListener(listener);
         } //end for
 
-        for (ActionListener listener : clearListeners) {
-            clearButton.removeActionListener(listener);
-        } //end for
-
         this.editView.addComponentsToPanel();
+
+        window.revalidate();
+
+        window.repaint();
     } //clearFields
 
     /**
@@ -503,12 +494,12 @@ public final class EditController {
     private void editCategory() {
         String id;
         String newCategory;
+        String newSubcategory;
         Optional<Entry> optional;
         JTextField idTextField;
         String message;
         Entry entry;
         Type type;
-        String subcategory;
         Set<String> tags;
         Entry newEntry;
         boolean edited;
@@ -522,6 +513,12 @@ public final class EditController {
         newCategory = this.getNewCategoryInput();
 
         if (newCategory == null) {
+            return;
+        } //end if
+
+        newSubcategory = this.getNewSubcategoryInput();
+
+        if (newSubcategory == null) {
             return;
         } //end if
 
@@ -541,11 +538,9 @@ public final class EditController {
 
         type = entry.getType();
 
-        subcategory = entry.getSubcategory();
-
         tags = entry.getTags();
 
-        newEntry = new Entry(id, type, newCategory, subcategory, tags);
+        newEntry = new Entry(id, type, newCategory, newSubcategory, tags);
 
         edited = this.model.editEntry(id, newEntry);
 
@@ -691,4 +686,406 @@ public final class EditController {
             this.showErrorMessage(message);
         } //end if
     } //editTags
+
+    /**
+     * Fills the new category combo box of this edit controller's edit view with the categories of this edit
+     * controller's model.
+     */
+    void fillNewCategoryComboBox() {
+        JComboBox<String> newCategoryComboBox;
+        Set<String> categories;
+
+        newCategoryComboBox = this.editView.getNewCategoryComboBox();
+
+        categories = this.model.getCategories();
+
+        newCategoryComboBox.removeAllItems();
+
+        if (categories.isEmpty()) {
+            newCategoryComboBox.setEnabled(false);
+        } else {
+            newCategoryComboBox.setEnabled(true);
+
+            categories.forEach(newCategoryComboBox::addItem);
+        } //end if
+
+        newCategoryComboBox.setSelectedIndex(-1);
+    } //fillCategoryComboBox
+
+    /**
+     * Fills the category combo box of this edit controller's edit view with the categories of this edit controller's
+     * model.
+     */
+    void fillCategoryComboBox() {
+        JComboBox<String> categoryComboBox;
+        Set<String> categories;
+
+        categoryComboBox = this.editView.getCategoryComboBox();
+
+        categories = this.model.getCategories();
+
+        categoryComboBox.removeAllItems();
+
+        if (categories.isEmpty()) {
+            categoryComboBox.setEnabled(false);
+        } else {
+            categoryComboBox.setEnabled(true);
+
+            categories.forEach(categoryComboBox::addItem);
+        } //end if
+
+        categoryComboBox.setSelectedIndex(-1);
+    } //fillCategoryComboBox
+
+    /**
+     * Fills the new subcategory combo box of this edit controller's edit view with the subcategories of this edit
+     * controller's model that are mapped from the user selected category.
+     */
+    void fillNewSubcategoryComboBox() {
+        JComboBox<String> newSubcategoryComboBox;
+        JComboBox<String> categoryComboBox;
+        String category;
+        Set<String> subcategories;
+
+        newSubcategoryComboBox = this.editView.getNewSubcategoryComboBox();
+
+        categoryComboBox = this.editView.getCategoryComboBox();
+
+        category = (String) categoryComboBox.getSelectedItem();
+
+        if (category == null) {
+            newSubcategoryComboBox.setEnabled(false);
+
+            newSubcategoryComboBox.setSelectedIndex(-1);
+
+            newSubcategoryComboBox.removeAllItems();
+
+            return;
+        } //end if
+
+        subcategories = this.model.getSubcategories(category);
+
+        newSubcategoryComboBox.removeAllItems();
+
+        if (subcategories.isEmpty()) {
+            newSubcategoryComboBox.setEnabled(false);
+        } else {
+            newSubcategoryComboBox.setEnabled(true);
+
+            subcategories.forEach(newSubcategoryComboBox::addItem);
+        } //end if
+
+        newSubcategoryComboBox.setSelectedIndex(-1);
+    } //fillNewSubcategoryComboBox
+
+    /**
+     * Displays the edit ID components of this edit controller's edit view.
+     */
+    private void displayEditIdComponents() {
+        JPanel panel;
+        JButton editButton;
+        JTextField newIdTextField;
+        JButton clearButton;
+        Window window;
+        int expectedCount = 2;
+        ActionListener[] editListeners;
+        int newIdRow = 2;
+        int column = 0;
+        int editRow = 3;
+        int clearRow = 4;
+
+        panel = this.editView.getPanel();
+
+        editButton = this.editView.getEditButton();
+
+        newIdTextField = this.editView.getNewIdTextField();
+
+        clearButton = this.editView.getClearButton();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        while (panel.getComponentCount() > expectedCount) {
+            panel.remove(expectedCount);
+        } //end while
+
+        editListeners = editButton.getActionListeners();
+
+        for (ActionListener listener : editListeners) {
+            editButton.removeActionListener(listener);
+        } //end for
+
+        ViewUtilities.addComponentToPanel(panel, newIdTextField, newIdRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.revalidate();
+
+        window.repaint();
+
+        editButton.addActionListener(actionEvent -> this.editId());
+    } //displayEditIdComponents
+
+    /**
+     * Displays the edit type components of this edit controller's edit view.
+     */
+    private void displayEditTypeComponents() {
+        JPanel panel;
+        JButton editButton;
+        JComboBox<Type> newTypeComboBox;
+        JButton clearButton;
+        Window window;
+        int expectedCount = 2;
+        ActionListener[] editListeners;
+        int newTypeRow = 2;
+        int column = 0;
+        int editRow = 3;
+        int clearRow = 4;
+
+        panel = this.editView.getPanel();
+
+        editButton = this.editView.getEditButton();
+
+        newTypeComboBox = this.editView.getNewTypeComboBox();
+
+        clearButton = this.editView.getClearButton();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        while (panel.getComponentCount() > expectedCount) {
+            panel.remove(expectedCount);
+        } //end while
+
+        editListeners = editButton.getActionListeners();
+
+        for (ActionListener listener : editListeners) {
+            editButton.removeActionListener(listener);
+        } //end for
+
+        ViewUtilities.addComponentToPanel(panel, newTypeComboBox, newTypeRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.revalidate();
+
+        window.repaint();
+
+        editButton.addActionListener(actionEvent -> this.editType());
+    } //displayEditTypeComponents
+
+    /**
+     * Displays the edit category components of this edit controller's edit view.
+     */
+    private void displayEditCategoryComponents() {
+        JPanel panel;
+        JButton editButton;
+        JComboBox<String> newCategoryComboBox;
+        JComboBox<String> newSubcategoryComboBox;
+        JButton clearButton;
+        Window window;
+        int expectedCount = 2;
+        ActionListener[] editListeners;
+        int newCategoryRow = 2;
+        int column = 0;
+        int newSubcategoryRow = 3;
+        int editRow = 4;
+        int clearRow = 5;
+
+        panel = this.editView.getPanel();
+
+        editButton = this.editView.getEditButton();
+
+        newCategoryComboBox = this.editView.getNewCategoryComboBox();
+
+        newSubcategoryComboBox = this.editView.getNewSubcategoryComboBox();
+
+        clearButton = this.editView.getClearButton();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        while (panel.getComponentCount() > expectedCount) {
+            panel.remove(expectedCount);
+        } //end while
+
+        editListeners = editButton.getActionListeners();
+
+        for (ActionListener listener : editListeners) {
+            editButton.removeActionListener(listener);
+        } //end for
+
+        ViewUtilities.addComponentToPanel(panel, newCategoryComboBox, newCategoryRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, newSubcategoryComboBox, newSubcategoryRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.revalidate();
+
+        window.repaint();
+
+        this.fillNewCategoryComboBox();
+
+        this.fillNewSubcategoryComboBox();
+
+        newCategoryComboBox.addActionListener(actionEvent -> this.fillNewSubcategoryComboBox());
+
+        editButton.addActionListener(actionEvent -> this.editCategory());
+    } //displayEditCategoryComponents
+
+    /**
+     * Displays the edit subcategory components of this edit controller's edit view.
+     */
+    private void displayEditSubcategoryComponents() {
+        JPanel panel;
+        JButton editButton;
+        JComboBox<String> categoryComboBox;
+        JComboBox<String> newSubcategoryComboBox;
+        JButton clearButton;
+        Window window;
+        int expectedCount = 2;
+        ActionListener[] editListeners;
+        int categoryRow = 2;
+        int column = 0;
+        int newSubcategoryRow = 3;
+        int editRow = 4;
+        int clearRow = 5;
+
+        panel = this.editView.getPanel();
+
+        editButton = this.editView.getEditButton();
+
+        categoryComboBox = this.editView.getCategoryComboBox();
+
+        newSubcategoryComboBox = this.editView.getNewSubcategoryComboBox();
+
+        clearButton = this.editView.getClearButton();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        while (panel.getComponentCount() > expectedCount) {
+            panel.remove(expectedCount);
+        } //end while
+
+        editListeners = editButton.getActionListeners();
+
+        for (ActionListener listener : editListeners) {
+            editButton.removeActionListener(listener);
+        } //end for
+
+        ViewUtilities.addComponentToPanel(panel, categoryComboBox, categoryRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, newSubcategoryComboBox, newSubcategoryRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.revalidate();
+
+        window.repaint();
+
+        this.fillCategoryComboBox();
+
+        this.fillNewSubcategoryComboBox();
+
+        categoryComboBox.addActionListener(actionEvent -> this.fillNewSubcategoryComboBox());
+
+        editButton.addActionListener(actionEvent -> this.editSubcategory());
+    } //displayEditSubcategoryComponents
+
+    /**
+     * Displays the edit tags components of this edit controller's edit view.
+     */
+    private void displayEditTagsComponents() {
+        JPanel panel;
+        JButton editButton;
+        JTextField newTagsTextField;
+        JButton clearButton;
+        Window window;
+        int expectedCount = 2;
+        ActionListener[] editListeners;
+        int newTagsRow = 2;
+        int column = 0;
+        int editRow = 3;
+        int clearRow = 4;
+
+        panel = this.editView.getPanel();
+
+        editButton = this.editView.getEditButton();
+
+        newTagsTextField = this.editView.getNewTagsTextField();
+
+        clearButton = this.editView.getClearButton();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        while (panel.getComponentCount() > expectedCount) {
+            panel.remove(expectedCount);
+        } //end while
+
+        editListeners = editButton.getActionListeners();
+
+        for (ActionListener listener : editListeners) {
+            editButton.removeActionListener(listener);
+        } //end for
+
+        ViewUtilities.addComponentToPanel(panel, newTagsTextField, newTagsRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
+
+        ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.revalidate();
+
+        window.repaint();
+
+        editButton.addActionListener(actionEvent -> this.editTags());
+    } //displayEditTagsComponents
+
+    /**
+     * Returns a new {@code EditController} object with the specified model and edit view.
+     *
+     * @param model the model to be used in construction
+     * @param editView the edit view to be used in construction
+     * @return a new {@code EditController} object with the specified model and edit view
+     * @throws NullPointerException if the specified model or edit view is {@code null}
+     */
+    public static EditController newEditController(Model model, EditView editView) {
+        EditController editController;
+        JComboBox<Field> fieldComboBox;
+        JButton clearButton;
+
+        editController = new EditController(model, editView);
+
+        fieldComboBox = editController.editView.getFieldComboBox();
+
+        clearButton = editController.editView.getClearButton();
+
+        fieldComboBox.addActionListener(actionEvent -> {
+            Field field;
+
+            field = (Field) fieldComboBox.getSelectedItem();
+
+            if (field == null) {
+                return;
+            } //end if
+
+            switch (field) {
+                case ID -> editController.displayEditIdComponents();
+                case TYPE -> editController.displayEditTypeComponents();
+                case CATEGORY -> editController.displayEditCategoryComponents();
+                case SUBCATEGORY -> editController.displayEditSubcategoryComponents();
+                case TAGS -> editController.displayEditTagsComponents();
+            } //end switch
+        });
+
+        clearButton.addActionListener(actionEvent -> editController.clearFields());
+
+        return editController;
+    } //newEditController
 }
