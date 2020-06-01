@@ -1009,7 +1009,7 @@ public final class MenuController {
     } //addCategory
 
     /**
-     * Edits a category to the model of this menu controller using the input of this menu controller's menu view.
+     * Edits a category of the model of this menu controller using the input of this menu controller's menu view.
      */
     private void editCategory() {
         String category;
@@ -1073,7 +1073,7 @@ public final class MenuController {
     } //editCategory
 
     /**
-     * Deletes a category to the model of this menu controller using the input of this menu controller's menu view.
+     * Deletes a category from the model of this menu controller using the input of this menu controller's menu view.
      */
     private void deleteCategory() {
         String category;
@@ -1173,7 +1173,7 @@ public final class MenuController {
     } //addSubcategory
 
     /**
-     * Edits a subcategory to the model of this menu controller using the input of this menu controller's menu view.
+     * Edits a subcategory of the model of this menu controller using the input of this menu controller's menu view.
      */
     private void editSubcategory() {
         String category;
@@ -1244,7 +1244,8 @@ public final class MenuController {
     } //editSubcategory
 
     /**
-     * Deletes a subcategory to the model of this menu controller using the input of this menu controller's menu view.
+     * Deletes a subcategory from the model of this menu controller using the input of this menu controller's menu
+     * view.
      */
     private void deleteSubcategory() {
         String category;

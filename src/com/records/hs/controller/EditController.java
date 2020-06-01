@@ -15,12 +15,17 @@ import com.records.hs.model.Type;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Optional;
+import com.records.hs.model.Entry;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.Arrays;
 
 /**
  * An edit controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 30, 2020
+ * @version June 1, 2020
  */
 public final class EditController {
     /**
@@ -104,6 +109,40 @@ public final class EditController {
 
         component.requestFocus();
     } //showErrorMessage
+
+    /**
+     * Shows the specified error message.
+     *
+     * @param message the message to be used in the operation
+     */
+    private void showErrorMessage(String message) {
+        JPanel panel;
+        Window window;
+        String title = "HS Records";
+
+        panel = this.editView.getPanel();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+    } //showErrorMessage
+
+    /**
+     * Shows the specified information message.
+     *
+     * @param message the message to be used in the operation
+     */
+    private void showInformationMessage(String message) {
+        JPanel panel;
+        Window window;
+        String title = "HS Records";
+
+        panel = this.editView.getPanel();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+    } //showInformationMessage
 
     /**
      * Returns the ID input of this edit controller's edit view.
@@ -286,15 +325,17 @@ public final class EditController {
      *
      * @return the new tags input of this edit controller's edit view
      */
-    private String getNewTagsInput() {
+    private Set<String> getNewTagsInput() {
         JTextField newTagsTextField;
-        String tags;
+        String tagsString;
+        String[] tagArray;
+        Set<String> tags;
 
         newTagsTextField = this.editView.getNewTagsTextField();
 
-        tags = newTagsTextField.getText();
+        tagsString = newTagsTextField.getText();
 
-        if (tags.isBlank()) {
+        if (tagsString.isBlank()) {
             String message = "Error: The specified set of tags is blank!";
 
             this.showErrorMessage(newTagsTextField, message);
@@ -302,6 +343,352 @@ public final class EditController {
             return null;
         } //end if
 
+        tagArray = tagsString.split(",");
+
+        tags = Arrays.stream(tagArray)
+                     .map(String::trim)
+                     .collect(Collectors.toUnmodifiableSet());
+
         return tags;
     } //getNewTagsInput
+
+    /**
+     * Edits the ID of a record of the model of this edit controller using the input of this edit controller's edit
+     * view.
+     */
+    private void editId() {
+        String id;
+        String newId;
+        Optional<Entry> optional;
+        JTextField idTextField;
+        String message;
+        Entry entry;
+        JTextField newIdTextField;
+        Type type;
+        String category;
+        String subcategory;
+        Set<String> tags;
+        Entry newEntry;
+        boolean edited;
+
+        id = this.getIdInput();
+
+        if (id == null) {
+            return;
+        } //end if
+
+        newId = this.getNewIdInput();
+
+        if (newId == null) {
+            return;
+        } //end if
+
+        optional = this.model.findEntryWithId(id);
+
+        idTextField = this.editView.getIdTextField();
+
+        if (optional.isEmpty()) {
+            message = "Error: A record with the specified ID does not exist!";
+
+            this.showErrorMessage(idTextField, message);
+
+            return;
+        } //end if
+
+        entry = optional.get();
+
+        optional = this.model.findEntryWithId(newId);
+
+        newIdTextField = this.editView.getNewIdTextField();
+
+        if (optional.isPresent()) {
+            message = "Error: A record with the specified new ID already exists!";
+
+            this.showErrorMessage(newIdTextField, message);
+
+            return;
+        } //end if
+
+        type = entry.getType();
+
+        category = entry.getCategory();
+
+        subcategory = entry.getSubcategory();
+
+        tags = entry.getTags();
+
+        newEntry = new Entry(newId, type, category, subcategory, tags);
+
+        edited = this.model.editEntry(id, newEntry);
+
+        if (edited) {
+            message = "The record was successfully edited!";
+
+            this.showInformationMessage(message);
+        } else {
+            message = "Error: The record could not be edited! Please contact support!";
+
+            this.showErrorMessage(message);
+        } //end if
+    } //editId
+
+    /**
+     * Edits the type of a record of the model of this edit controller using the input of this edit controller's edit
+     * view.
+     */
+    private void editType() {
+        String id;
+        Type newType;
+        Optional<Entry> optional;
+        JTextField idTextField;
+        String message;
+        Entry entry;
+        String category;
+        String subcategory;
+        Set<String> tags;
+        Entry newEntry;
+        boolean edited;
+
+        id = this.getIdInput();
+
+        if (id == null) {
+            return;
+        } //end if
+
+        newType = this.getNewTypeInput();
+
+        if (newType == null) {
+            return;
+        } //end if
+
+        optional = this.model.findEntryWithId(id);
+
+        idTextField = this.editView.getIdTextField();
+
+        if (optional.isEmpty()) {
+            message = "Error: A record with the specified ID does not exist!";
+
+            this.showErrorMessage(idTextField, message);
+
+            return;
+        } //end if
+
+        entry = optional.get();
+
+        category = entry.getCategory();
+
+        subcategory = entry.getSubcategory();
+
+        tags = entry.getTags();
+
+        newEntry = new Entry(id, newType, category, subcategory, tags);
+
+        edited = this.model.editEntry(id, newEntry);
+
+        if (edited) {
+            message = "The record was successfully edited!";
+
+            this.showInformationMessage(message);
+        } else {
+            message = "Error: The record could not be edited! Please contact support!";
+
+            this.showErrorMessage(message);
+        } //end if
+    } //editType
+
+    /**
+     * Edits the category of a record of the model of this edit controller using the input of this edit controller's
+     * edit view.
+     */
+    private void editCategory() {
+        String id;
+        String newCategory;
+        Optional<Entry> optional;
+        JTextField idTextField;
+        String message;
+        Entry entry;
+        Type type;
+        String subcategory;
+        Set<String> tags;
+        Entry newEntry;
+        boolean edited;
+
+        id = this.getIdInput();
+
+        if (id == null) {
+            return;
+        } //end if
+
+        newCategory = this.getNewCategoryInput();
+
+        if (newCategory == null) {
+            return;
+        } //end if
+
+        optional = this.model.findEntryWithId(id);
+
+        idTextField = this.editView.getIdTextField();
+
+        if (optional.isEmpty()) {
+            message = "Error: A record with the specified ID does not exist!";
+
+            this.showErrorMessage(idTextField, message);
+
+            return;
+        } //end if
+
+        entry = optional.get();
+
+        type = entry.getType();
+
+        subcategory = entry.getSubcategory();
+
+        tags = entry.getTags();
+
+        newEntry = new Entry(id, type, newCategory, subcategory, tags);
+
+        edited = this.model.editEntry(id, newEntry);
+
+        if (edited) {
+            message = "The record was successfully edited!";
+
+            this.showInformationMessage(message);
+        } else {
+            message = "Error: The record could not be edited! Please contact support!";
+
+            this.showErrorMessage(message);
+        } //end if
+    } //editCategory
+
+    /**
+     * Edits the subcategory of a record of the model of this edit controller using the input of this edit controller's
+     * edit view.
+     */
+    private void editSubcategory() {
+        String id;
+        String category;
+        String newSubcategory;
+        Optional<Entry> optional;
+        JTextField idTextField;
+        String message;
+        Entry entry;
+        Type type;
+        Set<String> tags;
+        Entry newEntry;
+        boolean edited;
+
+        id = this.getIdInput();
+
+        if (id == null) {
+            return;
+        } //end if
+
+        category = this.getCategoryInput();
+
+        if (category == null) {
+            return;
+        } //end if
+
+        newSubcategory = this.getNewSubcategoryInput();
+
+        if (newSubcategory == null) {
+            return;
+        } //end if
+
+        optional = this.model.findEntryWithId(id);
+
+        idTextField = this.editView.getIdTextField();
+
+        if (optional.isEmpty()) {
+            message = "Error: A record with the specified ID does not exist!";
+
+            this.showErrorMessage(idTextField, message);
+
+            return;
+        } //end if
+
+        entry = optional.get();
+
+        type = entry.getType();
+
+        tags = entry.getTags();
+
+        newEntry = new Entry(id, type, category, newSubcategory, tags);
+
+        edited = this.model.editEntry(id, newEntry);
+
+        if (edited) {
+            message = "The record was successfully edited!";
+
+            this.showInformationMessage(message);
+        } else {
+            message = "Error: The record could not be edited! Please contact support!";
+
+            this.showErrorMessage(message);
+        } //end if
+    } //editSubcategory
+
+    /**
+     * Edits the tags of a record of the model of this edit controller using the input of this edit controller's edit
+     * view.
+     */
+    private void editTags() {
+        String id;
+        Set<String> newTags;
+        Optional<Entry> optional;
+        JTextField idTextField;
+        String message;
+        Entry entry;
+        Type type;
+        String category;
+        String subcategory;
+        Entry newEntry;
+        boolean edited;
+
+        id = this.getIdInput();
+
+        if (id == null) {
+            return;
+        } //end if
+
+        newTags = this.getNewTagsInput();
+
+        if (newTags == null) {
+            return;
+        } //end if
+
+        optional = this.model.findEntryWithId(id);
+
+        idTextField = this.editView.getIdTextField();
+
+        if (optional.isEmpty()) {
+            message = "Error: A record with the specified ID does not exist!";
+
+            this.showErrorMessage(idTextField, message);
+
+            return;
+        } //end if
+
+        entry = optional.get();
+
+        type = entry.getType();
+
+        category = entry.getCategory();
+
+        subcategory = entry.getSubcategory();
+
+        newEntry = new Entry(id, type, category, subcategory, newTags);
+
+        edited = this.model.editEntry(id, newEntry);
+
+        if (edited) {
+            message = "The record was successfully edited!";
+
+            this.showInformationMessage(message);
+        } else {
+            message = "Error: The record could not be edited! Please contact support!";
+
+            this.showErrorMessage(message);
+        } //end if
+    } //editTags
 }
