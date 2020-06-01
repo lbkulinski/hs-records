@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 30, 2020
+ * @version June 1, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -396,6 +396,121 @@ public final class Model implements Serializable {
     } //editEntry
 
     /**
+     * Attempts to edit all of the entries with the specified category in this model. If an entry with the specified
+     * category has not been previously added to this model, no edits will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @param newCategory the new category to be used in the operation
+     * @return {@code true}, if at least one entry with the specified category was edited in this model and
+     * @code false} otherwise
+     * @throws NullPointerException if the specified category or new category is {@code null}
+     */
+    public boolean editEntriesWithCategory(String category, String newCategory) {
+        String categoryUpper;
+        Set<Entry> foundEntries;
+        String id;
+        Type type;
+        String subcategory;
+        Set<String> tags;
+        Entry newEntry;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        Objects.requireNonNull(newCategory, "the specified new category is null");
+
+        categoryUpper = category.toUpperCase();
+
+        foundEntries = this.idsToEntries.values()
+                                        .stream()
+                                        .filter(entry -> {
+                                            String entryCategory = entry.getCategory();
+
+                                            return entryCategory.equals(categoryUpper);
+                                        })
+                                        .collect(Collectors.toUnmodifiableSet());
+
+        for (Entry entry : foundEntries) {
+            id = entry.getId();
+
+            type = entry.getType();
+
+            subcategory = entry.getSubcategory();
+
+            tags = entry.getTags();
+
+            newEntry = new Entry(id, type, newCategory, subcategory, tags);
+
+            this.deleteEntry(id);
+
+            this.addEntry(newEntry);
+        } //end if
+
+        return foundEntries.size() > 0;
+    } //editEntriesWithCategory
+
+    /**
+     * Attempts to edit all of the entries with the specified subcategory in this model. If an entry with the specified
+     * subcategory has not been previously added to this model or the specified subcategory is not mapped from the
+     * specified category, no edits will not occur.
+     *
+     * @param category the category to be used in the operation
+     * @param subcategory the subcategory to be used in the operation
+     * @param newSubcategory the new subcategory to be used in the operation
+     * @return {@code true}, if at least one entry with the specified subcategory was edited in this model and
+     * {@code false} otherwise
+     * @throws NullPointerException if the specified category, subcategory, or new subcategory is {@code null}
+     */
+    public boolean editEntriesWithSubcategory(String category, String subcategory, String newSubcategory) {
+        String categoryUpper;
+        String subcategoryUpper;
+        Set<Entry> foundEntries;
+        String id;
+        Type type;
+        Set<String> tags;
+        Entry newEntry;
+
+        Objects.requireNonNull(category, "the specified category is null");
+
+        Objects.requireNonNull(subcategory, "the specified subcategory is null");
+
+        Objects.requireNonNull(newSubcategory, "the specified new subcategory is null");
+
+        categoryUpper = category.toUpperCase();
+
+        subcategoryUpper = subcategory.toUpperCase();
+
+        foundEntries = this.idsToEntries.values()
+                                        .stream()
+                                        .filter(entry -> {
+                                            String entryCategory = entry.getCategory();
+
+                                            return entryCategory.equals(categoryUpper);
+                                        })
+                                        .filter(entry -> {
+                                            String entrySubcategory = entry.getSubcategory();
+
+                                            return entrySubcategory.equals(subcategoryUpper);
+                                        })
+                                        .collect(Collectors.toUnmodifiableSet());
+
+        for (Entry entry : foundEntries) {
+            id = entry.getId();
+
+            type = entry.getType();
+
+            tags = entry.getTags();
+
+            newEntry = new Entry(id, type, category, newSubcategory, tags);
+
+            this.deleteEntry(id);
+
+            this.addEntry(newEntry);
+        } //end if
+
+        return foundEntries.size() > 0;
+    } //editEntriesWithSubcategory
+
+    /**
      * Attempts to edit the specified category of this model by replacing it with the specified new category. If the
      * specified category has not been previously added to this model, the edit will not occur.
      *
@@ -573,7 +688,7 @@ public final class Model implements Serializable {
      * @param subcategory the subcategory to be used in the operation
      * @return {@code true}, if at least one entry with the specified subcategory was deleted from this model and
      * {@code false} otherwise
-     * @throws NullPointerException if the specified subcategory is {@code null}
+     * @throws NullPointerException if the specified category or subcategory is {@code null}
      */
     public boolean deleteEntriesWithSubcategory(String category, String subcategory) {
         String categoryUpper;

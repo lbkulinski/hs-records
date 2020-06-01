@@ -32,7 +32,7 @@ import javax.swing.JMenuItem;
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 22, 2020
+ * @version June 1, 2020
  */
 public final class MenuController {
     /**
@@ -77,6 +77,40 @@ public final class MenuController {
     } //MenuController
 
     /**
+     * Shows the specified error message.
+     *
+     * @param message the message to be used in the operation
+     */
+    private void showErrorMessage(String message) {
+        JMenuBar menuBar;
+        Window window;
+        String title = "HS Records";
+
+        menuBar = this.menuView.getMenuBar();
+
+        window = SwingUtilities.getWindowAncestor(menuBar);
+
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+    } //showErrorMessage
+
+    /**
+     * Shows the specified information message.
+     *
+     * @param message the message to be used in the operation
+     */
+    private void showInformationMessage(String message) {
+        JMenuBar menuBar;
+        Window window;
+        String title = "HS Records";
+
+        menuBar = this.menuView.getMenuBar();
+
+        window = SwingUtilities.getWindowAncestor(menuBar);
+
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+    } //showInformationMessage
+
+    /**
      * Returns the category input of this menu controller's menu view.
      *
      * @return the category input of this menu controller's menu view
@@ -99,7 +133,7 @@ public final class MenuController {
         if (categories.isEmpty()) {
             message = "Error: No categories have been previously added!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } //end if
@@ -141,7 +175,7 @@ public final class MenuController {
         if (subcategories.isEmpty()) {
             message = "Error: No subcategories have been previously added!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } //end if
@@ -207,19 +241,19 @@ public final class MenuController {
         } else if (category.isBlank()) {
             message = "Error: The specified category is blank!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } else if (category.contains(comma)) {
             message = "Error: The specified category contains a comma!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } else if (this.model.containsCategory(category)) {
             message = "Error: The specified category already exists!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } //end if
@@ -259,19 +293,19 @@ public final class MenuController {
         } else if (subcategory.isBlank()) {
             message = "Error: The specified subcategory is blank!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } else if (subcategory.contains(comma)) {
             message = "Error: The specified subcategory contains a comma!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } else if (this.model.containsSubcategory(category, subcategory)) {
             message = "Error: The specified subcategory already exists!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } //end if
@@ -315,7 +349,7 @@ public final class MenuController {
         if (Files.exists(path)) {
             message = "Error: The directory already exists!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -329,12 +363,16 @@ public final class MenuController {
 
             message = "Error: The directory could not be created! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end try catch
 
-        message = "The directory was successfully created! Would you like to open it?";
+        message = "The directory was successfully created!";
+
+        this.showInformationMessage(message);
+
+        message = "Would you like to open the directory?";
 
         choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
                                                JOptionPane.QUESTION_MESSAGE);
@@ -346,7 +384,7 @@ public final class MenuController {
             if (!Desktop.isDesktopSupported()) {
                 message = "Error: The directory could not be opened! Please contact support!";
 
-                JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+                this.showErrorMessage(message);
 
                 return;
             } //end if
@@ -364,7 +402,7 @@ public final class MenuController {
 
                 message = "Error: The directory could not be opened! Please contact support!";
 
-                JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+                this.showErrorMessage(message);
             } //end try catch
         } //end if
     } //createDirectory
@@ -374,12 +412,9 @@ public final class MenuController {
      */
     private void openRecord() {
         int entryCount;
-        JMenuBar menuBar;
-        Window window;
         String id;
         Optional<Entry> optional;
         String message;
-        String title = "HS Records";
         Entry entry;
         String category;
         String subcategory;
@@ -390,14 +425,10 @@ public final class MenuController {
 
         entryCount = this.model.getEntryCount();
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (entryCount == 0) {
             message = "Error: No records have been previously added!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -409,7 +440,7 @@ public final class MenuController {
         if (optional.isEmpty()) {
             message = "Error: The record does not exist!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -429,7 +460,7 @@ public final class MenuController {
         if (Files.notExists(path)) {
             message = "Error: The file associated with the record could not be found!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -437,7 +468,7 @@ public final class MenuController {
         if (!Desktop.isDesktopSupported()) {
             message = "Error: The file associated with the record could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -455,7 +486,7 @@ public final class MenuController {
 
             message = "Error: The file associated with the record could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end try catch
     } //openRecord
 
@@ -466,10 +497,7 @@ public final class MenuController {
         String category;
         String subcategory;
         Path path;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
         Desktop desktop;
         File file;
 
@@ -487,14 +515,10 @@ public final class MenuController {
 
         path = Path.of(category, subcategory);
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (Files.notExists(path)) {
             message = "Error: The directory could not be found!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -502,7 +526,7 @@ public final class MenuController {
         if (!Desktop.isDesktopSupported()) {
             message = "Error: The directory could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -520,7 +544,7 @@ public final class MenuController {
 
             message = "Error: The directory could not be opened! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end try catch
     } //openDirectory
 
@@ -542,10 +566,7 @@ public final class MenuController {
         String subcategory;
         String tagsString;
         Optional<Entry> optional;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
         Type type;
         String[] tagArray;
         Set<String> tags;
@@ -571,14 +592,10 @@ public final class MenuController {
 
         optional = this.model.findEntryWithId(id);
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (optional.isPresent()) {
             message = "Error: An entry in the CSV file has an ID that already exists!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } //end if
@@ -594,7 +611,7 @@ public final class MenuController {
 
             message = "Error: An entry in the CSV file has a type that is invalid!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return null;
         } //end try catch
@@ -626,7 +643,6 @@ public final class MenuController {
         Path path;
         List<String> lines;
         String message;
-        String title = "HS Records";
         Entry parsedEntry;
         Set<Entry> entries;
         String category;
@@ -647,7 +663,7 @@ public final class MenuController {
 
         fileChooser.setFileFilter(filter);
 
-        state = fileChooser.showOpenDialog(menuBar);
+        state = fileChooser.showOpenDialog(window);
 
         if (state != JFileChooser.APPROVE_OPTION) {
             return;
@@ -666,7 +682,7 @@ public final class MenuController {
 
             message = "Error: The CSV file could not be imported! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end try catch
@@ -694,7 +710,7 @@ public final class MenuController {
                 if (!added) {
                     message = "Error: The CSV file could not be fully imported! Please contact support!";
 
-                    JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+                    this.showErrorMessage(message);
 
                     return;
                 } //end if
@@ -706,7 +722,7 @@ public final class MenuController {
                 if (!added) {
                     message = "Error: The CSV file could not be fully imported! Please contact support!";
 
-                    JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+                    this.showErrorMessage(message);
 
                     return;
                 } //end if
@@ -717,7 +733,7 @@ public final class MenuController {
             if (!added) {
                 message = "Error: The CSV file could not be fully imported! Please contact support!";
 
-                JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+                this.showErrorMessage(message);
 
                 return;
             } //end if
@@ -727,7 +743,7 @@ public final class MenuController {
 
         message = "The CSV file was successfully imported!";
 
-        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+        this.showInformationMessage(message);
     } //importFromCsv
 
     /**
@@ -809,7 +825,6 @@ public final class MenuController {
         String name;
         String patternString = "(.)*.csv";
         String message;
-        String title = "HS Records";
         Pattern pattern;
         Matcher matcher;
         Path path;
@@ -830,7 +845,7 @@ public final class MenuController {
 
         fileChooser.setFileFilter(filter);
 
-        state = fileChooser.showSaveDialog(menuBar);
+        state = fileChooser.showSaveDialog(window);
 
         if (state != JFileChooser.APPROVE_OPTION) {
             return;
@@ -847,7 +862,7 @@ public final class MenuController {
         if (!matcher.matches()) {
             message = "Error: The selected file is not a CSV file!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end if
@@ -869,14 +884,14 @@ public final class MenuController {
 
             message = "Error: The CSV file could not be exported! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             return;
         } //end try catch
 
         message = "The CSV file was successfully exported!";
 
-        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+        this.showInformationMessage(message);
     } //exportToCsv
 
     /**
@@ -884,25 +899,18 @@ public final class MenuController {
      */
     private void save() {
         boolean saved;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
 
         saved = ControllerUtilities.writeModelToFile(this.model);
-
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (saved) {
             message = "The save was successful!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
         } else {
             message = "Error: The save was unsuccessful! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //save
 
@@ -914,7 +922,6 @@ public final class MenuController {
         JMenuBar menuBar;
         Window window;
         String message;
-        String title = "HS Records";
 
         saved = ControllerUtilities.writeModelToFile(this.model);
 
@@ -931,7 +938,7 @@ public final class MenuController {
         } else {
             message = "Error: The save was unsuccessful! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //exit
 
@@ -940,27 +947,20 @@ public final class MenuController {
      */
     private void showLatestId() {
         String latestId;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
 
         latestId = this.model.getLatestId();
-
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (latestId == null) {
             message = "Error: No entries have been added!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } else {
             String format = "Latest ID: %s";
 
             message = String.format(format, latestId);
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
         } //end if
     } //showLatestId
 
@@ -969,21 +969,14 @@ public final class MenuController {
      */
     private void showEntryCount() {
         int entryCount;
-        JMenuBar menuBar;
-        Window window;
         String message;
         String format = "Record count: %d";
-        String title = "HS Records";
 
         entryCount = this.model.getEntryCount();
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         message = String.format(format, entryCount);
 
-        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+        this.showInformationMessage(message);
     } //showEntryCount
 
     /**
@@ -992,10 +985,7 @@ public final class MenuController {
     private void addCategory() {
         String newCategory;
         boolean added;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
 
         newCategory = this.getNewCategoryInput();
 
@@ -1005,20 +995,16 @@ public final class MenuController {
 
         added = this.model.addCategory(newCategory);
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (added) {
             this.addController.fillCategoryComboBox();
 
             message = "The category was successfully added!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
         } else {
             message = "Error: The category could not be added! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //addCategory
 
@@ -1053,15 +1039,36 @@ public final class MenuController {
         window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (edited) {
+            int choice;
+
             this.addController.fillCategoryComboBox();
 
             message = "The category was successfully edited!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
+
+            message = "Would you like to update all records with the old category to the new category?";
+
+            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                   JOptionPane.QUESTION_MESSAGE);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                edited = this.model.editEntriesWithCategory(category, newCategory);
+
+                if (edited) {
+                    message = "The records were successfully edited!";
+
+                    this.showInformationMessage(message);
+                } else {
+                    message = "Error: The records could not be edited! Please contact support!";
+
+                    this.showErrorMessage(message);
+                } //end if
+            } //end if
         } else {
             message = "Error: The category could not be edited! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //editCategory
 
@@ -1089,15 +1096,36 @@ public final class MenuController {
         window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (deleted) {
+            int choice;
+
             this.addController.fillCategoryComboBox();
 
             message = "The category was successfully deleted!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
+
+            message = "Would you like to delete all records with the deleted category?";
+
+            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                   JOptionPane.QUESTION_MESSAGE);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                deleted = this.model.deleteEntriesWithCategory(category);
+
+                if (deleted) {
+                    message = "The records were successfully deleted!";
+
+                    this.showInformationMessage(message);
+                } else {
+                    message = "Error: The records could not be deleted! Please contact support!";
+
+                    this.showErrorMessage(message);
+                } //end if
+            } //end if
         } else {
             message = "Error: The category could not be deleted! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //deleteCategory
 
@@ -1182,15 +1210,36 @@ public final class MenuController {
         window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (edited) {
+            int choice;
+
             this.addController.fillSubcategoryComboBox();
 
             message = "The subcategory was successfully edited!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
+
+            message = "Would you like to update all records with the old subcategory to the new subcategory?";
+
+            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                   JOptionPane.QUESTION_MESSAGE);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                edited = this.model.editEntriesWithSubcategory(category, subcategory, newSubcategory);
+
+                if (edited) {
+                    message = "The records were successfully edited!";
+
+                    this.showInformationMessage(message);
+                } else {
+                    message = "Error: The records could not be edited! Please contact support!";
+
+                    this.showErrorMessage(message);
+                } //end if
+            } //end if
         } else {
             message = "Error: The subcategory could not be edited! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //editSubcategory
 
@@ -1225,15 +1274,36 @@ public final class MenuController {
         window = SwingUtilities.getWindowAncestor(menuBar);
 
         if (deleted) {
+            int choice;
+
             this.addController.fillSubcategoryComboBox();
 
             message = "The subcategory was successfully deleted!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
+
+            message = "Would you like to delete all records with the deleted subcategory?";
+
+            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                   JOptionPane.QUESTION_MESSAGE);
+
+            if (choice == JOptionPane.YES_OPTION) {
+                deleted = this.model.deleteEntriesWithSubcategory(category, subcategory);
+
+                if (deleted) {
+                    message = "The records were successfully deleted!";
+
+                    this.showInformationMessage(message);
+                } else {
+                    message = "Error: The records could not be deleted! Please contact support!";
+
+                    this.showErrorMessage(message);
+                } //end if
+            } //end if
         } else {
             message = "Error: The subcategory could not be deleted! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //deleteSubcategory
 
