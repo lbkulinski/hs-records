@@ -55,12 +55,114 @@ public final class EditController {
     } //EditController
 
     /**
+     * Fills the new category combo box of this edit controller's edit view with the categories of this edit
+     * controller's model.
+     */
+    void fillNewCategoryComboBox() {
+        JComboBox<String> newCategoryComboBox;
+        Set<String> categories;
+
+        newCategoryComboBox = this.editView.getNewCategoryComboBox();
+
+        categories = this.model.getCategories();
+
+        newCategoryComboBox.removeAllItems();
+
+        if (categories.isEmpty()) {
+            newCategoryComboBox.setEnabled(false);
+        } else {
+            newCategoryComboBox.setEnabled(true);
+
+            categories.forEach(newCategoryComboBox::addItem);
+        } //end if
+
+        newCategoryComboBox.setSelectedIndex(-1);
+    } //fillCategoryComboBox
+
+    /**
+     * Fills the category combo box of this edit controller's edit view with the categories of this edit controller's
+     * model.
+     */
+    void fillCategoryComboBox() {
+        JComboBox<String> categoryComboBox;
+        Set<String> categories;
+
+        categoryComboBox = this.editView.getCategoryComboBox();
+
+        categories = this.model.getCategories();
+
+        categoryComboBox.removeAllItems();
+
+        if (categories.isEmpty()) {
+            categoryComboBox.setEnabled(false);
+        } else {
+            categoryComboBox.setEnabled(true);
+
+            categories.forEach(categoryComboBox::addItem);
+        } //end if
+
+        categoryComboBox.setSelectedIndex(-1);
+    } //fillCategoryComboBox
+
+    /**
+     * Fills the new subcategory combo box of this edit controller's edit view with the subcategories of this edit
+     * controller's model that are mapped from the user selected category.
+     */
+    void fillNewSubcategoryComboBox() {
+        JComboBox<String> newSubcategoryComboBox;
+        JComboBox<String> newCategoryComboBox;
+        JComboBox<String> categoryComboBox;
+        String category;
+        Set<String> subcategories;
+
+        newSubcategoryComboBox = this.editView.getNewSubcategoryComboBox();
+
+        newCategoryComboBox = this.editView.getNewCategoryComboBox();
+
+        categoryComboBox = this.editView.getCategoryComboBox();
+
+        if (newCategoryComboBox.isShowing()) {
+            category = (String) newCategoryComboBox.getSelectedItem();
+        } else if (categoryComboBox.isShowing()) {
+            category = (String) categoryComboBox.getSelectedItem();
+        } else {
+            category = null;
+        } //end for
+
+        if (category == null) {
+            newSubcategoryComboBox.setEnabled(false);
+
+            newSubcategoryComboBox.setSelectedIndex(-1);
+
+            newSubcategoryComboBox.removeAllItems();
+
+            return;
+        } //end if
+
+        subcategories = this.model.getSubcategories(category);
+
+        newSubcategoryComboBox.removeAllItems();
+
+        if (subcategories.isEmpty()) {
+            newSubcategoryComboBox.setEnabled(false);
+        } else {
+            newSubcategoryComboBox.setEnabled(true);
+
+            subcategories.forEach(newSubcategoryComboBox::addItem);
+        } //end if
+
+        newSubcategoryComboBox.setSelectedIndex(-1);
+    } //fillNewSubcategoryComboBox
+
+    /**
      * Clears the fields of this edit controller's edit view.
      */
     private void clearFields() {
         JPanel panel;
         JButton editButton;
         Window window;
+        JTextField idTextField;
+        JComboBox<Field> fieldComboBox;
         ActionListener[] editListeners;
 
         panel = this.editView.getPanel();
@@ -68,6 +170,10 @@ public final class EditController {
         editButton = this.editView.getEditButton();
 
         window = SwingUtilities.getWindowAncestor(panel);
+
+        idTextField = this.editView.getIdTextField();
+
+        fieldComboBox = this.editView.getFieldComboBox();
 
         editListeners = editButton.getActionListeners();
 
@@ -82,6 +188,18 @@ public final class EditController {
         window.revalidate();
 
         window.repaint();
+
+        idTextField.setText(null);
+
+        fieldComboBox.setSelectedIndex(-1);
+
+        this.fillNewCategoryComboBox();
+
+        this.fillCategoryComboBox();
+
+        this.fillNewSubcategoryComboBox();
+
+        idTextField.requestFocus();
     } //clearFields
 
     /**
@@ -171,14 +289,6 @@ public final class EditController {
         fieldComboBox = this.editView.getFieldComboBox();
 
         field = (Field) fieldComboBox.getSelectedItem();
-
-        if (field == null) {
-            String message = "Error: The specified field is blank!";
-
-            this.showErrorMessage(fieldComboBox, message);
-
-            return null;
-        } //end if
 
         return field;
     } //getFieldInput
@@ -688,97 +798,6 @@ public final class EditController {
     } //editTags
 
     /**
-     * Fills the new category combo box of this edit controller's edit view with the categories of this edit
-     * controller's model.
-     */
-    void fillNewCategoryComboBox() {
-        JComboBox<String> newCategoryComboBox;
-        Set<String> categories;
-
-        newCategoryComboBox = this.editView.getNewCategoryComboBox();
-
-        categories = this.model.getCategories();
-
-        newCategoryComboBox.removeAllItems();
-
-        if (categories.isEmpty()) {
-            newCategoryComboBox.setEnabled(false);
-        } else {
-            newCategoryComboBox.setEnabled(true);
-
-            categories.forEach(newCategoryComboBox::addItem);
-        } //end if
-
-        newCategoryComboBox.setSelectedIndex(-1);
-    } //fillCategoryComboBox
-
-    /**
-     * Fills the category combo box of this edit controller's edit view with the categories of this edit controller's
-     * model.
-     */
-    void fillCategoryComboBox() {
-        JComboBox<String> categoryComboBox;
-        Set<String> categories;
-
-        categoryComboBox = this.editView.getCategoryComboBox();
-
-        categories = this.model.getCategories();
-
-        categoryComboBox.removeAllItems();
-
-        if (categories.isEmpty()) {
-            categoryComboBox.setEnabled(false);
-        } else {
-            categoryComboBox.setEnabled(true);
-
-            categories.forEach(categoryComboBox::addItem);
-        } //end if
-
-        categoryComboBox.setSelectedIndex(-1);
-    } //fillCategoryComboBox
-
-    /**
-     * Fills the new subcategory combo box of this edit controller's edit view with the subcategories of this edit
-     * controller's model that are mapped from the user selected category.
-     */
-    void fillNewSubcategoryComboBox() {
-        JComboBox<String> newSubcategoryComboBox;
-        JComboBox<String> categoryComboBox;
-        String category;
-        Set<String> subcategories;
-
-        newSubcategoryComboBox = this.editView.getNewSubcategoryComboBox();
-
-        categoryComboBox = this.editView.getCategoryComboBox();
-
-        category = (String) categoryComboBox.getSelectedItem();
-
-        if (category == null) {
-            newSubcategoryComboBox.setEnabled(false);
-
-            newSubcategoryComboBox.setSelectedIndex(-1);
-
-            newSubcategoryComboBox.removeAllItems();
-
-            return;
-        } //end if
-
-        subcategories = this.model.getSubcategories(category);
-
-        newSubcategoryComboBox.removeAllItems();
-
-        if (subcategories.isEmpty()) {
-            newSubcategoryComboBox.setEnabled(false);
-        } else {
-            newSubcategoryComboBox.setEnabled(true);
-
-            subcategories.forEach(newSubcategoryComboBox::addItem);
-        } //end if
-
-        newSubcategoryComboBox.setSelectedIndex(-1);
-    } //fillNewSubcategoryComboBox
-
-    /**
      * Displays the edit ID components of this edit controller's edit view.
      */
     private void displayEditIdComponents() {
@@ -824,7 +843,11 @@ public final class EditController {
 
         window.repaint();
 
-        editButton.addActionListener(actionEvent -> this.editId());
+        editButton.addActionListener(actionEvent -> {
+            this.editId();
+
+            this.clearFields();
+        });
     } //displayEditIdComponents
 
     /**
@@ -873,7 +896,11 @@ public final class EditController {
 
         window.repaint();
 
-        editButton.addActionListener(actionEvent -> this.editType());
+        editButton.addActionListener(actionEvent -> {
+            this.editType();
+
+            this.clearFields();
+        });
     } //displayEditTypeComponents
 
     /**
@@ -930,11 +957,11 @@ public final class EditController {
 
         this.fillNewCategoryComboBox();
 
-        this.fillNewSubcategoryComboBox();
+        editButton.addActionListener(actionEvent -> {
+            this.editCategory();
 
-        newCategoryComboBox.addActionListener(actionEvent -> this.fillNewSubcategoryComboBox());
-
-        editButton.addActionListener(actionEvent -> this.editCategory());
+            this.clearFields();
+        });
     } //displayEditCategoryComponents
 
     /**
@@ -991,11 +1018,11 @@ public final class EditController {
 
         this.fillCategoryComboBox();
 
-        this.fillNewSubcategoryComboBox();
+        editButton.addActionListener(actionEvent -> {
+            this.editSubcategory();
 
-        categoryComboBox.addActionListener(actionEvent -> this.fillNewSubcategoryComboBox());
-
-        editButton.addActionListener(actionEvent -> this.editSubcategory());
+            this.clearFields();
+        });
     } //displayEditSubcategoryComponents
 
     /**
@@ -1044,8 +1071,33 @@ public final class EditController {
 
         window.repaint();
 
-        editButton.addActionListener(actionEvent -> this.editTags());
+        editButton.addActionListener(actionEvent -> {
+            this.editTags();
+
+            this.clearFields();
+        });
     } //displayEditTagsComponents
+
+    /**
+     * Displays the appropriate edit components of this edit controller's edit view.
+     */
+    private void displayEditComponents() {
+        Field field;
+
+        field = this.getFieldInput();
+
+        if (field == null) {
+            return;
+        } //end if
+
+        switch (field) {
+            case ID -> this.displayEditIdComponents();
+            case TYPE -> this.displayEditTypeComponents();
+            case CATEGORY -> this.displayEditCategoryComponents();
+            case SUBCATEGORY -> this.displayEditSubcategoryComponents();
+            case TAGS -> this.displayEditTagsComponents();
+        } //end switch
+    } //displayEditComponents
 
     /**
      * Returns a new {@code EditController} object with the specified model and edit view.
@@ -1058,33 +1110,29 @@ public final class EditController {
     public static EditController newEditController(Model model, EditView editView) {
         EditController editController;
         JComboBox<Field> fieldComboBox;
+        JComboBox<String> newCategoryComboBox;
+        JComboBox<String> categoryComboBox;
         JButton clearButton;
 
         editController = new EditController(model, editView);
 
         fieldComboBox = editController.editView.getFieldComboBox();
 
+        newCategoryComboBox = editController.editView.getNewCategoryComboBox();
+
+        categoryComboBox = editController.editView.getCategoryComboBox();
+
         clearButton = editController.editView.getClearButton();
 
-        fieldComboBox.addActionListener(actionEvent -> {
-            Field field;
+        fieldComboBox.addActionListener(actionEvent -> editController.displayEditComponents());
 
-            field = (Field) fieldComboBox.getSelectedItem();
+        newCategoryComboBox.addActionListener(actionEvent -> editController.fillNewSubcategoryComboBox());
 
-            if (field == null) {
-                return;
-            } //end if
-
-            switch (field) {
-                case ID -> editController.displayEditIdComponents();
-                case TYPE -> editController.displayEditTypeComponents();
-                case CATEGORY -> editController.displayEditCategoryComponents();
-                case SUBCATEGORY -> editController.displayEditSubcategoryComponents();
-                case TAGS -> editController.displayEditTagsComponents();
-            } //end switch
-        });
+        categoryComboBox.addActionListener(actionEvent -> editController.fillNewSubcategoryComboBox());
 
         clearButton.addActionListener(actionEvent -> editController.clearFields());
+
+        editController.clearFields();
 
         return editController;
     } //newEditController

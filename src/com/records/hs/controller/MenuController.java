@@ -51,28 +51,39 @@ public final class MenuController {
     private final AddController addController;
 
     /**
+     * The edit controller of this menu controller.
+     */
+    private final EditController editController;
+
+    /**
      * The logger of this menu controller.
      */
     private final Logger logger;
 
     /**
-     * Constructs a newly allocated {@code MenuController} object with the specified model and menu view.
+     * Constructs a newly allocated {@code MenuController} object with the specified model, menu view, add controller,
+     * and edit controller.
      *
      * @param model the model to be used in construction
      * @param menuView the menu view to be used in construction
      * @param addController the add controller to be used in construction
-     * @throws NullPointerException if the specified model, menu view, or add controller is {@code null}
+     * @param editController the edit controller to be used in construction
+     * @throws NullPointerException if the specified model, menu view, add controller, or edit controller is {@code null}
      */
-    private MenuController(Model model, MenuView menuView, AddController addController) {
+    private MenuController(Model model, MenuView menuView, AddController addController,
+                           EditController editController) {
         Objects.requireNonNull(model, "the specified model is null");
 
         Objects.requireNonNull(menuView, "the specified menu view is null");
 
         Objects.requireNonNull(addController, "the specified add controller is null");
 
+        Objects.requireNonNull(editController, "the specified edit controller is null");
+
         this.model = model;
         this.menuView = menuView;
         this.addController = addController;
+        this.editController = editController;
         this.logger = Logger.getGlobal();
     } //MenuController
 
@@ -998,6 +1009,10 @@ public final class MenuController {
         if (added) {
             this.addController.fillCategoryComboBox();
 
+            this.editController.fillNewCategoryComboBox();
+
+            this.editController.fillCategoryComboBox();
+
             message = "The category was successfully added!";
 
             this.showInformationMessage(message);
@@ -1042,6 +1057,10 @@ public final class MenuController {
             int choice;
 
             this.addController.fillCategoryComboBox();
+
+            this.editController.fillNewCategoryComboBox();
+
+            this.editController.fillCategoryComboBox();
 
             message = "The category was successfully edited!";
 
@@ -1099,6 +1118,10 @@ public final class MenuController {
             int choice;
 
             this.addController.fillCategoryComboBox();
+
+            this.editController.fillNewCategoryComboBox();
+
+            this.editController.fillCategoryComboBox();
 
             message = "The category was successfully deleted!";
 
@@ -1162,6 +1185,8 @@ public final class MenuController {
         if (added) {
             this.addController.fillSubcategoryComboBox();
 
+            this.editController.fillNewSubcategoryComboBox();
+
             message = "The subcategory was successfully added!";
 
             JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
@@ -1213,6 +1238,8 @@ public final class MenuController {
             int choice;
 
             this.addController.fillSubcategoryComboBox();
+
+            this.editController.fillNewSubcategoryComboBox();
 
             message = "The subcategory was successfully edited!";
 
@@ -1279,6 +1306,8 @@ public final class MenuController {
 
             this.addController.fillSubcategoryComboBox();
 
+            this.editController.fillNewSubcategoryComboBox();
+
             message = "The subcategory was successfully deleted!";
 
             this.showInformationMessage(message);
@@ -1309,15 +1338,18 @@ public final class MenuController {
     } //deleteSubcategory
 
     /**
-     * Returns a new {@code MenuController} with the specified model, menu view, and add controller.
+     * Returns a new {@code MenuController} with the specified model, menu view, add controller, and edit controller.
      *
      * @param model the model to be used in the operation
      * @param menuView the menu view to be used in the operation
      * @param addController the add controller to be used in the operation
-     * @return a new {@code MenuController} with the specified model, menu view, and add controller
-     * @throws NullPointerException if the specified model, menu view, or add controller is {@code null}
+     * @param editController the edit controller to be used in the operation
+     * @return a new {@code MenuController} with the specified model, menu view, add controller, and edit controller
+     * @throws NullPointerException if the specified model, menu view, add controller, or edit controller is
+     * {@code null}
      */
-    public static MenuController newMenuController(Model model, MenuView menuView, AddController addController) {
+    public static MenuController newMenuController(Model model, MenuView menuView, AddController addController,
+                                                   EditController editController) {
         MenuController menuController;
         JMenuItem createDirectoryMenuItem;
         JMenuItem openRecordMenuItem;
@@ -1335,7 +1367,7 @@ public final class MenuController {
         JMenuItem editSubcategoryMenuItem;
         JMenuItem deleteSubcategoryMenuItem;
 
-        menuController = new MenuController(model, menuView, addController);
+        menuController = new MenuController(model, menuView, addController, editController);
 
         createDirectoryMenuItem = menuController.menuView.getCreateDirectoryMenuItem();
 
