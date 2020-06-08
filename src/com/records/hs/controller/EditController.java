@@ -269,8 +269,6 @@ public final class EditController {
 
             this.showErrorMessage(idTextField, message);
 
-            idTextField.requestFocus();
-
             return null;
         } //end if
 
@@ -313,8 +311,6 @@ public final class EditController {
 
             this.showErrorMessage(newIdTextField, message);
 
-            newIdTextField.requestFocus();
-
             return null;
         } else if (id.contains(comma)) {
             message = "Error: The specified ID contains a comma!";
@@ -347,8 +343,6 @@ public final class EditController {
 
             this.showErrorMessage(newTypeComboBox, message);
 
-            newTypeComboBox.requestFocus();
-
             return null;
         } //end if
 
@@ -372,8 +366,6 @@ public final class EditController {
             String message = "Error: The specified category is blank!";
 
             this.showErrorMessage(newCategoryComboBox, message);
-
-            newCategoryComboBox.requestFocus();
 
             return null;
         } //end if
@@ -399,8 +391,6 @@ public final class EditController {
 
             this.showErrorMessage(categoryComboBox, message);
 
-            categoryComboBox.requestFocus();
-
             return null;
         } //end if
 
@@ -424,8 +414,6 @@ public final class EditController {
             String message = "Error: The specified subcategory is blank!";
 
             this.showErrorMessage(newSubcategoryComboBox, message);
-
-            newSubcategoryComboBox.requestFocus();
 
             return null;
         } //end if
@@ -452,8 +440,6 @@ public final class EditController {
             String message = "Error: The specified set of tags is blank!";
 
             this.showErrorMessage(newTagsTextField, message);
-
-            newTagsTextField.requestFocus();
 
             return null;
         } //end if

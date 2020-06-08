@@ -107,7 +107,7 @@ public final class DeleteView {
     /**
      * Adds the components of this delete view to the panel of this delete view.
      */
-    private void addComponentsToPanel() {
+    public void addComponentsToPanel() {
         int fieldRow = 0;
         int column = 0;
         int clearRow = 1;
