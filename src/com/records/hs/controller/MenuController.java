@@ -23,7 +23,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import javax.swing.JMenuItem;
@@ -698,7 +698,7 @@ public final class MenuController {
             return;
         } //end try catch
 
-        entries = new LinkedHashSet<>();
+        entries = new HashSet<>();
 
         for (String line : lines) {
             parsedEntry = this.parseEntry(line);
