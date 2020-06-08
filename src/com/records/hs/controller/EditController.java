@@ -39,7 +39,7 @@ public final class EditController {
     private final EditView editView;
 
     /**
-     * Constructs a newly allocated {@code EditController} object.
+     * Constructs a newly allocated {@code EditController} object with the specified model and edit view.
      *
      * @param model the model to be used in construction
      * @param editView the edit view to be used in construction
@@ -129,19 +129,17 @@ public final class EditController {
             category = null;
         } //end for
 
+        newSubcategoryComboBox.removeAllItems();
+
         if (category == null) {
             newSubcategoryComboBox.setEnabled(false);
 
             newSubcategoryComboBox.setSelectedIndex(-1);
 
-            newSubcategoryComboBox.removeAllItems();
-
             return;
         } //end if
 
         subcategories = this.model.getSubcategories(category);
-
-        newSubcategoryComboBox.removeAllItems();
 
         if (subcategories.isEmpty()) {
             newSubcategoryComboBox.setEnabled(false);
