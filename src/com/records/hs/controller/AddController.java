@@ -18,12 +18,13 @@ import java.util.stream.Collectors;
 import com.records.hs.model.Entry;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import java.util.Optional;
 
 /**
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 22, 2020
+ * @version June 8, 2020
  */
 public final class AddController {
     /**
@@ -228,7 +229,7 @@ public final class AddController {
     /**
      * Clears the fields of this add controller's add view.
      */
-    void clearFields() {
+    private void clearFields() {
         JTextField idTextField;
         JComboBox<Type> typeComboBox;
         JTextField tagsTextField;
@@ -253,28 +254,61 @@ public final class AddController {
     } //clearFields
 
     /**
+     * Shows the specified error message.
+     *
+     * @param message the message to be used in the operation
+     */
+    private void showErrorMessage(String message) {
+        JPanel panel;
+        Window window;
+        String title = "HS Records";
+
+        panel = this.addView.getPanel();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+    } //showErrorMessage
+
+    /**
+     * Shows the specified information message.
+     *
+     * @param message the message to be used in the operation
+     */
+    private void showInformationMessage(String message) {
+        JPanel panel;
+        Window window;
+        String title = "HS Records";
+
+        panel = this.addView.getPanel();
+
+        window = SwingUtilities.getWindowAncestor(panel);
+
+        JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+    } //showInformationMessage
+
+    /**
      * Returns the ID input of this add controller's add view.
      *
      * @return the ID input of this add controller's add view
      */
     private String getIdInput() {
         JTextField idTextField;
-        Window window;
         String id;
         String message;
-        String title = "HS Records";
         String comma = ",";
+        Optional<Entry> optional;
 
         idTextField = this.addView.getIdTextField();
 
-        window = SwingUtilities.getWindowAncestor(idTextField);
-
         id = idTextField.getText();
+
+        optional = this.model.findEntryWithId(id);
 
         if (id.isBlank()) {
             message = "Error: The specified ID is blank!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             idTextField.requestFocus();
 
@@ -282,12 +316,20 @@ public final class AddController {
         } else if (id.contains(comma)) {
             message = "Error: The specified ID contains a comma!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             idTextField.requestFocus();
 
             return null;
-        } //end if
+        } else if (optional.isPresent()) {
+            message = "Error: An entry with the specified ID already exists!";
+
+            this.showErrorMessage(message);
+
+            idTextField.requestFocus();
+
+            return null;
+        }//end if
 
         return id;
     } //getIdInput
@@ -299,21 +341,16 @@ public final class AddController {
      */
     private Type getTypeInput() {
         JComboBox<Type> typeComboBox;
-        Window window;
         Type type;
-        String message;
-        String title = "HS Records";
 
         typeComboBox = this.addView.getTypeComboBox();
-
-        window = SwingUtilities.getWindowAncestor(typeComboBox);
 
         type = (Type) typeComboBox.getSelectedItem();
 
         if (type == null) {
-            message = "Error: The specified type is blank!";
+            String message = "Error: The specified type is blank!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             typeComboBox.requestFocus();
 
@@ -330,20 +367,16 @@ public final class AddController {
      */
     private String getCategoryInput() {
         JComboBox<String> categoryComboBox;
-        Window window;
         String category;
 
         categoryComboBox = this.addView.getCategoryComboBox();
-
-        window = SwingUtilities.getWindowAncestor(categoryComboBox);
 
         category = (String) categoryComboBox.getSelectedItem();
 
         if (category == null) {
             String message = "Error: The specified category is blank!";
-            String title = "HS Records";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             categoryComboBox.requestFocus();
 
@@ -360,20 +393,16 @@ public final class AddController {
      */
     private String getSubcategoryInput() {
         JComboBox<String> subcategoryComboBox;
-        Window window;
         String subcategory;
 
         subcategoryComboBox = this.addView.getSubcategoryComboBox();
-
-        window = SwingUtilities.getWindowAncestor(subcategoryComboBox);
 
         subcategory = (String) subcategoryComboBox.getSelectedItem();
 
         if (subcategory == null) {
             String message = "Error: The specified subcategory is blank!";
-            String title = "HS Records";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             subcategoryComboBox.requestFocus();
 
@@ -390,22 +419,18 @@ public final class AddController {
      */
     private Set<String> getTagsInput() {
         JTextField tagsTextField;
-        Window window;
         String tagsString;
         String[] tagArray;
         Set<String> tags;
 
         tagsTextField = this.addView.getTagsTextField();
 
-        window = SwingUtilities.getWindowAncestor(tagsTextField);
-
         tagsString = tagsTextField.getText();
 
         if (tagsString.isBlank()) {
             String message = "Error: The specified set of tags is blank!";
-            String title = "HS Records";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
 
             tagsTextField.requestFocus();
 
@@ -432,10 +457,7 @@ public final class AddController {
         Set<String> tags;
         Entry entry;
         boolean added;
-        JPanel panel;
-        Window window;
         String message;
-        String title = "HS Records";
 
         id = this.getIdInput();
 
@@ -471,20 +493,16 @@ public final class AddController {
 
         added = this.model.addEntry(entry);
 
-        panel = this.addView.getPanel();
-
-        window = SwingUtilities.getWindowAncestor(panel);
-
         if (added) {
             message = "The record was successfully added!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
+            this.showInformationMessage(message);
 
             this.clearFields();
         } else {
             message = "Error: The record could not be added! Please contact support!";
 
-            JOptionPane.showMessageDialog(window, message, title, JOptionPane.ERROR_MESSAGE);
+            this.showErrorMessage(message);
         } //end if
     } //addEntry
 

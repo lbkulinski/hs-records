@@ -32,7 +32,7 @@ import javax.swing.JMenuItem;
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 1, 2020
+ * @version June 8, 2020
  */
 public final class MenuController {
     /**
@@ -750,7 +750,15 @@ public final class MenuController {
             } //end if
         } //end for
 
-        this.addController.clearFields();
+        this.addController.fillCategoryComboBox();
+
+        this.addController.fillSubcategoryComboBox();
+
+        this.editController.fillNewCategoryComboBox();
+
+        this.editController.fillNewSubcategoryComboBox();
+
+        this.editController.fillCategoryComboBox();
 
         message = "The CSV file was successfully imported!";
 
@@ -1030,10 +1038,7 @@ public final class MenuController {
         String category;
         String newCategory;
         boolean edited;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
 
         category = this.getCategoryInput();
 
@@ -1049,12 +1054,8 @@ public final class MenuController {
 
         edited = this.model.editCategory(category, newCategory);
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (edited) {
-            int choice;
+            int entryCount;
 
             this.addController.fillCategoryComboBox();
 
@@ -1066,22 +1067,35 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            message = "Would you like to update all records with the old category to the new category?";
+            entryCount = this.model.getEntryCount();
 
-            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
-                                                   JOptionPane.QUESTION_MESSAGE);
+            if (entryCount > 0) {
+                JMenuBar menuBar;
+                Window window;
+                int choice;
+                String title = "HS Records";
 
-            if (choice == JOptionPane.YES_OPTION) {
-                edited = this.model.editEntriesWithCategory(category, newCategory);
+                menuBar = this.menuView.getMenuBar();
 
-                if (edited) {
-                    message = "The records were successfully edited!";
+                window = SwingUtilities.getWindowAncestor(menuBar);
 
-                    this.showInformationMessage(message);
-                } else {
-                    message = "Error: The records could not be edited! Please contact support!";
+                message = "Would you like to update all records with the old category to the new category?";
 
-                    this.showErrorMessage(message);
+                choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                       JOptionPane.QUESTION_MESSAGE);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    edited = this.model.editEntriesWithCategory(category, newCategory);
+
+                    if (edited) {
+                        message = "The records were successfully edited!";
+
+                        this.showInformationMessage(message);
+                    } else {
+                        message = "Error: The records could not be edited! Please contact support!";
+
+                        this.showErrorMessage(message);
+                    } //end if
                 } //end if
             } //end if
         } else {
@@ -1097,10 +1111,7 @@ public final class MenuController {
     private void deleteCategory() {
         String category;
         boolean deleted;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
 
         category = this.getCategoryInput();
 
@@ -1110,12 +1121,8 @@ public final class MenuController {
 
         deleted = this.model.deleteCategory(category);
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (deleted) {
-            int choice;
+            int entryCount;
 
             this.addController.fillCategoryComboBox();
 
@@ -1127,22 +1134,35 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            message = "Would you like to delete all records with the deleted category?";
+            entryCount = this.model.getEntryCount();
 
-            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
-                                                   JOptionPane.QUESTION_MESSAGE);
+            if (entryCount > 0) {
+                JMenuBar menuBar;
+                Window window;
+                int choice;
+                String title = "HS Records";
 
-            if (choice == JOptionPane.YES_OPTION) {
-                deleted = this.model.deleteEntriesWithCategory(category);
+                menuBar = this.menuView.getMenuBar();
 
-                if (deleted) {
-                    message = "The records were successfully deleted!";
+                window = SwingUtilities.getWindowAncestor(menuBar);
 
-                    this.showInformationMessage(message);
-                } else {
-                    message = "Error: The records could not be deleted! Please contact support!";
+                message = "Would you like to delete all records with the deleted category?";
 
-                    this.showErrorMessage(message);
+                choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                       JOptionPane.QUESTION_MESSAGE);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    deleted = this.model.deleteEntriesWithCategory(category);
+
+                    if (deleted) {
+                        message = "The records were successfully deleted!";
+
+                        this.showInformationMessage(message);
+                    } else {
+                        message = "Error: The records could not be deleted! Please contact support!";
+
+                        this.showErrorMessage(message);
+                    } //end if
                 } //end if
             } //end if
         } else {
@@ -1205,10 +1225,7 @@ public final class MenuController {
         String subcategory;
         String newSubcategory;
         boolean edited;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
 
         category = this.getCategoryInput();
 
@@ -1230,12 +1247,8 @@ public final class MenuController {
 
         edited = this.model.editSubcategory(category, subcategory, newSubcategory);
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (edited) {
-            int choice;
+            int entryCount;
 
             this.addController.fillSubcategoryComboBox();
 
@@ -1245,22 +1258,35 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            message = "Would you like to update all records with the old subcategory to the new subcategory?";
+            entryCount = this.model.getEntryCount();
 
-            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
-                                                   JOptionPane.QUESTION_MESSAGE);
+            if (entryCount > 0) {
+                JMenuBar menuBar;
+                Window window;
+                int choice;
+                String title = "HS Records";
 
-            if (choice == JOptionPane.YES_OPTION) {
-                edited = this.model.editEntriesWithSubcategory(category, subcategory, newSubcategory);
+                menuBar = this.menuView.getMenuBar();
 
-                if (edited) {
-                    message = "The records were successfully edited!";
+                window = SwingUtilities.getWindowAncestor(menuBar);
 
-                    this.showInformationMessage(message);
-                } else {
-                    message = "Error: The records could not be edited! Please contact support!";
+                message = "Would you like to update all records with the old subcategory to the new subcategory?";
 
-                    this.showErrorMessage(message);
+                choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                       JOptionPane.QUESTION_MESSAGE);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    edited = this.model.editEntriesWithSubcategory(category, subcategory, newSubcategory);
+
+                    if (edited) {
+                        message = "The records were successfully edited!";
+
+                        this.showInformationMessage(message);
+                    } else {
+                        message = "Error: The records could not be edited! Please contact support!";
+
+                        this.showErrorMessage(message);
+                    } //end if
                 } //end if
             } //end if
         } else {
@@ -1278,10 +1304,7 @@ public final class MenuController {
         String category;
         String subcategory;
         boolean deleted;
-        JMenuBar menuBar;
-        Window window;
         String message;
-        String title = "HS Records";
 
         category = this.getCategoryInput();
 
@@ -1297,12 +1320,8 @@ public final class MenuController {
 
         deleted = this.model.deleteSubcategory(category, subcategory);
 
-        menuBar = this.menuView.getMenuBar();
-
-        window = SwingUtilities.getWindowAncestor(menuBar);
-
         if (deleted) {
-            int choice;
+            int entryCount;
 
             this.addController.fillSubcategoryComboBox();
 
@@ -1312,22 +1331,35 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            message = "Would you like to delete all records with the deleted subcategory?";
+            entryCount = this.model.getEntryCount();
 
-            choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
-                                                   JOptionPane.QUESTION_MESSAGE);
+            if (entryCount > 0) {
+                JMenuBar menuBar;
+                Window window;
+                int choice;
+                String title = "HS Records";
 
-            if (choice == JOptionPane.YES_OPTION) {
-                deleted = this.model.deleteEntriesWithSubcategory(category, subcategory);
+                menuBar = this.menuView.getMenuBar();
 
-                if (deleted) {
-                    message = "The records were successfully deleted!";
+                window = SwingUtilities.getWindowAncestor(menuBar);
 
-                    this.showInformationMessage(message);
-                } else {
-                    message = "Error: The records could not be deleted! Please contact support!";
+                message = "Would you like to delete all records with the deleted subcategory?";
 
-                    this.showErrorMessage(message);
+                choice = JOptionPane.showConfirmDialog(window, message, title, JOptionPane.YES_NO_OPTION,
+                                                       JOptionPane.QUESTION_MESSAGE);
+
+                if (choice == JOptionPane.YES_OPTION) {
+                    deleted = this.model.deleteEntriesWithSubcategory(category, subcategory);
+
+                    if (deleted) {
+                        message = "The records were successfully deleted!";
+
+                        this.showInformationMessage(message);
+                    } else {
+                        message = "Error: The records could not be deleted! Please contact support!";
+
+                        this.showErrorMessage(message);
+                    } //end if
                 } //end if
             } //end if
         } else {
