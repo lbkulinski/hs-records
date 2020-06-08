@@ -890,11 +890,9 @@ public final class MenuController {
 
         entries = this.model.getEntries();
 
-        strings = new LinkedHashSet<>();
-
-        entries.stream()
-               .map(this::convertToString)
-               .forEachOrdered(strings::add);
+        strings = entries.stream()
+                         .map(this::convertToString)
+                         .collect(Collectors.toUnmodifiableSet());
 
         try {
             Files.write(path, strings);

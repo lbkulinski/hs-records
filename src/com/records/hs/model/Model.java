@@ -12,14 +12,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 
 /**
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 8, 2020
+ * @version June 1, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -190,7 +188,7 @@ public final class Model implements Serializable {
      * Constructs a newly allocated {@code Model} object.
      */
     public Model() {
-        this(null, new LinkedHashMap<>(), new HashMap<>());
+        this(null, new HashMap<>(), new HashMap<>());
     } //Model
 
     /**
@@ -214,7 +212,7 @@ public final class Model implements Serializable {
 
         elements = this.idsToEntries.values();
 
-        entries = new LinkedHashSet<>(elements);
+        entries = new HashSet<>(elements);
 
         return Collections.unmodifiableSet(entries);
     } //getEntries
