@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 1, 2020
+ * @version June 8, 2020
  */
 public final class Model implements Serializable {
     /**
@@ -623,21 +623,24 @@ public final class Model implements Serializable {
      */
     public boolean deleteEntriesWithType(Type type) {
         int previousSize;
+        Set<String> ids;
         int currentSize;
 
         Objects.requireNonNull(type, "the specified type is null");
 
         previousSize = this.idsToEntries.size();
 
-        this.idsToEntries.values()
-                         .stream()
-                         .filter(entry -> {
-                             Type entryType = entry.getType();
+        ids = this.idsToEntries.values()
+                               .stream()
+                               .filter(entry -> {
+                                   Type entryType = entry.getType();
 
-                             return Objects.equals(entryType, type);
-                         })
-                         .map(Entry::getId)
-                         .forEach(this.idsToEntries::remove);
+                                   return Objects.equals(entryType, type);
+                               })
+                               .map(Entry::getId)
+                               .collect(Collectors.toUnmodifiableSet());
+
+        ids.forEach(this.idsToEntries::remove);
 
         currentSize = this.idsToEntries.size();
 
@@ -656,6 +659,7 @@ public final class Model implements Serializable {
     public boolean deleteEntriesWithCategory(String category) {
         String categoryUpper;
         int previousSize;
+        Set<String> ids;
         int currentSize;
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -664,15 +668,17 @@ public final class Model implements Serializable {
 
         previousSize = this.idsToEntries.size();
 
-        this.idsToEntries.values()
-                         .stream()
-                         .filter(entry -> {
-                             String entryCategory = entry.getCategory();
+        ids = this.idsToEntries.values()
+                               .stream()
+                               .filter(entry -> {
+                                   String entryCategory = entry.getCategory();
 
-                             return entryCategory.equals(categoryUpper);
-                         })
-                         .map(Entry::getId)
-                         .forEach(this.idsToEntries::remove);
+                                   return entryCategory.equals(categoryUpper);
+                               })
+                               .map(Entry::getId)
+                               .collect(Collectors.toUnmodifiableSet());
+
+        ids.forEach(this.idsToEntries::remove);
 
         currentSize = this.idsToEntries.size();
 
@@ -694,6 +700,7 @@ public final class Model implements Serializable {
         String categoryUpper;
         String subcategoryUpper;
         int previousSize;
+        Set<String> ids;
         int currentSize;
 
         Objects.requireNonNull(category, "the specified category is null");
@@ -706,20 +713,22 @@ public final class Model implements Serializable {
 
         previousSize = this.idsToEntries.size();
 
-        this.idsToEntries.values()
-                         .stream()
-                         .filter(entry -> {
-                             String entryCategory = entry.getCategory();
+        ids = this.idsToEntries.values()
+                               .stream()
+                               .filter(entry -> {
+                                   String entryCategory = entry.getCategory();
 
-                             return entryCategory.equals(categoryUpper);
-                         })
-                         .filter(entry -> {
-                             String entrySubcategory = entry.getSubcategory();
+                                   return entryCategory.equals(categoryUpper);
+                               })
+                               .filter(entry -> {
+                                   String entrySubcategory = entry.getSubcategory();
 
-                             return entrySubcategory.equals(subcategoryUpper);
-                         })
-                         .map(Entry::getId)
-                         .forEach(this.idsToEntries::remove);
+                                   return entrySubcategory.equals(subcategoryUpper);
+                               })
+                               .map(Entry::getId)
+                               .collect(Collectors.toUnmodifiableSet());
+
+        ids.forEach(this.idsToEntries::remove);
 
         currentSize = this.idsToEntries.size();
 
@@ -738,6 +747,7 @@ public final class Model implements Serializable {
     public boolean deleteEntriesWithTag(String tag) {
         String tagUpper;
         int previousSize;
+        Set<String> ids;
         int currentSize;
 
         Objects.requireNonNull(tag, "the specified tag is null");
@@ -746,15 +756,17 @@ public final class Model implements Serializable {
 
         previousSize = this.idsToEntries.size();
 
-        this.idsToEntries.values()
-                         .stream()
-                         .filter(entry -> {
-                             Set<String> entryTags = entry.getTags();
+        ids = this.idsToEntries.values()
+                               .stream()
+                               .filter(entry -> {
+                                   Set<String> entryTags = entry.getTags();
 
-                             return entryTags.contains(tagUpper);
-                         })
-                         .map(Entry::getId)
-                         .forEach(this.idsToEntries::remove);
+                                   return entryTags.contains(tagUpper);
+                               })
+                               .map(Entry::getId)
+                               .collect(Collectors.toUnmodifiableSet());
+
+        ids.forEach(this.idsToEntries::remove);
 
         currentSize = this.idsToEntries.size();
 

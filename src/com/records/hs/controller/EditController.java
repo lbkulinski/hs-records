@@ -843,6 +843,8 @@ public final class EditController {
             editButton.removeActionListener(listener);
         } //end for
 
+        newIdTextField.setText(null);
+
         ViewUtilities.addComponentToPanel(panel, newIdTextField, newIdRow, column);
 
         ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
@@ -891,6 +893,8 @@ public final class EditController {
         for (ActionListener listener : editListeners) {
             editButton.removeActionListener(listener);
         } //end for
+
+        newTypeComboBox.setSelectedIndex(-1);
 
         ViewUtilities.addComponentToPanel(panel, newTypeComboBox, newTypeRow, column);
 
@@ -944,6 +948,10 @@ public final class EditController {
         for (ActionListener listener : editListeners) {
             editButton.removeActionListener(listener);
         } //end for
+
+        newCategoryComboBox.setSelectedIndex(-1);
+
+        newSubcategoryComboBox.setSelectedIndex(-1);
 
         ViewUtilities.addComponentToPanel(panel, newCategoryComboBox, newCategoryRow, column);
 
@@ -1002,6 +1010,10 @@ public final class EditController {
             editButton.removeActionListener(listener);
         } //end for
 
+        categoryComboBox.setSelectedIndex(-1);
+
+        newSubcategoryComboBox.setSelectedIndex(-1);
+
         ViewUtilities.addComponentToPanel(panel, categoryComboBox, categoryRow, column);
 
         ViewUtilities.addComponentToPanel(panel, newSubcategoryComboBox, newSubcategoryRow, column);
@@ -1054,6 +1066,8 @@ public final class EditController {
         for (ActionListener listener : editListeners) {
             editButton.removeActionListener(listener);
         } //end for
+
+        newTagsTextField.setText(null);
 
         ViewUtilities.addComponentToPanel(panel, newTagsTextField, newTagsRow, column);
 
