@@ -1055,7 +1055,7 @@ public final class MenuController {
         edited = this.model.editCategory(category, newCategory);
 
         if (edited) {
-            int entryCount;
+            Set<Entry> foundEntries;
 
             this.addController.fillCategoryComboBox();
 
@@ -1067,9 +1067,9 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            entryCount = this.model.getEntryCount();
+            foundEntries = this.model.findEntriesWithCategory(category);
 
-            if (entryCount > 0) {
+            if (!foundEntries.isEmpty()) {
                 JMenuBar menuBar;
                 Window window;
                 int choice;
@@ -1122,7 +1122,7 @@ public final class MenuController {
         deleted = this.model.deleteCategory(category);
 
         if (deleted) {
-            int entryCount;
+            Set<Entry> foundEntries;
 
             this.addController.fillCategoryComboBox();
 
@@ -1134,9 +1134,9 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            entryCount = this.model.getEntryCount();
+            foundEntries = this.model.findEntriesWithCategory(category);
 
-            if (entryCount > 0) {
+            if (!foundEntries.isEmpty()) {
                 JMenuBar menuBar;
                 Window window;
                 int choice;
@@ -1248,7 +1248,7 @@ public final class MenuController {
         edited = this.model.editSubcategory(category, subcategory, newSubcategory);
 
         if (edited) {
-            int entryCount;
+            Set<Entry> foundEntries;
 
             this.addController.fillSubcategoryComboBox();
 
@@ -1258,9 +1258,9 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            entryCount = this.model.getEntryCount();
+            foundEntries = this.model.findEntriesWithSubcategory(category, subcategory);
 
-            if (entryCount > 0) {
+            if (!foundEntries.isEmpty()) {
                 JMenuBar menuBar;
                 Window window;
                 int choice;
@@ -1321,7 +1321,7 @@ public final class MenuController {
         deleted = this.model.deleteSubcategory(category, subcategory);
 
         if (deleted) {
-            int entryCount;
+            Set<Entry> foundEntries;
 
             this.addController.fillSubcategoryComboBox();
 
@@ -1331,9 +1331,9 @@ public final class MenuController {
 
             this.showInformationMessage(message);
 
-            entryCount = this.model.getEntryCount();
+            foundEntries = this.model.findEntriesWithSubcategory(category, subcategory);
 
-            if (entryCount > 0) {
+            if (!foundEntries.isEmpty()) {
                 JMenuBar menuBar;
                 Window window;
                 int choice;
