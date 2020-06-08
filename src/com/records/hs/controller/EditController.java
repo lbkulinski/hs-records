@@ -25,7 +25,7 @@ import com.records.hs.view.ViewUtilities;
  * An edit controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 1, 2020
+ * @version June 8, 2020
  */
 public final class EditController {
     /**
@@ -271,6 +271,8 @@ public final class EditController {
 
             this.showErrorMessage(idTextField, message);
 
+            idTextField.requestFocus();
+
             return null;
         } //end if
 
@@ -313,11 +315,15 @@ public final class EditController {
 
             this.showErrorMessage(newIdTextField, message);
 
+            newIdTextField.requestFocus();
+
             return null;
         } else if (id.contains(comma)) {
             message = "Error: The specified ID contains a comma!";
 
             this.showErrorMessage(newIdTextField, message);
+
+            newIdTextField.requestFocus();
 
             return null;
         } //end if
@@ -343,6 +349,8 @@ public final class EditController {
 
             this.showErrorMessage(newTypeComboBox, message);
 
+            newTypeComboBox.requestFocus();
+
             return null;
         } //end if
 
@@ -366,6 +374,8 @@ public final class EditController {
             String message = "Error: The specified category is blank!";
 
             this.showErrorMessage(newCategoryComboBox, message);
+
+            newCategoryComboBox.requestFocus();
 
             return null;
         } //end if
@@ -391,6 +401,8 @@ public final class EditController {
 
             this.showErrorMessage(categoryComboBox, message);
 
+            categoryComboBox.requestFocus();
+
             return null;
         } //end if
 
@@ -414,6 +426,8 @@ public final class EditController {
             String message = "Error: The specified subcategory is blank!";
 
             this.showErrorMessage(newSubcategoryComboBox, message);
+
+            newSubcategoryComboBox.requestFocus();
 
             return null;
         } //end if
@@ -440,6 +454,8 @@ public final class EditController {
             String message = "Error: The specified set of tags is blank!";
 
             this.showErrorMessage(newTagsTextField, message);
+
+            newTagsTextField.requestFocus();
 
             return null;
         } //end if
@@ -531,6 +547,8 @@ public final class EditController {
 
             this.showErrorMessage(message);
         } //end if
+
+        this.clearFields();
     } //editId
 
     /**
@@ -595,6 +613,8 @@ public final class EditController {
 
             this.showErrorMessage(message);
         } //end if
+
+        this.clearFields();
     } //editType
 
     /**
@@ -663,6 +683,8 @@ public final class EditController {
 
             this.showErrorMessage(message);
         } //end if
+
+        this.clearFields();
     } //editCategory
 
     /**
@@ -731,6 +753,8 @@ public final class EditController {
 
             this.showErrorMessage(message);
         } //end if
+
+        this.clearFields();
     } //editSubcategory
 
     /**
@@ -795,6 +819,8 @@ public final class EditController {
 
             this.showErrorMessage(message);
         } //end if
+
+        this.clearFields();
     } //editTags
 
     /**
@@ -843,11 +869,7 @@ public final class EditController {
 
         window.repaint();
 
-        editButton.addActionListener(actionEvent -> {
-            this.editId();
-
-            this.clearFields();
-        });
+        editButton.addActionListener(actionEvent -> this.editId());
     } //displayEditIdComponents
 
     /**
@@ -896,11 +918,7 @@ public final class EditController {
 
         window.repaint();
 
-        editButton.addActionListener(actionEvent -> {
-            this.editType();
-
-            this.clearFields();
-        });
+        editButton.addActionListener(actionEvent -> this.editType());
     } //displayEditTypeComponents
 
     /**
@@ -957,11 +975,7 @@ public final class EditController {
 
         this.fillNewCategoryComboBox();
 
-        editButton.addActionListener(actionEvent -> {
-            this.editCategory();
-
-            this.clearFields();
-        });
+        editButton.addActionListener(actionEvent -> this.editCategory());
     } //displayEditCategoryComponents
 
     /**
@@ -1018,11 +1032,7 @@ public final class EditController {
 
         this.fillCategoryComboBox();
 
-        editButton.addActionListener(actionEvent -> {
-            this.editSubcategory();
-
-            this.clearFields();
-        });
+        editButton.addActionListener(actionEvent -> this.editSubcategory());
     } //displayEditSubcategoryComponents
 
     /**
@@ -1071,11 +1081,7 @@ public final class EditController {
 
         window.repaint();
 
-        editButton.addActionListener(actionEvent -> {
-            this.editTags();
-
-            this.clearFields();
-        });
+        editButton.addActionListener(actionEvent -> this.editTags());
     } //displayEditTagsComponents
 
     /**
