@@ -14,7 +14,7 @@ import java.util.Arrays;
  * A find view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 18, 2020
+ * @version June 9, 2020
  */
 public final class FindView {
     /**
@@ -124,7 +124,7 @@ public final class FindView {
     /**
      * Adds the components of this find view to the panel of this find view.
      */
-    private void addComponentsToPanel() {
+    public void addComponentsToPanel() {
         int fieldRow = 0;
         int column = 0;
         int clearRow = 1;

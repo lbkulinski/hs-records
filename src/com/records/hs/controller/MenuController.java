@@ -32,7 +32,7 @@ import javax.swing.JMenuItem;
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 8, 2020
+ * @version June 9, 2020
  */
 public final class MenuController {
     /**
@@ -61,24 +61,31 @@ public final class MenuController {
     private final DeleteController deleteController;
 
     /**
+     * The find controller of this menu controller.
+     */
+    private final FindController findController;
+
+    /**
      * The logger of this menu controller.
      */
     private final Logger logger;
 
     /**
      * Constructs a newly allocated {@code MenuController} object with the specified model, menu view, add controller,
-     * edit controller, and delete controller.
+     * edit controller, delete controller, and find controller.
      *
      * @param model the model to be used in construction
      * @param menuView the menu view to be used in construction
      * @param addController the add controller to be used in construction
      * @param editController the edit controller to be used in construction
      * @param deleteController the delete controller to be used in construction
-     * @throws NullPointerException if the specified model, menu view, add controller, edit controller, or delete
-     * controller is {@code null}
+     * @param findController the find controller to be used in construction
+     * @throws NullPointerException if the specified model, menu view, add controller, edit controller, delete
+     * controller, or find controller is {@code null}
      */
     private MenuController(Model model, MenuView menuView, AddController addController,
-                           EditController editController, DeleteController deleteController) {
+                           EditController editController, DeleteController deleteController,
+                           FindController findController) {
         Objects.requireNonNull(model, "the specified model is null");
 
         Objects.requireNonNull(menuView, "the specified menu view is null");
@@ -89,11 +96,14 @@ public final class MenuController {
 
         Objects.requireNonNull(deleteController, "the specified delete controller is null");
 
+        Objects.requireNonNull(findController, "the specified find controller is null");
+
         this.model = model;
         this.menuView = menuView;
         this.addController = addController;
         this.editController = editController;
         this.deleteController = deleteController;
+        this.findController = findController;
         this.logger = Logger.getGlobal();
     } //MenuController
 
@@ -774,6 +784,10 @@ public final class MenuController {
 
         this.deleteController.fillSubcategoryComboBox();
 
+        this.findController.fillCategoryComboBox();
+
+        this.findController.fillSubcategoryComboBox();
+
         message = "The CSV file was successfully imported!";
 
         this.showInformationMessage(message);
@@ -1037,6 +1051,8 @@ public final class MenuController {
 
             this.deleteController.fillCategoryComboBox();
 
+            this.findController.fillCategoryComboBox();
+
             message = "The category was successfully added!";
 
             this.showInformationMessage(message);
@@ -1080,6 +1096,8 @@ public final class MenuController {
             this.editController.fillCategoryComboBox();
 
             this.deleteController.fillCategoryComboBox();
+
+            this.findController.fillCategoryComboBox();
 
             message = "The category was successfully edited!";
 
@@ -1149,6 +1167,8 @@ public final class MenuController {
             this.editController.fillCategoryComboBox();
 
             this.deleteController.fillCategoryComboBox();
+
+            this.findController.fillCategoryComboBox();
 
             message = "The category was successfully deleted!";
 
@@ -1229,6 +1249,8 @@ public final class MenuController {
 
             this.deleteController.fillSubcategoryComboBox();
 
+            this.findController.fillSubcategoryComboBox();
+
             message = "The subcategory was successfully added!";
 
             JOptionPane.showMessageDialog(window, message, title, JOptionPane.INFORMATION_MESSAGE);
@@ -1277,6 +1299,8 @@ public final class MenuController {
             this.editController.fillNewSubcategoryComboBox();
 
             this.deleteController.fillSubcategoryComboBox();
+
+            this.findController.fillSubcategoryComboBox();
 
             message = "The subcategory was successfully edited!";
 
@@ -1353,6 +1377,8 @@ public final class MenuController {
 
             this.deleteController.fillSubcategoryComboBox();
 
+            this.findController.fillSubcategoryComboBox();
+
             message = "The subcategory was successfully deleted!";
 
             this.showInformationMessage(message);
@@ -1396,21 +1422,23 @@ public final class MenuController {
     } //deleteSubcategory
 
     /**
-     * Returns a new {@code MenuController} with the specified model, menu view, add controller, edit controller, and
-     * delete controller.
+     * Returns a new {@code MenuController} with the specified model, menu view, add controller, edit controller,
+     * delete controller, and find controller.
      *
      * @param model the model to be used in the operation
      * @param menuView the menu view to be used in the operation
      * @param addController the add controller to be used in the operation
      * @param editController the edit controller to be used in the operation
      * @param deleteController the delete controller to be used in construction
-     * @return a new {@code MenuController} with the specified model, menu view, add controller, edit controller, and
-     * delete controller
-     * @throws NullPointerException if the specified model, menu view, add controller, edit controller, or delete
-     * controller is {@code null}
+     * @param findController the find controller to be used in construction
+     * @return a new {@code MenuController} with the specified model, menu view, add controller, edit controller,
+     * delete controller, and find controller
+     * @throws NullPointerException if the specified model, menu view, add controller, edit controller, delete
+     * controller, or find controller is {@code null}
      */
     public static MenuController newMenuController(Model model, MenuView menuView, AddController addController,
-                                                   EditController editController, DeleteController deleteController) {
+                                                   EditController editController, DeleteController deleteController,
+                                                   FindController findController) {
         MenuController menuController;
         JMenuItem createDirectoryMenuItem;
         JMenuItem openRecordMenuItem;
@@ -1428,7 +1456,8 @@ public final class MenuController {
         JMenuItem editSubcategoryMenuItem;
         JMenuItem deleteSubcategoryMenuItem;
 
-        menuController = new MenuController(model, menuView, addController, editController, deleteController);
+        menuController = new MenuController(model, menuView, addController, editController, deleteController,
+                                            findController);
 
         createDirectoryMenuItem = menuController.menuView.getCreateDirectoryMenuItem();
 
