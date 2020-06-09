@@ -851,6 +851,8 @@ public final class EditController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
+        window.pack();
+
         window.revalidate();
 
         window.repaint();
@@ -901,6 +903,8 @@ public final class EditController {
         ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 
@@ -960,6 +964,8 @@ public final class EditController {
         ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 
@@ -1022,6 +1028,8 @@ public final class EditController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
+        window.pack();
+
         window.revalidate();
 
         window.repaint();
@@ -1074,6 +1082,8 @@ public final class EditController {
         ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 

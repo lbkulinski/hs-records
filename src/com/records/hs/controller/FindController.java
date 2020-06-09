@@ -27,7 +27,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.JScrollPane;
 import com.records.hs.view.ViewUtilities;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import java.awt.Dimension;
 
 /**
  * A find controller in the HS Records application.
@@ -362,6 +362,7 @@ public final class FindController {
         int length;
         int startIndex;
         String tagsString;
+        int offset;
         String idHeader = "ID: ";
         String newline = "\n";
         String typeHeader = "Type: ";
@@ -411,37 +412,69 @@ public final class FindController {
             tagsString = stringBuilder.toString();
 
             try {
-                document.insertString(document.getLength(), idHeader, boldAttributeSet);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), id, null);
+                document.insertString(offset, idHeader, boldAttributeSet);
 
-                document.insertString(document.getLength(), newline, null);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), typeHeader, boldAttributeSet);
+                document.insertString(offset, id, null);
 
-                document.insertString(document.getLength(), typeString, null);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), newline, null);
+                document.insertString(offset, newline, null);
 
-                document.insertString(document.getLength(), categoryHeader, boldAttributeSet);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), category, null);
+                document.insertString(offset, typeHeader, boldAttributeSet);
 
-                document.insertString(document.getLength(), newline, null);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), subcategoryHeader, boldAttributeSet);
+                document.insertString(offset, typeString, null);
 
-                document.insertString(document.getLength(), subcategory, null);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), newline, null);
+                document.insertString(offset, newline, null);
 
-                document.insertString(document.getLength(), tagsHeader, boldAttributeSet);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), tagsString, null);
+                document.insertString(offset, categoryHeader, boldAttributeSet);
 
-                document.insertString(document.getLength(), newline, null);
+                offset = document.getLength();
 
-                document.insertString(document.getLength(), newline, null);
+                document.insertString(offset, category, null);
+
+                offset = document.getLength();
+
+                document.insertString(offset, newline, null);
+
+                offset = document.getLength();
+
+                document.insertString(offset, subcategoryHeader, boldAttributeSet);
+
+                offset = document.getLength();
+
+                document.insertString(offset, subcategory, null);
+
+                offset = document.getLength();
+
+                document.insertString(offset, newline, null);
+
+                offset = document.getLength();
+
+                document.insertString(offset, tagsHeader, boldAttributeSet);
+
+                offset = document.getLength();
+
+                document.insertString(offset, tagsString, null);
+
+                offset = document.getLength();
+
+                document.insertString(offset, newline, null);
+
+                offset = document.getLength();
+
+                document.insertString(offset, newline, null);
             } catch (BadLocationException e) {
                 String exceptionMessage;
                 String message = "Error: The record(s) could not be displayed! Please contact support!";
@@ -456,7 +489,26 @@ public final class FindController {
             } //end try catch
         } //end for
 
-        resultsTextPane.moveCaretPosition(0);
+        offset = document.getLength() - 2;
+
+        length = 2;
+
+        try {
+            document.remove(offset, length);
+        } catch (BadLocationException e) {
+            String exceptionMessage;
+            String message = "Error: The record(s) could not be displayed! Please contact support!";
+
+            exceptionMessage = e.getMessage();
+
+            this.logger.log(Level.INFO, exceptionMessage, e);
+
+            this.showErrorMessage(message);
+
+            return;
+        } //end try catch
+
+        resultsTextPane.setCaretPosition(0);
     } //addEntriesToPane
 
     /**
@@ -477,6 +529,10 @@ public final class FindController {
 
         optional = this.model.findEntryWithId(id);
 
+        resultsTextPane = this.findView.getResultsTextPane();
+
+        resultsTextPane.setText(null);
+
         if (optional.isEmpty()) {
             JTextField idTextField;
             String message = "Error: A record with the specified ID does not exist!";
@@ -489,10 +545,6 @@ public final class FindController {
         } //end if
 
         foundEntry = optional.get();
-
-        resultsTextPane = this.findView.getResultsTextPane();
-
-        resultsTextPane.setText(null);
 
         this.addEntriesToPane(foundEntry);
     } //findWithId
@@ -515,6 +567,10 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithType(type);
 
+        resultsTextPane = this.findView.getResultsTextPane();
+
+        resultsTextPane.setText(null);
+
         if (foundEntries.isEmpty()) {
             JComboBox<Type> typeComboBox;
             String message = "Error: A record with the specified type does not exist!";
@@ -529,10 +585,6 @@ public final class FindController {
         entryArray = new Entry[foundEntries.size()];
 
         foundEntries.toArray(entryArray);
-
-        resultsTextPane = this.findView.getResultsTextPane();
-
-        resultsTextPane.setText(null);
 
         this.addEntriesToPane(entryArray);
     } //findWithType
@@ -555,6 +607,10 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithCategory(category);
 
+        resultsTextPane = this.findView.getResultsTextPane();
+
+        resultsTextPane.setText(null);
+
         if (foundEntries.isEmpty()) {
             JComboBox<String> categoryComboBox;
             String message = "Error: A record with the specified category does not exist!";
@@ -569,10 +625,6 @@ public final class FindController {
         entryArray = new Entry[foundEntries.size()];
 
         foundEntries.toArray(entryArray);
-
-        resultsTextPane = this.findView.getResultsTextPane();
-
-        resultsTextPane.setText(null);
 
         this.addEntriesToPane(entryArray);
     } //findWithCategory
@@ -602,6 +654,10 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithSubcategory(category, subcategory);
 
+        resultsTextPane = this.findView.getResultsTextPane();
+
+        resultsTextPane.setText(null);
+
         if (foundEntries.isEmpty()) {
             JComboBox<String> subcategoryComboBox;
             String message = "Error: A record with the specified subcategory does not exist!";
@@ -616,10 +672,6 @@ public final class FindController {
         entryArray = new Entry[foundEntries.size()];
 
         foundEntries.toArray(entryArray);
-
-        resultsTextPane = this.findView.getResultsTextPane();
-
-        resultsTextPane.setText(null);
 
         this.addEntriesToPane(entryArray);
     } //findWithSubcategory
@@ -642,6 +694,10 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithTag(tag);
 
+        resultsTextPane = this.findView.getResultsTextPane();
+
+        resultsTextPane.setText(null);
+
         if (foundEntries.isEmpty()) {
             JTextField tagTextField;
             String message = "Error: A record with the specified tag does not exist!";
@@ -657,10 +713,6 @@ public final class FindController {
 
         foundEntries.toArray(entryArray);
 
-        resultsTextPane = this.findView.getResultsTextPane();
-
-        resultsTextPane.setText(null);
-
         this.addEntriesToPane(entryArray);
     } //findWithTag
 
@@ -673,9 +725,9 @@ public final class FindController {
      */
     private void addScrollPaneToPanel(int row, int column) {
         GridBagConstraints constraints;
-        int pixelCount;
         JPanel panel;
         JScrollPane resultsScrollPane;
+        Dimension size;
 
         if (row < 0) {
             throw new IllegalArgumentException("the specified row is negative");
@@ -687,13 +739,9 @@ public final class FindController {
 
         constraints = new GridBagConstraints();
 
-        pixelCount = 5;
-
         constraints.gridx = column;
 
         constraints.gridy = row;
-
-        constraints.insets = new Insets(pixelCount, pixelCount, pixelCount, pixelCount);
 
         constraints.fill = GridBagConstraints.BOTH;
 
@@ -706,6 +754,10 @@ public final class FindController {
         resultsScrollPane = this.findView.getResultsScrollPane();
 
         panel.add(resultsScrollPane, constraints);
+
+        size = resultsScrollPane.getMinimumSize();
+
+        resultsScrollPane.setPreferredSize(size);
     } //addScrollPaneToPanel
 
     /**
@@ -759,6 +811,8 @@ public final class FindController {
         ViewUtilities.addComponentToPanel(panel, findButton, findRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 
@@ -819,6 +873,8 @@ public final class FindController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
+        window.pack();
+
         window.revalidate();
 
         window.repaint();
@@ -877,6 +933,8 @@ public final class FindController {
         ViewUtilities.addComponentToPanel(panel, findButton, findRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 
@@ -943,6 +1001,8 @@ public final class FindController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
+        window.pack();
+
         window.revalidate();
 
         window.repaint();
@@ -1001,6 +1061,8 @@ public final class FindController {
         ViewUtilities.addComponentToPanel(panel, findButton, findRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 

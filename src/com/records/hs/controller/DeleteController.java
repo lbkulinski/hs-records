@@ -559,6 +559,8 @@ public final class DeleteController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
+        window.pack();
+
         window.revalidate();
 
         window.repaint();
@@ -610,6 +612,8 @@ public final class DeleteController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
+        window.pack();
+
         window.revalidate();
 
         window.repaint();
@@ -660,6 +664,8 @@ public final class DeleteController {
         ViewUtilities.addComponentToPanel(panel, deleteButton, deleteRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 
@@ -720,6 +726,8 @@ public final class DeleteController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
+        window.pack();
+
         window.revalidate();
 
         window.repaint();
@@ -770,6 +778,8 @@ public final class DeleteController {
         ViewUtilities.addComponentToPanel(panel, deleteButton, deleteRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
+
+        window.pack();
 
         window.revalidate();
 

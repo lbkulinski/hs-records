@@ -8,7 +8,6 @@ import javax.swing.BorderFactory;
 import java.awt.Color;
 import javax.swing.JPanel;
 import java.awt.GridBagConstraints;
-import java.awt.Insets;
 
 /**
  * A set of utility methods used by the views in the HS Records application.
@@ -62,7 +61,6 @@ public final class ViewUtilities {
      */
     public static void addComponentToPanel(JPanel panel, JComponent component, int row, int column) {
         GridBagConstraints constraints;
-        int pixelCount;
 
         Objects.requireNonNull(panel, "the specified panel is null");
 
@@ -78,13 +76,9 @@ public final class ViewUtilities {
 
         constraints = new GridBagConstraints();
 
-        pixelCount = 5;
-
         constraints.gridx = column;
 
         constraints.gridy = row;
-
-        constraints.insets = new Insets(pixelCount, pixelCount, pixelCount, pixelCount);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
 
