@@ -23,10 +23,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.HashSet;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import javax.swing.JMenuItem;
+import java.util.LinkedHashSet;
 
 /**
  * A menu controller in the HS Records application.
@@ -718,7 +718,7 @@ public final class MenuController {
             return;
         } //end try catch
 
-        entries = new HashSet<>();
+        entries = new LinkedHashSet<>();
 
         for (String line : lines) {
             parsedEntry = this.parseEntry(line);
@@ -918,9 +918,11 @@ public final class MenuController {
 
         entries = this.model.getEntries();
 
-        strings = entries.stream()
-                         .map(this::convertToString)
-                         .collect(Collectors.toUnmodifiableSet());
+        strings = new LinkedHashSet<>();
+
+        entries.stream()
+               .map(this::convertToString)
+               .forEachOrdered(strings::add);
 
         try {
             Files.write(path, strings);

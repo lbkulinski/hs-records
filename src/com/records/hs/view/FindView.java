@@ -158,6 +158,8 @@ public final class FindView {
 
         findView.typeComboBox.setSelectedIndex(-1);
 
+        findView.resultsTextPane.setEditable(false);
+
         findView.formatComponents();
 
         findView.addComponentsToPanel();

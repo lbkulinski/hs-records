@@ -1,8 +1,10 @@
 package com.records.hs.model;
 
 import java.io.Serializable;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Collection;
 import java.util.HashSet;
@@ -58,7 +60,8 @@ public final class Model implements Serializable {
          * @throws NullPointerException if the specified mapping from IDs to entries or mapping from categories to
          * subcategories is {@code null}
          */
-        private SerializationProxy(String latestId, Map<String, Entry> idsToEntries, Map<String, Set<String>> catsToSubcats) {
+        private SerializationProxy(String latestId, Map<String, Entry> idsToEntries,
+                                   Map<String, Set<String>> catsToSubcats) {
             Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
 
             Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
@@ -180,7 +183,7 @@ public final class Model implements Serializable {
         Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
 
         this.latestId = latestId;
-        this.idsToEntries = idsToEntries;
+        this.idsToEntries = new LinkedHashMap<>(idsToEntries);
         this.catsToSubcats = catsToSubcats;
     } //Model
 
@@ -188,7 +191,7 @@ public final class Model implements Serializable {
      * Constructs a newly allocated {@code Model} object.
      */
     public Model() {
-        this(null, new HashMap<>(), new HashMap<>());
+        this(null, new LinkedHashMap<>(), new HashMap<>());
     } //Model
 
     /**
@@ -208,11 +211,11 @@ public final class Model implements Serializable {
      */
     public Set<Entry> getEntries() {
         Collection<Entry> elements;
-        Set<Entry> entries;
+        LinkedHashSet<Entry> entries;
 
         elements = this.idsToEntries.values();
 
-        entries = new HashSet<>(elements);
+        entries = new LinkedHashSet<>(elements);
 
         return Collections.unmodifiableSet(entries);
     } //getEntries
