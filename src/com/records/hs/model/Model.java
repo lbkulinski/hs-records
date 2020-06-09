@@ -861,14 +861,16 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(type, "the specified type is null");
 
-        foundEntries = this.idsToEntries.values()
-                                        .stream()
-                                        .filter(entry -> {
-                                            Type entryType = entry.getType();
+        foundEntries = new LinkedHashSet<>();
 
-                                            return Objects.equals(entryType, type);
-                                        })
-                                        .collect(Collectors.toUnmodifiableSet());
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             Type entryType = entry.getType();
+
+                             return Objects.equals(entryType, type);
+                         })
+                         .forEachOrdered(foundEntries::add);
 
         return foundEntries;
     } //findEntriesWithType
@@ -888,14 +890,16 @@ public final class Model implements Serializable {
 
         categoryUpper = category.toUpperCase();
 
-        foundEntries = this.idsToEntries.values()
-                                        .stream()
-                                        .filter(entry -> {
-                                            String entryCategory = entry.getCategory();
+        foundEntries = new LinkedHashSet<>();
 
-                                            return entryCategory.equals(categoryUpper);
-                                        })
-                                        .collect(Collectors.toUnmodifiableSet());
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             String entryCategory = entry.getCategory();
+
+                             return entryCategory.equals(categoryUpper);
+                         })
+                         .forEachOrdered(foundEntries::add);
 
         return foundEntries;
     } //findEntriesWithCategory
@@ -922,19 +926,21 @@ public final class Model implements Serializable {
 
         subcategoryUpper = subcategory.toUpperCase();
 
-        foundEntries = this.idsToEntries.values()
-                                        .stream()
-                                        .filter(entry -> {
-                                            String entryCategory = entry.getCategory();
+        foundEntries = new LinkedHashSet<>();
 
-                                            return entryCategory.equals(categoryUpper);
-                                        })
-                                        .filter(entry -> {
-                                            String entrySubcategory = entry.getSubcategory();
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             String entryCategory = entry.getCategory();
 
-                                            return entrySubcategory.equals(subcategoryUpper);
-                                        })
-                                        .collect(Collectors.toUnmodifiableSet());
+                             return entryCategory.equals(categoryUpper);
+                         })
+                         .filter(entry -> {
+                             String entrySubcategory = entry.getSubcategory();
+
+                             return entrySubcategory.equals(subcategoryUpper);
+                         })
+                         .forEachOrdered(foundEntries::add);
 
         return foundEntries;
     } //findEntriesWithSubcategory
@@ -954,14 +960,16 @@ public final class Model implements Serializable {
 
         tagUpper = tag.toUpperCase();
 
-        foundEntries = this.idsToEntries.values()
-                                        .stream()
-                                        .filter(entry -> {
-                                            Set<String> entryTags = entry.getTags();
+        foundEntries = new LinkedHashSet<>();
 
-                                            return entryTags.contains(tagUpper);
-                                        })
-                                        .collect(Collectors.toUnmodifiableSet());
+        this.idsToEntries.values()
+                         .stream()
+                         .filter(entry -> {
+                             Set<String> entryTags = entry.getTags();
+
+                             return entryTags.contains(tagUpper);
+                         })
+                         .forEachOrdered(foundEntries::add);
 
         return foundEntries;
     } //findEntriesWithTag
