@@ -4,27 +4,27 @@ import com.records.hs.model.Model;
 import com.records.hs.view.AddView;
 import java.util.logging.Logger;
 import java.util.Objects;
-import java.util.logging.Level;
 import java.time.LocalDate;
+import java.util.logging.Level;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.util.Set;
+import com.records.hs.model.Type;
+import javax.swing.JPanel;
 import java.awt.Window;
 import javax.swing.SwingUtilities;
 import javax.swing.JOptionPane;
-import com.records.hs.model.Type;
+import java.util.Optional;
+import com.records.hs.model.Entry;
 import java.util.Arrays;
 import java.util.stream.Collectors;
-import com.records.hs.model.Entry;
-import javax.swing.JPanel;
 import javax.swing.JButton;
-import java.util.Optional;
 
 /**
  * An add controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 8, 2020
+ * @version June 9, 2020
  */
 public final class AddController {
     /**

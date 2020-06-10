@@ -1,33 +1,33 @@
 package com.records.hs.controller;
 
-import com.records.hs.util.Utilities;
 import com.records.hs.model.Model;
 import com.records.hs.view.MenuView;
 import java.util.logging.Logger;
 import java.util.Objects;
-import java.util.Set;
 import javax.swing.JMenuBar;
 import java.awt.Window;
 import javax.swing.SwingUtilities;
 import javax.swing.JOptionPane;
+import java.util.Set;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.io.IOException;
 import java.util.logging.Level;
-import java.io.File;
 import java.awt.Desktop;
+import java.io.File;
 import java.util.Optional;
 import com.records.hs.model.Entry;
 import com.records.hs.model.Type;
-import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.JFileChooser;
+import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import com.records.hs.util.Utilities;
 import javax.swing.JMenuItem;
-import java.util.LinkedHashSet;
 
 /**
  * A menu controller in the HS Records application.

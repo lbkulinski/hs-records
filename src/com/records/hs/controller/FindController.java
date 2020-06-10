@@ -16,18 +16,18 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.records.hs.model.Type;
-import java.util.Optional;
 import com.records.hs.model.Entry;
 import javax.swing.JTextPane;
 import javax.swing.text.StyledDocument;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import java.util.logging.Level;
 import javax.swing.text.BadLocationException;
-import javax.swing.JScrollPane;
-import com.records.hs.view.ViewUtilities;
+import java.util.logging.Level;
+import java.util.Optional;
 import java.awt.GridBagConstraints;
+import javax.swing.JScrollPane;
 import java.awt.Dimension;
+import com.records.hs.view.ViewUtilities;
 
 /**
  * A find controller in the HS Records application.

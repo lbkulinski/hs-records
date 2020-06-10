@@ -1,17 +1,17 @@
 package com.records.hs.controller;
 
-import com.records.hs.util.Utilities;
 import com.records.hs.model.Model;
 import com.records.hs.view.View;
-import java.awt.event.WindowEvent;
-import java.util.Objects;
+import javax.swing.JFrame;
 import com.records.hs.view.AddView;
 import com.records.hs.view.EditView;
 import com.records.hs.view.DeleteView;
 import com.records.hs.view.FindView;
 import com.records.hs.view.MenuView;
-import javax.swing.JFrame;
+import java.util.Objects;
 import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import com.records.hs.util.Utilities;
 
 /**
  * A controller in the HS Records application.

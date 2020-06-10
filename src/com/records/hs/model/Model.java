@@ -1,19 +1,19 @@
 package com.records.hs.model;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Optional;
+import java.util.HashSet;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 /**
  * A model in the HS Records application.

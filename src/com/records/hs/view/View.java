@@ -4,8 +4,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
 import java.awt.GridBagLayout;
-import javax.swing.JMenuBar;
 import java.awt.GridBagConstraints;
+import javax.swing.JMenuBar;
 
 /**
  * A view in the HS Records application.

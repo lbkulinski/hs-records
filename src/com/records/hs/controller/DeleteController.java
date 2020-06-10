@@ -500,7 +500,7 @@ public final class DeleteController {
             return;
         } //end if
 
-        deleted = this.model.deleteEntriesWithCategory(tag);
+        deleted = this.model.deleteEntriesWithTag(tag);
 
         if (deleted) {
             message = "The records were successfully deleted!";
