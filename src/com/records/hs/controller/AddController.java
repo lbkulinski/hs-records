@@ -146,7 +146,7 @@ public final class AddController {
     /**
      * Fills the ID text field of this add controller's add view with the next ID.
      */
-    private void fillIdTextField() {
+    void fillIdTextField() {
         String id;
         String nextId;
         JTextField idTextField;

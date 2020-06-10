@@ -6,6 +6,4 @@
 module com.records.hs {
     requires java.desktop;
     requires java.logging;
-
-    exports com.records.hs;
 }

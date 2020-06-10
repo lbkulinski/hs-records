@@ -771,6 +771,8 @@ public final class MenuController {
             } //end if
         } //end for
 
+        this.addController.fillIdTextField();
+
         this.addController.fillCategoryComboBox();
 
         this.addController.fillSubcategoryComboBox();

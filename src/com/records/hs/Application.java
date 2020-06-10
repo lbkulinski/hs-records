@@ -62,7 +62,7 @@ public class Application {
         logger = Logger.getGlobal();
 
         try {
-            handler = new FileHandler(fileName);
+            handler = new FileHandler(fileName, true);
         } catch (IOException e) {
             String message;
 
