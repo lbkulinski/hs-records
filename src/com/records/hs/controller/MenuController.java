@@ -1,5 +1,6 @@
 package com.records.hs.controller;
 
+import com.records.hs.util.Utilities;
 import com.records.hs.model.Model;
 import com.records.hs.view.MenuView;
 import java.util.logging.Logger;
@@ -950,7 +951,7 @@ public final class MenuController {
         boolean saved;
         String message;
 
-        saved = ControllerUtilities.writeModelToFile(this.model);
+        saved = Utilities.writeModelToFile(this.model);
 
         if (saved) {
             message = "The save was successful!";
@@ -972,7 +973,7 @@ public final class MenuController {
         Window window;
         String message;
 
-        saved = ControllerUtilities.writeModelToFile(this.model);
+        saved = Utilities.writeModelToFile(this.model);
 
         menuBar = this.menuView.getMenuBar();
 

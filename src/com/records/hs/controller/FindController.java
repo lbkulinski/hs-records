@@ -812,8 +812,6 @@ public final class FindController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -873,8 +871,6 @@ public final class FindController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -933,8 +929,6 @@ public final class FindController {
         ViewUtilities.addComponentToPanel(panel, findButton, findRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
-
-        window.pack();
 
         window.revalidate();
 
@@ -1001,8 +995,6 @@ public final class FindController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -1062,8 +1054,6 @@ public final class FindController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -1119,6 +1109,8 @@ public final class FindController {
         categoryComboBox.addActionListener(actionEvent -> findController.fillSubcategoryComboBox());
 
         clearButton.addActionListener(actionEvent -> findController.clearFields());
+
+        findController.clearFields();
 
         return findController;
     } //newFindController

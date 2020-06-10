@@ -23,7 +23,7 @@ import com.records.hs.view.ViewUtilities;
  * A delete controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 8, 2020
+ * @version June 9, 2020
  */
 public final class DeleteController {
     /**
@@ -559,8 +559,6 @@ public final class DeleteController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -612,8 +610,6 @@ public final class DeleteController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -664,8 +660,6 @@ public final class DeleteController {
         ViewUtilities.addComponentToPanel(panel, deleteButton, deleteRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
-
-        window.pack();
 
         window.revalidate();
 
@@ -726,8 +720,6 @@ public final class DeleteController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -778,8 +770,6 @@ public final class DeleteController {
         ViewUtilities.addComponentToPanel(panel, deleteButton, deleteRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
-
-        window.pack();
 
         window.revalidate();
 

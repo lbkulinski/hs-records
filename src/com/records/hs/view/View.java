@@ -11,7 +11,7 @@ import java.awt.GridBagConstraints;
  * A view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 12, 2020
+ * @version June 9, 2020
  */
 public final class View {
     /**

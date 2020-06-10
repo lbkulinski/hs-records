@@ -25,7 +25,7 @@ import com.records.hs.view.ViewUtilities;
  * An edit controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 8, 2020
+ * @version June 9, 2020
  */
 public final class EditController {
     /**
@@ -851,8 +851,6 @@ public final class EditController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -903,8 +901,6 @@ public final class EditController {
         ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
-
-        window.pack();
 
         window.revalidate();
 
@@ -964,8 +960,6 @@ public final class EditController {
         ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
-
-        window.pack();
 
         window.revalidate();
 
@@ -1028,8 +1022,6 @@ public final class EditController {
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
 
-        window.pack();
-
         window.revalidate();
 
         window.repaint();
@@ -1082,8 +1074,6 @@ public final class EditController {
         ViewUtilities.addComponentToPanel(panel, editButton, editRow, column);
 
         ViewUtilities.addComponentToPanel(panel, clearButton, clearRow, column);
-
-        window.pack();
 
         window.revalidate();
 
