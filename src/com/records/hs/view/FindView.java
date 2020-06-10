@@ -3,7 +3,7 @@ package com.records.hs.view;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 import com.records.hs.model.Type;
-import javax.swing.JTextPane;
+import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -14,7 +14,7 @@ import java.util.Arrays;
  * A find view in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 9, 2020
+ * @version June 10, 2020
  */
 public final class FindView {
     /**
@@ -48,9 +48,9 @@ public final class FindView {
     private final JTextField tagTextField;
 
     /**
-     * The results text pane of this find view.
+     * The results text area of this find view.
      */
-    private final JTextPane resultsTextPane;
+    private final JTextArea resultsTextArea;
 
     /**
      * The results scroll pane of this find view.
@@ -87,8 +87,8 @@ public final class FindView {
         this.categoryComboBox = new JComboBox<>();
         this.subcategoryComboBox = new JComboBox<>();
         this.tagTextField = new JTextField(length);
-        this.resultsTextPane = new JTextPane();
-        this.resultsScrollPane = new JScrollPane(this.resultsTextPane);
+        this.resultsTextArea = new JTextArea();
+        this.resultsScrollPane = new JScrollPane(this.resultsTextArea);
         this.findButton = new JButton(findName);
         this.clearButton = new JButton(clearName);
         this.panel = new JPanel(layout);
@@ -158,7 +158,7 @@ public final class FindView {
 
         findView.typeComboBox.setSelectedIndex(-1);
 
-        findView.resultsTextPane.setEditable(false);
+        findView.resultsTextArea.setEditable(false);
 
         findView.formatComponents();
 
@@ -222,13 +222,13 @@ public final class FindView {
     } //getTagTextField
 
     /**
-     * Returns the results text pane of this find view.
+     * Returns the results text area of this find view.
      *
-     * @return the results text pane of this find view
+     * @return the results text area of this find view
      */
-    public JTextPane getResultsTextPane() {
-        return this.resultsTextPane;
-    } //getResultsTextPane
+    public JTextArea getResultsTextArea() {
+        return this.resultsTextArea;
+    } //getResultsTextArea
 
     /**
      * Returns the results scroll pane of this find view.

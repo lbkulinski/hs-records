@@ -17,12 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.records.hs.model.Type;
 import com.records.hs.model.Entry;
-import javax.swing.JTextPane;
-import javax.swing.text.StyledDocument;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.BadLocationException;
-import java.util.logging.Level;
+import javax.swing.JTextArea;
 import java.util.Optional;
 import java.awt.GridBagConstraints;
 import javax.swing.JScrollPane;
@@ -344,48 +339,36 @@ public final class FindController {
     } //getTagInput
 
     /**
-     * Adds the specified entries to the pane of this find controller's find view.
+     * Adds the specified entries to the text area of this find controller's find view.
      *
      * @param entries the entries to be used in the operation
      */
-    private void addEntriesToPane(Entry... entries) {
-        JTextPane resultsTextPane;
-        StyledDocument document;
-        SimpleAttributeSet boldAttributeSet;
+    private void addEntriesToTextArea(Entry... entries) {
+        JTextArea resultsTextArea;
+        StringBuilder stringBuilder;
         String id;
         Type type;
-        String typeString;
         String category;
         String subcategory;
         Set<String> tags;
-        StringBuilder stringBuilder;
+        StringBuilder tagsStringBuilder;
         int length;
         int startIndex;
         String tagsString;
-        int offset;
-        String idHeader = "ID: ";
-        String newline = "\n";
-        String typeHeader = "Type: ";
-        String categoryHeader = "Category: ";
-        String subcategoryHeader = "Subcategory: ";
-        String tagsHeader = "Tags: ";
+        String entryString;
+        String format = "ID: %s%nType: %s%nCategory: %s%nSubcategory: %s%nTags: %s%n%n";
+        String resultsString;
 
         Objects.requireNonNull(entries, "the specified set of entries is null");
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
-        document = resultsTextPane.getStyledDocument();
-
-        boldAttributeSet = new SimpleAttributeSet();
-
-        StyleConstants.setBold(boldAttributeSet, true);
+        stringBuilder = new StringBuilder();
 
         for (Entry entry : entries) {
             id = entry.getId();
 
             type = entry.getType();
-
-            typeString = type.toString();
 
             category = entry.getCategory();
 
@@ -393,123 +376,43 @@ public final class FindController {
 
             tags = entry.getTags();
 
-            stringBuilder = new StringBuilder();
+            tagsStringBuilder = new StringBuilder();
 
             for (String tag : tags) {
-                stringBuilder.append(tag);
+                tagsStringBuilder.append(tag);
 
-                stringBuilder.append(", ");
+                tagsStringBuilder.append(", ");
             } //end if
 
-            if (stringBuilder.length() > 0) {
-                length = stringBuilder.length();
+            if (tagsStringBuilder.length() > 0) {
+                length = tagsStringBuilder.length();
 
                 startIndex = length - 2;
 
-                stringBuilder.delete(startIndex, length);
+                tagsStringBuilder.delete(startIndex, length);
             } //end if
 
-            tagsString = stringBuilder.toString();
+            tagsString = tagsStringBuilder.toString();
 
-            try {
-                offset = document.getLength();
+            entryString = String.format(format, id, type, category, subcategory, tagsString);
 
-                document.insertString(offset, idHeader, boldAttributeSet);
-
-                offset = document.getLength();
-
-                document.insertString(offset, id, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, newline, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, typeHeader, boldAttributeSet);
-
-                offset = document.getLength();
-
-                document.insertString(offset, typeString, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, newline, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, categoryHeader, boldAttributeSet);
-
-                offset = document.getLength();
-
-                document.insertString(offset, category, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, newline, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, subcategoryHeader, boldAttributeSet);
-
-                offset = document.getLength();
-
-                document.insertString(offset, subcategory, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, newline, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, tagsHeader, boldAttributeSet);
-
-                offset = document.getLength();
-
-                document.insertString(offset, tagsString, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, newline, null);
-
-                offset = document.getLength();
-
-                document.insertString(offset, newline, null);
-            } catch (BadLocationException e) {
-                String exceptionMessage;
-                String message = "Error: The record(s) could not be displayed! Please contact support!";
-
-                exceptionMessage = e.getMessage();
-
-                this.logger.log(Level.INFO, exceptionMessage, e);
-
-                this.showErrorMessage(message);
-
-                return;
-            } //end try catch
+            stringBuilder.append(entryString);
         } //end for
 
-        offset = document.getLength() - 2;
+        length = stringBuilder.length();
 
-        length = 2;
+        if (length > 0) {
+            startIndex = length - 2;
 
-        try {
-            document.remove(offset, length);
-        } catch (BadLocationException e) {
-            String exceptionMessage;
-            String message = "Error: The record(s) could not be displayed! Please contact support!";
+            stringBuilder.delete(startIndex, length);
+        } //end if
 
-            exceptionMessage = e.getMessage();
+        resultsString = stringBuilder.toString();
 
-            this.logger.log(Level.INFO, exceptionMessage, e);
+        resultsTextArea.setText(resultsString);
 
-            this.showErrorMessage(message);
-
-            return;
-        } //end try catch
-
-        resultsTextPane.setCaretPosition(0);
-    } //addEntriesToPane
+        resultsTextArea.setCaretPosition(0);
+    } //addEntriesToTextArea
 
     /**
      * Searches for a record with the specified ID in the model of this find controller using the input of this find
@@ -519,7 +422,7 @@ public final class FindController {
         String id;
         Optional<Entry> optional;
         Entry foundEntry;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
 
         id = this.getIdInput();
 
@@ -529,9 +432,9 @@ public final class FindController {
 
         optional = this.model.findEntryWithId(id);
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         if (optional.isEmpty()) {
             JTextField idTextField;
@@ -546,7 +449,7 @@ public final class FindController {
 
         foundEntry = optional.get();
 
-        this.addEntriesToPane(foundEntry);
+        this.addEntriesToTextArea(foundEntry);
     } //findWithId
 
     /**
@@ -557,7 +460,7 @@ public final class FindController {
         Type type;
         Set<Entry> foundEntries;
         Entry[] entryArray;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
 
         type = this.getTypeInput();
 
@@ -567,9 +470,9 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithType(type);
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         if (foundEntries.isEmpty()) {
             JComboBox<Type> typeComboBox;
@@ -586,7 +489,7 @@ public final class FindController {
 
         foundEntries.toArray(entryArray);
 
-        this.addEntriesToPane(entryArray);
+        this.addEntriesToTextArea(entryArray);
     } //findWithType
 
     /**
@@ -597,7 +500,7 @@ public final class FindController {
         String category;
         Set<Entry> foundEntries;
         Entry[] entryArray;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
 
         category = this.getCategoryInput();
 
@@ -607,9 +510,9 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithCategory(category);
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         if (foundEntries.isEmpty()) {
             JComboBox<String> categoryComboBox;
@@ -626,7 +529,7 @@ public final class FindController {
 
         foundEntries.toArray(entryArray);
 
-        this.addEntriesToPane(entryArray);
+        this.addEntriesToTextArea(entryArray);
     } //findWithCategory
 
     /**
@@ -638,7 +541,7 @@ public final class FindController {
         String subcategory;
         Set<Entry> foundEntries;
         Entry[] entryArray;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
 
         category = this.getCategoryInput();
 
@@ -654,9 +557,9 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithSubcategory(category, subcategory);
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         if (foundEntries.isEmpty()) {
             JComboBox<String> subcategoryComboBox;
@@ -673,7 +576,7 @@ public final class FindController {
 
         foundEntries.toArray(entryArray);
 
-        this.addEntriesToPane(entryArray);
+        this.addEntriesToTextArea(entryArray);
     } //findWithSubcategory
 
     /**
@@ -684,7 +587,7 @@ public final class FindController {
         String tag;
         Set<Entry> foundEntries;
         Entry[] entryArray;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
 
         tag = this.getTagInput();
 
@@ -694,9 +597,9 @@ public final class FindController {
 
         foundEntries = this.model.findEntriesWithTag(tag);
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         if (foundEntries.isEmpty()) {
             JTextField tagTextField;
@@ -713,7 +616,7 @@ public final class FindController {
 
         foundEntries.toArray(entryArray);
 
-        this.addEntriesToPane(entryArray);
+        this.addEntriesToTextArea(entryArray);
     } //findWithTag
 
     /**
@@ -767,7 +670,7 @@ public final class FindController {
         JPanel panel;
         JButton findButton;
         JTextField idTextField;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
         JButton clearButton;
         Window window;
         int expectedCount = 1;
@@ -784,7 +687,7 @@ public final class FindController {
 
         idTextField = this.findView.getIdTextField();
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
         clearButton = this.findView.getClearButton();
 
@@ -802,7 +705,7 @@ public final class FindController {
 
         idTextField.setText(null);
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         ViewUtilities.addComponentToPanel(panel, idTextField, idRow, column);
 
@@ -826,7 +729,7 @@ public final class FindController {
         JPanel panel;
         JButton findButton;
         JComboBox<Type> typeComboBox;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
         JButton clearButton;
         Window window;
         int expectedCount = 1;
@@ -843,7 +746,7 @@ public final class FindController {
 
         typeComboBox = this.findView.getTypeComboBox();
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
         clearButton = this.findView.getClearButton();
 
@@ -861,7 +764,7 @@ public final class FindController {
 
         typeComboBox.setSelectedIndex(-1);
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         ViewUtilities.addComponentToPanel(panel, typeComboBox, typeRow, column);
 
@@ -885,7 +788,7 @@ public final class FindController {
         JPanel panel;
         JButton findButton;
         JComboBox<String> categoryComboBox;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
         JButton clearButton;
         Window window;
         int expectedCount = 1;
@@ -902,7 +805,7 @@ public final class FindController {
 
         categoryComboBox = this.findView.getCategoryComboBox();
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
         clearButton = this.findView.getClearButton();
 
@@ -920,7 +823,7 @@ public final class FindController {
 
         categoryComboBox.setSelectedIndex(-1);
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         ViewUtilities.addComponentToPanel(panel, categoryComboBox, categoryRow, column);
 
@@ -945,7 +848,7 @@ public final class FindController {
         JButton findButton;
         JComboBox<String> categoryComboBox;
         JComboBox<String> subcategoryComboBox;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
         JButton clearButton;
         Window window;
         int expectedCount = 1;
@@ -965,7 +868,7 @@ public final class FindController {
 
         subcategoryComboBox = this.findView.getSubcategoryComboBox();
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
         clearButton = this.findView.getClearButton();
 
@@ -983,7 +886,7 @@ public final class FindController {
 
         categoryComboBox.setSelectedIndex(-1);
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         ViewUtilities.addComponentToPanel(panel, categoryComboBox, categoryRow, column);
 
@@ -1009,7 +912,7 @@ public final class FindController {
         JPanel panel;
         JButton findButton;
         JTextField tagTextField;
-        JTextPane resultsTextPane;
+        JTextArea resultsTextArea;
         JButton clearButton;
         Window window;
         int expectedCount = 1;
@@ -1026,7 +929,7 @@ public final class FindController {
 
         tagTextField = this.findView.getTagTextField();
 
-        resultsTextPane = this.findView.getResultsTextPane();
+        resultsTextArea = this.findView.getResultsTextArea();
 
         clearButton = this.findView.getClearButton();
 
@@ -1044,7 +947,7 @@ public final class FindController {
 
         tagTextField.setText(null);
 
-        resultsTextPane.setText(null);
+        resultsTextArea.setText(null);
 
         ViewUtilities.addComponentToPanel(panel, tagTextField, tagRow, column);
 
