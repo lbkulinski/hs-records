@@ -17,7 +17,7 @@ import com.records.hs.util.Utilities;
  * A controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 9, 2020
+ * @version April 29, 2021
  */
 public final class Controller {
     /**
@@ -26,7 +26,7 @@ public final class Controller {
      * @throws AssertionError if an object of type {@code Controller} attempts to be instantiated
      */
     private Controller() {
-        throw new AssertionError("an object of type Utilities cannot be instantiated");
+        throw new AssertionError("an object of type Controller cannot be instantiated");
     } //Controller
 
     /**

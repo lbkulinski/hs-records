@@ -33,7 +33,7 @@ import javax.swing.JMenuItem;
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 9, 2020
+ * @version April 29, 2021
  */
 public final class MenuController {
     /**
@@ -485,7 +485,7 @@ public final class MenuController {
 
         fileName = id;
 
-        fileName += ".png";
+        fileName += ".tif";
 
         path = Path.of(category, subcategory, fileName);
 

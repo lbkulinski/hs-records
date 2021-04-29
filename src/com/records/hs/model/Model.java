@@ -19,7 +19,7 @@ import java.util.Optional;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 8, 2020
+ * @version April 29, 2021
  */
 public final class Model implements Serializable {
     /**
@@ -966,8 +966,12 @@ public final class Model implements Serializable {
                          .stream()
                          .filter(entry -> {
                              Set<String> entryTags = entry.getTags();
+                             boolean match;
 
-                             return entryTags.contains(tagUpper);
+                             match = entryTags.stream()
+                                              .anyMatch(entryTag -> entryTag.contains(tagUpper));
+
+                             return match;
                          })
                          .forEachOrdered(foundEntries::add);
 
