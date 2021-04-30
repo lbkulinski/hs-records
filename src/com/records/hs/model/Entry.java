@@ -1,5 +1,6 @@
 package com.records.hs.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.Objects;
@@ -9,7 +10,7 @@ import java.util.stream.Collectors;
  * An entry in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version May 12, 2020
+ * @version April 30, 2021
  */
 public final class Entry implements Serializable {
     /**
@@ -19,6 +20,7 @@ public final class Entry implements Serializable {
         /**
          * The serial version UID of the class.
          */
+        @Serial
         private static final long serialVersionUID;
 
         /**
@@ -85,6 +87,7 @@ public final class Entry implements Serializable {
          *
          * @return an {@code Entry} object in place of this serialization proxy
          */
+        @Serial
         private Object readResolve() {
             return new Entry(this.id, this.type, this.category, this.subcategory, this.tags);
         } //readResolve
@@ -163,6 +166,7 @@ public final class Entry implements Serializable {
     /**
      * The serial version UID of the class.
      */
+    @Serial
     private static final long serialVersionUID;
 
     /**
@@ -275,6 +279,7 @@ public final class Entry implements Serializable {
      *
      * @return a {@code SerializationProxy} object in place of this entry
      */
+    @Serial
     private Object writeReplace() {
         return new SerializationProxy(this.id, this.type, this.category, this.subcategory, this.tags);
     } //writeReplace

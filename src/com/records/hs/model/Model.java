@@ -1,5 +1,6 @@
 package com.records.hs.model;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
@@ -19,7 +20,7 @@ import java.util.Optional;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version April 29, 2021
+ * @version April 30, 2021
  */
 public final class Model implements Serializable {
     /**
@@ -29,6 +30,7 @@ public final class Model implements Serializable {
         /**
          * The serial version UID of the class.
          */
+        @Serial
         private static final long serialVersionUID;
 
         /**
@@ -76,6 +78,7 @@ public final class Model implements Serializable {
          *
          * @return a {@code Model} object in place of this serialization proxy
          */
+        @Serial
         private Object readResolve() {
             return new Model(this.latestId, this.idsToEntries, this.catsToSubcats);
         } //readResolve
@@ -146,6 +149,7 @@ public final class Model implements Serializable {
     /**
      * The serial version UID of the class.
      */
+    @Serial
     private static final long serialVersionUID;
 
     /**
@@ -1028,6 +1032,7 @@ public final class Model implements Serializable {
      *
      * @return a {@code SerializationProxy} object in place of this model
      */
+    @Serial
     private Object writeReplace() {
         return new SerializationProxy(this.latestId, this.idsToEntries, this.catsToSubcats);
     } //writeReplace
