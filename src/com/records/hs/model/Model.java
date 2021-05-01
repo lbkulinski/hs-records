@@ -1,7 +1,7 @@
 package com.records.hs.model;
 
-import java.io.Serial;
 import java.io.Serializable;
+import java.io.Serial;
 import java.util.Map;
 import java.util.Set;
 import java.util.Objects;
@@ -20,33 +20,19 @@ import java.util.Optional;
  * A model in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version April 30, 2021
+ * @version May 1, 2021
  */
 public final class Model implements Serializable {
     /**
      * The serialization proxy of the class.
      */
-    private static final class SerializationProxy implements Serializable {
+    private record SerializationProxy(String latestId, Map<String, Entry> idsToEntries,
+                                      Map<String, Set<String>> catsToSubcats) implements Serializable {
         /**
          * The serial version UID of the class.
          */
         @Serial
         private static final long serialVersionUID;
-
-        /**
-         * The latest ID of this serialization proxy.
-         */
-        private final String latestId;
-
-        /**
-         * The mapping from IDs to entries of this serialization proxy.
-         */
-        private final Map<String, Entry> idsToEntries;
-
-        /**
-         * The mapping from categories to subcategories of this serialization proxy.
-         */
-        private final Map<String, Set<String>> catsToSubcats;
 
         static {
             serialVersionUID = 0xCAFEBABEL;
@@ -62,15 +48,10 @@ public final class Model implements Serializable {
          * @throws NullPointerException if the specified mapping from IDs to entries or mapping from categories to
          * subcategories is {@code null}
          */
-        private SerializationProxy(String latestId, Map<String, Entry> idsToEntries,
-                                   Map<String, Set<String>> catsToSubcats) {
+        private SerializationProxy {
             Objects.requireNonNull(idsToEntries, "the specified mapping from IDs to entries is null");
 
             Objects.requireNonNull(catsToSubcats, "the specified mapping from categories to subcategories is null");
-
-            this.latestId = latestId;
-            this.idsToEntries = idsToEntries;
-            this.catsToSubcats = catsToSubcats;
         } //SerializationProxy
 
         /**
@@ -82,68 +63,6 @@ public final class Model implements Serializable {
         private Object readResolve() {
             return new Model(this.latestId, this.idsToEntries, this.catsToSubcats);
         } //readResolve
-
-        /**
-         * Returns the hash code of this serialization proxy.
-         *
-         * @return the hash code of this serialization proxy
-         */
-        @Override
-        public int hashCode() {
-            int result = 23;
-            int prime = 31;
-
-            result = prime * result + Objects.hashCode(this.latestId);
-
-            result = prime * result + Objects.hashCode(this.idsToEntries);
-
-            result = prime * result + Objects.hashCode(this.catsToSubcats);
-
-            return result;
-        } //hashCode
-
-        /**
-         * Determines whether or not the specified object is equal to this serialization proxy. {@code true} is
-         * returned if and only if the specified object is an instance of {@code SerializationProxy} and its latest ID,
-         * mapping from IDs to entries, and mapping from categories to subcategories are equal to this serialization proxy's.
-         *
-         * @param object the object to be used in the comparisons
-         * @return {@code true}, if the specified object is equal to this serialization proxy and {@code false}
-         * otherwise
-         */
-        @Override
-        public boolean equals(Object object) {
-            if (this == object) {
-                return true;
-            } else if (object instanceof SerializationProxy) {
-                boolean equal;
-
-                equal = Objects.equals(this.latestId, ((SerializationProxy) object).latestId);
-
-                equal &= Objects.equals(this.idsToEntries, ((SerializationProxy) object).idsToEntries);
-
-                equal &= Objects.equals(this.catsToSubcats, ((SerializationProxy) object).catsToSubcats);
-
-                return equal;
-            } else {
-                return false;
-            } //end if
-        } //equals
-
-        /**
-         * Returns the {@code String} representation of this serialization proxy. The format of the returned
-         * {@code String} may change in future versions of this API. If two entries are equal according to
-         * {@link SerializationProxy#equals(Object)}, though, their {@code toString()} values will be equal according
-         * to {@link String#equals(Object)}.
-         *
-         * @return the {@code String} representation of this serialization proxy
-         */
-        @Override
-        public String toString() {
-            String format = "SerializationProxy[latestId=%s, idsToEntries=%s, catsToSubcats=%s]";
-
-            return String.format(format, this.latestId, this.idsToEntries, this.catsToSubcats);
-        } //toString
     } //SerializationProxy
 
     /**
@@ -288,7 +207,7 @@ public final class Model implements Serializable {
 
         Objects.requireNonNull(entry, "the specified entry is null");
 
-        id = entry.getId();
+        id = entry.id();
 
         this.latestId = id;
 
@@ -385,7 +304,7 @@ public final class Model implements Serializable {
 
         id = id.toUpperCase();
 
-        if (Objects.equals(newEntry.getId(), id)) {
+        if (Objects.equals(newEntry.id(), id)) {
             Entry currentEntry = this.idsToEntries.get(id);
 
             if (currentEntry == null) {
@@ -430,20 +349,20 @@ public final class Model implements Serializable {
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
-                                            String entryCategory = entry.getCategory();
+                                            String entryCategory = entry.category();
 
                                             return entryCategory.equals(categoryUpper);
                                         })
                                         .collect(Collectors.toUnmodifiableSet());
 
         for (Entry entry : foundEntries) {
-            id = entry.getId();
+            id = entry.id();
 
-            type = entry.getType();
+            type = entry.type();
 
-            subcategory = entry.getSubcategory();
+            subcategory = entry.subcategory();
 
-            tags = entry.getTags();
+            tags = entry.tags();
 
             newEntry = new Entry(id, type, newCategory, subcategory, tags);
 
@@ -489,23 +408,23 @@ public final class Model implements Serializable {
         foundEntries = this.idsToEntries.values()
                                         .stream()
                                         .filter(entry -> {
-                                            String entryCategory = entry.getCategory();
+                                            String entryCategory = entry.category();
 
                                             return entryCategory.equals(categoryUpper);
                                         })
                                         .filter(entry -> {
-                                            String entrySubcategory = entry.getSubcategory();
+                                            String entrySubcategory = entry.subcategory();
 
                                             return entrySubcategory.equals(subcategoryUpper);
                                         })
                                         .collect(Collectors.toUnmodifiableSet());
 
         for (Entry entry : foundEntries) {
-            id = entry.getId();
+            id = entry.id();
 
-            type = entry.getType();
+            type = entry.type();
 
-            tags = entry.getTags();
+            tags = entry.tags();
 
             newEntry = new Entry(id, type, category, newSubcategory, tags);
 
@@ -640,11 +559,11 @@ public final class Model implements Serializable {
         ids = this.idsToEntries.values()
                                .stream()
                                .filter(entry -> {
-                                   Type entryType = entry.getType();
+                                   Type entryType = entry.type();
 
                                    return Objects.equals(entryType, type);
                                })
-                               .map(Entry::getId)
+                               .map(Entry::id)
                                .collect(Collectors.toUnmodifiableSet());
 
         ids.forEach(this.idsToEntries::remove);
@@ -678,11 +597,11 @@ public final class Model implements Serializable {
         ids = this.idsToEntries.values()
                                .stream()
                                .filter(entry -> {
-                                   String entryCategory = entry.getCategory();
+                                   String entryCategory = entry.category();
 
                                    return entryCategory.equals(categoryUpper);
                                })
-                               .map(Entry::getId)
+                               .map(Entry::id)
                                .collect(Collectors.toUnmodifiableSet());
 
         ids.forEach(this.idsToEntries::remove);
@@ -723,16 +642,16 @@ public final class Model implements Serializable {
         ids = this.idsToEntries.values()
                                .stream()
                                .filter(entry -> {
-                                   String entryCategory = entry.getCategory();
+                                   String entryCategory = entry.category();
 
                                    return entryCategory.equals(categoryUpper);
                                })
                                .filter(entry -> {
-                                   String entrySubcategory = entry.getSubcategory();
+                                   String entrySubcategory = entry.subcategory();
 
                                    return entrySubcategory.equals(subcategoryUpper);
                                })
-                               .map(Entry::getId)
+                               .map(Entry::id)
                                .collect(Collectors.toUnmodifiableSet());
 
         ids.forEach(this.idsToEntries::remove);
@@ -766,11 +685,11 @@ public final class Model implements Serializable {
         ids = this.idsToEntries.values()
                                .stream()
                                .filter(entry -> {
-                                   Set<String> entryTags = entry.getTags();
+                                   Set<String> entryTags = entry.tags();
 
                                    return entryTags.contains(tagUpper);
                                })
-                               .map(Entry::getId)
+                               .map(Entry::id)
                                .collect(Collectors.toUnmodifiableSet());
 
         ids.forEach(this.idsToEntries::remove);
@@ -870,7 +789,7 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             Type entryType = entry.getType();
+                             Type entryType = entry.type();
 
                              return Objects.equals(entryType, type);
                          })
@@ -899,7 +818,7 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             String entryCategory = entry.getCategory();
+                             String entryCategory = entry.category();
 
                              return entryCategory.equals(categoryUpper);
                          })
@@ -935,12 +854,12 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             String entryCategory = entry.getCategory();
+                             String entryCategory = entry.category();
 
                              return entryCategory.equals(categoryUpper);
                          })
                          .filter(entry -> {
-                             String entrySubcategory = entry.getSubcategory();
+                             String entrySubcategory = entry.subcategory();
 
                              return entrySubcategory.equals(subcategoryUpper);
                          })
@@ -969,7 +888,7 @@ public final class Model implements Serializable {
         this.idsToEntries.values()
                          .stream()
                          .filter(entry -> {
-                             Set<String> entryTags = entry.getTags();
+                             Set<String> entryTags = entry.tags();
                              boolean match;
 
                              match = entryTags.stream()

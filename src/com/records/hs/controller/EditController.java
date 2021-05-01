@@ -25,7 +25,7 @@ import com.records.hs.view.ViewUtilities;
  * An edit controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 9, 2020
+ * @version May 1, 2021
  */
 public final class EditController {
     /**
@@ -510,13 +510,13 @@ public final class EditController {
             return;
         } //end if
 
-        type = entry.getType();
+        type = entry.type();
 
-        category = entry.getCategory();
+        category = entry.category();
 
-        subcategory = entry.getSubcategory();
+        subcategory = entry.subcategory();
 
-        tags = entry.getTags();
+        tags = entry.tags();
 
         newEntry = new Entry(newId, type, category, subcategory, tags);
 
@@ -578,11 +578,11 @@ public final class EditController {
 
         entry = optional.get();
 
-        category = entry.getCategory();
+        category = entry.category();
 
-        subcategory = entry.getSubcategory();
+        subcategory = entry.subcategory();
 
-        tags = entry.getTags();
+        tags = entry.tags();
 
         newEntry = new Entry(id, newType, category, subcategory, tags);
 
@@ -650,9 +650,9 @@ public final class EditController {
 
         entry = optional.get();
 
-        type = entry.getType();
+        type = entry.type();
 
-        tags = entry.getTags();
+        tags = entry.tags();
 
         newEntry = new Entry(id, type, newCategory, newSubcategory, tags);
 
@@ -720,9 +720,9 @@ public final class EditController {
 
         entry = optional.get();
 
-        type = entry.getType();
+        type = entry.type();
 
-        tags = entry.getTags();
+        tags = entry.tags();
 
         newEntry = new Entry(id, type, category, newSubcategory, tags);
 
@@ -784,11 +784,11 @@ public final class EditController {
 
         entry = optional.get();
 
-        type = entry.getType();
+        type = entry.type();
 
-        category = entry.getCategory();
+        category = entry.category();
 
-        subcategory = entry.getSubcategory();
+        subcategory = entry.subcategory();
 
         newEntry = new Entry(id, type, category, subcategory, newTags);
 

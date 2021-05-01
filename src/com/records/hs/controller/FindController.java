@@ -2,7 +2,6 @@ package com.records.hs.controller;
 
 import com.records.hs.model.Model;
 import com.records.hs.view.FindView;
-import java.util.logging.Logger;
 import java.util.Objects;
 import javax.swing.JComboBox;
 import java.util.Set;
@@ -28,7 +27,7 @@ import com.records.hs.view.ViewUtilities;
  * A find controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version June 9, 2020
+ * @version May 1, 2021
  */
 public final class FindController {
     /**
@@ -40,11 +39,6 @@ public final class FindController {
      * The find view of this find controller.
      */
     private final FindView findView;
-
-    /**
-     * The logger of this find controller.
-     */
-    private final Logger logger;
 
     /**
      * Constructs a newly allocated {@code FindController} object with the specified model and find view.
@@ -60,7 +54,6 @@ public final class FindController {
 
         this.model = model;
         this.findView = findView;
-        this.logger = Logger.getGlobal();
     } //FindController
 
     /**
@@ -366,15 +359,15 @@ public final class FindController {
         stringBuilder = new StringBuilder();
 
         for (Entry entry : entries) {
-            id = entry.getId();
+            id = entry.id();
 
-            type = entry.getType();
+            type = entry.type();
 
-            category = entry.getCategory();
+            category = entry.category();
 
-            subcategory = entry.getSubcategory();
+            subcategory = entry.subcategory();
 
-            tags = entry.getTags();
+            tags = entry.tags();
 
             tagsStringBuilder = new StringBuilder();
 

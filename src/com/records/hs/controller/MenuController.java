@@ -33,7 +33,7 @@ import javax.swing.JMenuItem;
  * A menu controller in the HS Records application.
  *
  * @author Logan Kulinski, lbkulinski@icloud.com
- * @version April 29, 2021
+ * @version May 1, 2021
  */
 public final class MenuController {
     /**
@@ -479,9 +479,9 @@ public final class MenuController {
 
         entry = optional.get();
 
-        category = entry.getCategory();
+        category = entry.category();
 
-        subcategory = entry.getSubcategory();
+        subcategory = entry.subcategory();
 
         fileName = id;
 
@@ -732,9 +732,9 @@ public final class MenuController {
         } //end if
 
         for (Entry entry : entries) {
-            category = entry.getCategory();
+            category = entry.category();
 
-            subcategory = entry.getSubcategory();
+            subcategory = entry.subcategory();
 
             if (!this.model.containsCategory(category)) {
                 added = this.model.addCategory(category);
@@ -816,15 +816,15 @@ public final class MenuController {
 
         Objects.requireNonNull(entry, "the specified entry is null");
 
-        id = entry.getId();
+        id = entry.id();
 
-        type = entry.getType();
+        type = entry.type();
 
-        category = entry.getCategory();
+        category = entry.category();
 
-        subcategory = entry.getSubcategory();
+        subcategory = entry.subcategory();
 
-        tags = entry.getTags();
+        tags = entry.tags();
 
         stringBuilder = new StringBuilder();
 
