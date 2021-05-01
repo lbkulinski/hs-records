@@ -29,16 +29,6 @@ public final class Model implements Serializable {
     private record SerializationProxy(String latestId, Map<String, Entry> idsToEntries,
                                       Map<String, Set<String>> catsToSubcats) implements Serializable {
         /**
-         * The serial version UID of the class.
-         */
-        @Serial
-        private static final long serialVersionUID;
-
-        static {
-            serialVersionUID = 0xCAFEBABEL;
-        } //static
-
-        /**
          * Constructs a newly allocated {@code SerializationProxy} object with the specified mapping from IDs to
          * entries and mapping from categories to subcategories.
          *
