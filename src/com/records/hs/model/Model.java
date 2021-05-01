@@ -15,6 +15,8 @@ import java.util.TreeSet;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 import java.util.Optional;
+import java.io.ObjectInputStream;
+import java.io.InvalidObjectException;
 
 /**
  * A model in the HS Records application.
@@ -945,6 +947,27 @@ public final class Model implements Serializable {
     private Object writeReplace() {
         return new SerializationProxy(this.latestId, this.idsToEntries, this.catsToSubcats);
     } //writeReplace
+
+    /**
+     * Throws an {@code InvalidObjectException}, as a proxy must be used for serialization.
+     *
+     * @param inputStream the input stream that is ignored in this operation
+     * @throws InvalidObjectException always, as a proxy must be used for serialization
+     */
+    @Serial
+    private void readObject(ObjectInputStream inputStream) throws InvalidObjectException {
+        throw new InvalidObjectException("a proxy must be used for serialization");
+    } //readObject
+
+    /**
+     * Throws an {@code InvalidObjectException}, as a proxy must be used for serialization.
+     *
+     * @throws InvalidObjectException always, as a proxy must be used for serialization
+     */
+    @Serial
+    private void readObjectNoData() throws InvalidObjectException {
+        throw new InvalidObjectException("a proxy must be used for serialization");
+    } //readObjectNoData
 
     /**
      * Returns the hash code of this model.
